@@ -1,0 +1,130 @@
+% manuscript, to be drafted
+
+%%This is a very basic article template.
+%%There is just one section and two subsections.
+%\documentclass[12pt,oneside,a4paper,doublespacing]{article} % for submission
+\documentclass[11pt,oneside,a4paper]{article} % for sharing
+
+\usepackage{appendix}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{placeins}
+\usepackage{graphicx}
+\usepackage{subcaption}
+%\usepackage{subfig}
+\usepackage{longtable}
+\usepackage{setspace}
+%\usepackage{tikz}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor,colortbl}
+\usepackage{chngpage}
+%\usepackage[active,tightpage]{preview}
+\usepackage{natbib}
+\bibpunct{(}{)}{,}{a}{}{;} 
+\usepackage{url}
+\usepackage{nth}
+\usepackage{authblk}
+\usepackage[most]{tcolorbox}
+%\usepackage{hyperref}
+%\usepackage{color}
+%\usepackage{fontspec}
+%\usepackage{pdfsync}
+\usepackage[normalem]{ulem}
+\usepackage{amsfonts}
+%\renewcommand{\listtablename}{List of Appendix Tables}
+%\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+%\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+% working on this need to concatenate file name based on sex and variable name
+%\newcommand\Cell[1]{{\raisebox{-0.05in}{\includegraphics[height=.2in,width=.2in]{Figures/ColorCodes/\expandafter#1}}}}  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% setting color to letters affects spacing. Here's a hack I found here:
+% http://tex.stackexchange.com/questions/212736/change-letter-colour-without-losing-letter-spacing
+%\DeclareRobustCommand{\spacedallcaps}[1]{\MakeUppercase{\textsc{#1}}} % all
+% caps with better spacing
+
+%\colorlet{RED}{red}
+%\colorlet{BLUE}{b}
+%\colorlet{rd}{red}
+%\colorlet{bl}{blue}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\ackn[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+%\newcommand\vt[1]{\textcolor{rd}{#1}}
+%\newcommand\eg[1]{\textcolor{bl}{#1}}
+
+%\newcommand\tg[1]{\includegraphics[scale=.5]{Figures/triadtable/triad#1.pdf}}
+%\newcommand\tgh[1]{\raisebox{-.25\height}{\includegraphics[scale=.3]{Figures/triadtable/triad#1.pdf}}}
+
+\defcitealias{HMD}{HMD}
+\newcommand{\dd}{\; \mathrm{d}}
+\newcommand{\tc}{\quad\quad\text{,}}
+\newcommand{\tp}{\quad\quad\text{.}}
+% junk for longtable caption
+\AtBeginEnvironment{longtable}{\linespread{1}\selectfont}
+\setlength{\LTcapwidth}{\linewidth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\title{Accounting for temporal variation in morbidity measurement
+and projections}
+
+\author[1]{Alyson van Raalte\thanks{vanraalte@demogr.mpg.de}}
+\author[1]{Tim Riffe}
+%\author[3]{John MacInnes}
+\affil[1]{Max Planck Institute for Demographic Research}
+%\affil[2]{Department of Demography, University of California, Berkeley}
+%\affil[3]{School of Social and Political Science, University of Edinburgh}
+
+%\author{[Authors]}
+
+\maketitle
+
+\begin{abstract}
+This is important stuff!
+\end{abstract}
+
+$G$ is a bad health condition that varies as a function of time to death,
+$y$ and not as a function of chronological age, $a$. However, there will still be an
+apparent age function, $g'(a)$, given that $g(y)$ is regular and mortality is
+sort of stable, but not really. $g'(a)$, in this case, is an aggregate based on
+both mortality and the real underlying time-to-death process:
+\begin{align}
+g'(a) &= \frac{\int _0^\omega g(y) N(a,y) \dd y}{N(a)} \\
+      &= \frac{\int _0^\omega g(y) N(a)
+      \mu(a+y)\frac{\ell(a+y)}{\ell(a)}\dd y}{N(a)}\\
+      &= \int _0^\omega g(y) f(y|a)\dd y
+\end{align}
+a little excercise we still need to do: find the $g'(a)$ that belongs to $g(y)$
+in our canned example. It will be different for males and females because they
+have different mortality schedules. In this case, we can make the healthy l;ife
+expectancy function be based on mortality and $g'(a)$ and see what would be the
+prediction if $g'(a)$ is held constant and we induce mortality improvement. The
+answer is that mortality improvement will appear to increase the proportion of
+remaining life expectancy that is unhealthy: also the absolute years spent
+unhealthy, but the change in sex gap is maybe ambiguous (gotta check, maybe
+not), depending on the changes induced.
+
+
+brief interlude \ldots.
+This is a simple caes of $g(y)$, but in reality morbidity often varies as a
+function of both chronological and thanatological age, and we ought to have a
+function $g(a,y)$.
+
+If 
+
+
+
+
+
+
+
+\end{document}

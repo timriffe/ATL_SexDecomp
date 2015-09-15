@@ -7,7 +7,7 @@ if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm","tim-ThinkPad-L440")){
 	setwd(paste0("/data/commons/",system("whoami",intern=TRUE),"/git/ATL_SexDecomp/ATL_SexDecomp"))
 }
 source("R/zzzLoess2Deprecate.R")
-
+source("R/SurfMap.R")
 Dat 	<- local(get(load("Data/Data_long_imputed.Rdata")))
 Dat 	<- as.data.frame(Dat)
 Dat     <- Dat[!is.na(Dat$b_yr), ]
@@ -16,6 +16,11 @@ Dat <- Dat[Dat$b_yr >= ]
 unique(Dat$sex)
 "adl5_"
 coh5 <- 1915
+table(Dat$b_yr[Dat$sex == "f"])
+table(Dat$b_yr[Dat$sex == "m"])
+plot(table(Dat$b_yr[Dat$sex == "f"]))
+colnames(Dat)
+
 
 getcoh <- function(varname = "iadl5_",coh5 = 1915,sex = "f", Dat){
 	FitLoess(varname = varname, 
@@ -49,9 +54,11 @@ for (sex in sexes){
 }
 
 
-names(Results$f)
+names(Results$f[[1]])
 
 ticks <- seq(0,1,by=.1)
+
+Results <- local(get(load("Data/ResultsIADL_ADL.Rdata")))
 
 # IADL5
 graphics.off()
