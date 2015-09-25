@@ -119,7 +119,80 @@ This is a simple caes of $g(y)$, but in reality morbidity often varies as a
 function of both chronological and thanatological age, and we ought to have a
 function $g(a,y)$.
 
-If 
+\section{temp section, out of sync, just for latex}
+
+Given the numbers from Figures X, there are various methods that one can use to
+calculate period and cohort lifetables. For the sake of reproducibility for our
+toy example, we describe steps as follows, firs tfor periods, then for cohorts.
+\subsection{Period quantities}
+We use event exposure lifetables, though it would be possible to jump straight
+to death quotients from the given Lexis diagram.
+Exposures for age $x$ in year $t$, $E(x,t)$, are calculated, per the HMD Methods
+Protocol (cite) as:
+\begin{equation}
+E(x,t) = \frac{C(x,t) + C(x,t+1)}{2} + {D_L(x,t) - D_U(x,t)}{6} \tc
+\end{equation}
+where $C(x,t)$ is the census population in age interval $[x,x+1)]$ on January 1
+of year $t$, $D_L(x,t)$ are deaths in the lower Lexis triangle of age $x$ in
+year $t$, i.e., belonging to the cohort born in the year interval $[t-x,t-x+1)$.
+$D_U(x,t)$ are deaths in the upper Lexis triangle of age $x$ in
+year $t$, i.e., belonging to the cohort born in the year interval
+$[t-x-1,t-x)$. All standard period lifetable steps are followed from the HMD
+Methods Protocol, with the exception of the $a(x)$ assumption. The HMD assumes period $a(x)$
+values of $\frac{1}{2}$. Instead, we apply the following formula:
+\begin{equation}
+a(x,t) = \frac{D_L(x,t)\frac{1}{3} + D_U(x,t)\frac{2}{3}}{D_L(x,t) + D_U(x,t)}
+\tp
+\end{equation}
+We then proceed to calculate all columns through $e(x)$. 
+
+The average value of the unhealthy condition $G$ at age $x$in year $t$, $g(x,t)$
+is calculated as follows. We first convert counts unhealthy on birthdays to
+proportions, and then take the arithmetic average of the proportion unhealthy at
+age $x$ and age $x+1$. Expectancies are then calculated as follows:
+\begin{align}
+e(0,t) =&\sum _0^2 L(x,t) \\
+e_U(0,t) =&\sum _0^2 L(x,t) g(x,t) \\
+e_H(0,t) =& e(0,t) - e_U(0,t) \tc
+\end{align}
+where $e(0,t)$ is the life expectancy at birth in year $t$, $e_U(0,t)$ is
+unhealthy life expectancy, and $e_H(0,t)$ is healthy life expectancy.
+
+\subsection{Cohort quantities}
+For cohorts we procede directly from within-cohort age interval survival
+probabilities, $p(x,c)$, as follows:
+\begin{equation}
+p(x,c) = \frac{B(x+1,c)}{B(x,c)} \tc
+\end{equation}
+where $B$ are birthdays (horizontal counts), $x$ indexes the lower age interval
+bound, and $c$ is the cohort born in the year interval $[c,c+1)]$. Starting with
+a radix of 1, we calculate $l(x,c)$ as:
+\begin{equation}
+l(x,c) = \prod_0^x p(a,c)
+\end{equation}
+$L(x,c)$ is calculated as the arithmetic average of lower $l(x,c)$ and
+$l(x+1,c)$. The average value of $G$ for the AC parallelogram is calculated
+similarly as for period squares, except that we take the arithmetic average of
+the proportions unhealthy at birthday $x$ and $x+a$ within the same cohort.
+Expectancies are then calculated in the same way.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
