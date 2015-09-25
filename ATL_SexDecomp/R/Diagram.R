@@ -300,8 +300,8 @@ text(-.2,1.2,"g(y)",xpd=TRUE,cex=2)
 text(1.5,-.2,"time to death",xpd=TRUE,cex=2)
 dev.off()
 
-pdf("Figures/e0eHtoy.pdf",height=5,width=10)
-
+pdf("Figures/e0eHtoy.pdf",height=5,width=8)
+par(mai=c(.5,.5,.5,.5))
 plot(2000:2009, period$e0, type = 'l', ylim = c(0,1.6),lwd=2,axes=FALSE, xlab = "",ylab = "")
 lines(2000:2006, cohort$e0, col = "blue",lwd=2)
 #polygon(c(2000:2009,2009:2000),c(period$e0,rev(period$eH)), col = "#00000020", border= FALSE)
@@ -316,9 +316,9 @@ segments(2000,seq(0,1.6,by=.5),2000-.15,seq(0,1.6,by=.5),xpd=TRUE)
 text(seq(2000,2009,by=1),-.04,seq(2000,2009,by=1),pos=1,xpd=TRUE)
 text(2000-.15,seq(0,1.6,by=.5),seq(0,1.6,by=.5),pos=2,xpd=TRUE)
 
-text(2001.5,1.5,"cohort e(0)",col="blue",cex=2)
-text(2004,1.3,"period e(0)",cex=2)
+text(2001.5,1.5,"cohort e(0)",col="blue",cex=1.2)
+text(2004,1.3,"period e(0)",cex=1.2)
 
-text(2001.5,.85,"cohort\nhealthy e(0)",col="blue",cex=2,pos=4)
-text(2006,1.3,"period healthy e(0)",cex=2)
-
+text(2001.5,.85,"cohort\nhealthy e(0)",col="blue",cex=1.2,pos=4)
+text(2004,.5,"period healthy e(0)",cex=1.2)
+dev.off()
