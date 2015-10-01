@@ -322,3 +322,7 @@ text(2004,1.3,"period e(0)",cex=1.2)
 text(2001.5,.85,"cohort\nhealthy e(0)",col="blue",cex=1.2,pos=4)
 text(2004,.5,"period healthy e(0)",cex=1.2)
 dev.off()
+
+matplot(0:2,GAP, type = 'l', col = "#00000050", lty = 1)
+
+
