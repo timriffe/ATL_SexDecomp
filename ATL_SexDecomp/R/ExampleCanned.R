@@ -66,7 +66,7 @@ source("R/Functions.R")
 JPN <- readHMDweb("JPN","mltper_1x1",username=us,password=pw)
 
 ##############################################
-x  <- 70:110
+x  <- 60:110
 y  <- 0:40
 
 ## male a,b
@@ -94,20 +94,20 @@ dx2 <- mx2dx(mx2)
 dx1 <- mx2dx(mx1)
 Lx2 <- mx2Lx(mx2)
 Lx1 <- mx2Lx(mx1)
-gy  <- c(seq(.5,0,length=10),rep(0,31))
+N <- length(x)
+gy  <- c(seq(.5,0,length=10),rep(0,N-10))
 # slow ramp up
-gy  <- cumprod(rep(.9,41)) * seq(.9,0,length=41)^8
-plot(gy)
+gy  <- cumprod(rep(.85,N))^4
 
 Morb <- May(gy,dx2)
 
 # remaining life expectancy at age 70
 (ex2 <- mx2ex(mx2))
 (ex1  <- mx2ex(mx1))
-(eH2 <- geteHx(mx2,Morb)  )
-(eH1 <- geteHx(mx1,Morb))
+(eH2 <- geteH(mx2,Morb)  )
+(eH1 <- geteH(mx1,Morb))
 
-(eH1 / ex1 )
+(eH1 / ex1)
 (eH2 / ex2) # higher proportion
 
 # unhealthy, similar but also increased
@@ -118,13 +118,34 @@ Morb <- May(gy,dx2)
 # buy what if we had used the sullivan method based on 
 # 1980 age pattern of morbidity fixed, rather than ttd pattern fixed?
 
-ga1         <- mxgay2gaLx(mx1, Morb)
+ga1         <- mxgay2gaLx(mx1, gy)
+ga2         <- mxgay2gaLx(mx2, gy)
 eU2sullivan <- sum(ga1 * Lx2)
-eHsullivan  <- ex2 - eU2sullivan
+(eHsullivan  <- ex2 - eU2sullivan)
 
 # sullivan increase in unhealthy expectancy
-100 * eU2sullivan / (ex1 - eH1) # sullivan predicts 52% increase
-100 * (ex2 - eH2) / (ex1 - eH1) # real 6% increase
+100 * eU2sullivan / (ex1 - eH1) # sullivan predicts 56% increase
+100 * (ex2 - eH2) / (ex1 - eH1) # real 0% increase
+
+# plot: compare dx1 dx2:
+
+plot(x, dx1, type = 'l', col = "red")
+lines(x, dx2, col = "blue")
+
+# compare ga1, ga2
+plot(x, ga1, type = 'l', col = "red")
+lines(x, ga2, col = "blue")
+
+# compare prev 1 to prev 2, and erroneous prev 2
+plot(x, ga1 * Lx1, type = 'l', col = "red",ylim=c(0,.07))
+lines(x, ga2 * Lx2, col = "blue")
+lines(x, ga1 * Lx2, col = "red", lty = 2)
+
+
+
+
+
+
 
 ##############################################################
 # OLDER CODE, written on train between Prague and Rostock, now superceded by Functions.R

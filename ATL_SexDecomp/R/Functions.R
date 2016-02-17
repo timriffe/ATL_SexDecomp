@@ -2,7 +2,7 @@
 # Author: tim
 ###############################################################################
 library(magrittr)
-library(DecompHoriuchi)
+#library(DecompHoriuchi)
 
 
 # Gompertz mx given a,b, and age vector
