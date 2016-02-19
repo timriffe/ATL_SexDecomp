@@ -28,7 +28,7 @@ sullivan <- function(survival,prevalence) {
 	R1 <- cbind(R1,rep(0,s+1))
 	R1 <- rbind(R1,rep(0,s+2))
 	
-	# each column gives the conditional survival.
+	# each column gives the conditional survival. -diff(N)
 	N  <- solve(diag(1,s+1)-U)
 	# 1s in subdiagonal
 	Z  <- cbind(diag(1,s+1),rep(0,s+1))
