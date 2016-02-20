@@ -92,13 +92,13 @@ models}
 
 \section{Morbidity as a function of time-to-death}
  
- Some morbidity condition vary as a function of time to death much more than as
+ Some morbidity conditions vary as a function of time to death much more than as
  a function of age itself \citep{riffe2015ttd}. For such conditions, the
  age-pattern (Sulivan curve) is itself a function of both mortality and the
  time-to-death pattern of the condition. That is to say, changing mortality will
  change the Sullivan curve independently of changes in the time-to-death
  process. As Hal mentioned, morbidity projections are often made assuming a
- fixed Sullivan curve. Such projections usually force imrpoving mortality. When
+ fixed Sullivan curve. Such projections usually force improving mortality. When
  morbidity is assumed fixed, a projection based on the Sullivan curve will
  deviate non-trivially from a projection based on the time-to-death pattern of
  the same morbidity condition. It is straightforward to describe this phenomenon
@@ -127,15 +127,15 @@ rapidly.
 Matrix calculations proceed by manipulating an object created by what is
 possibly one of the coolest tricks I learned in Hal's course. Recall the matrix,
 \textbf{N}, created by taking the inverse of the matrix that contains
-conditional death probabilities in the subdiagonal. Understand the demographic
-interpretation of \textbf{N} is key: each column of \textbf{N} gives the
-condition remaining survival curve, identical to $\frac{l(x+y)}{l(x)}$. That a
-matrix inverse can produce for us this useful and meaningful object is black
+conditional death probabilities in the subdiagonal. Understanding the
+demographic interpretation of \textbf{N} is key: Each column of \textbf{N} gives
+the conditional remaining survival curve, identical to $\frac{l(x+y)}{l(x)}$.
+That a matrix inverse can produce for us this useful and meaningful object is black
 magic to me, but we will exploit it.
 
-We need to do two basic things to \textbf{N} in order to make progess: first, we
-need the condtional remaining lifespan distribution, \textbf{D} rather than the
-conditional survival curve. This is just negative the first row difference of \textbf{N},
+We need to do two basic things to \textbf{N} in order to make progess: First, we
+need a matrix of the condtional remaining lifespan distribution, \textbf{D},
+rather than the conditional survival curve. This is just negative the first row difference of \textbf{N},
 or (roughly):
 
 \begin{equation}
@@ -193,9 +193,15 @@ long (with a zero tacked on to the end). Then the new prevalence vector,
 One then procedes to make the rewards matrix as described in the course, and can
 calculate, business as usual. The above is not necessarily computationally
 efficient, due to the creation of the commutation matrix, $Perm^{up}$, but that
-is perhaps an area for improvement. Another area for improvement would be to
-blend out these intermediate steps and embed \textbf{D} into the transition
-matrix, \textbf{P}. Anyway, this works for now.
+is perhaps an area for improvement. For the time being it appears that any
+alternative implementation would also require a matrix of similar dimensions:
+If there are $\omega$ age classes, then $Perm^{up}$, or alternatively an
+expanded version of the transition and rewards matrices, implied $\omega^4$
+matrix elements. Even if sparse matrices are used, this is far from
+being computationally convenient. This works for now, but for this particular
+scenario matrix calculations do not seem to beat using conventional arithmetic
+to do the same thing. I don't rule out there being a more efficient way to do
+this, though.
 
 
 \bibliographystyle{chicago}
