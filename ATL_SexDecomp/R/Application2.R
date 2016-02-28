@@ -115,10 +115,15 @@ unique(Dat$adl5_)
 Dat$adl1            <- as.integer(Dat$adl5_ >= 1)
 Dat$adl2            <- as.integer(Dat$adl5_ >= 2)
 Dat$adl3            <- as.integer(Dat$adl5_ >= 3)
+
+colnames(Dat)
+Dat$iadl1            <- as.integer(Dat$iadl5_ >= 1)
+Dat$iadl2            <- as.integer(Dat$iadl5_ >= 2)
+Dat$iadl3            <- as.integer(Dat$iadl5_ >= 3)
+
+
 Dat$srhpoor         <- ifelse(Dat$srh == "5. poor",1,ifelse(Dat$srh == "NA",NA,0))
 
-
-plot(jitter(Dat$srhpoor) , jitter(Dat$ttd))
 
 #Dat[, srhpoor := imputeSkippedQuestions(srhpoor,intv_dt), by = list(id) ]
 
@@ -269,10 +274,79 @@ ADL3m <- FitLoess(varname = "adl3",
 		span =  .5, 
 		.Coh5 = Coh5)
 
+# IADL
+IADL1f <- FitLoess(varname = "iadl1", 
+		Dat = Dat, 
+		sex = "f",
+		t.age = 0:12,    # some 5-year cohorts simply don't have 15 years, cut it lower
+		c.age = 70:100,  # standard matrix size, though we may NA certain unobserved cells
+		span =  .5, 
+		.Coh5 = Coh5)
 
+IADL1m <- FitLoess(varname = "iadl1", 
+		Dat = Dat, 
+		sex = "m",
+		t.age = 0:12,    # some 5-year cohorts simply don't have 15 years, cut it lower
+		c.age = 70:100,  # standard matrix size, though we may NA certain unobserved cells
+		span =  .5, 
+		.Coh5 = Coh5)
+IADL2f <- FitLoess(varname = "iadl2", 
+		Dat = Dat, 
+		sex = "f",
+		t.age = 0:12,    # some 5-year cohorts simply don't have 15 years, cut it lower
+		c.age = 70:100,  # standard matrix size, though we may NA certain unobserved cells
+		span =  .5, 
+		.Coh5 = Coh5)
+
+IADL2m <- FitLoess(varname = "iadl2", 
+		Dat = Dat, 
+		sex = "m",
+		t.age = 0:12,    # some 5-year cohorts simply don't have 15 years, cut it lower
+		c.age = 70:100,  # standard matrix size, though we may NA certain unobserved cells
+		span =  .5, 
+		.Coh5 = Coh5)
+IADL3f <- FitLoess(varname = "iadl3", 
+		Dat = Dat, 
+		sex = "f",
+		t.age = 0:12,    # some 5-year cohorts simply don't have 15 years, cut it lower
+		c.age = 70:100,  # standard matrix size, though we may NA certain unobserved cells
+		span =  .5, 
+		.Coh5 = Coh5)
+
+IADL3m <- FitLoess(varname = "iadl3", 
+		Dat = Dat, 
+		sex = "m",
+		t.age = 0:12,    # some 5-year cohorts simply don't have 15 years, cut it lower
+		c.age = 70:100,  # standard matrix size, though we may NA certain unobserved cells
+		span =  .5, 
+		.Coh5 = Coh5)
+graphics.off()
 plot(rowMeans(ADL1f$Surf, na.rm=TRUE), ylim=c(0,.8), xlim=c(0,15),col="red",type='l')
 lines(rowMeans(ADL1m$Surf, na.rm=TRUE),col="blue")
 lines(rowMeans(ADL2m$Surf, na.rm=TRUE),col="blue",lty=2)
 lines(rowMeans(ADL2f$Surf, na.rm=TRUE),col="red",lty=2)
 lines(rowMeans(ADL3m$Surf, na.rm=TRUE),col="blue",lty=4)
 lines(rowMeans(ADL3f$Surf, na.rm=TRUE),col="red",lty=4)
+
+plot(rowMeans(IADL1f$Surf, na.rm=TRUE), ylim=c(0,.8), xlim=c(0,15),col="red",type='l')
+lines(rowMeans(IADL1m$Surf, na.rm=TRUE),col="blue")
+lines(rowMeans(IADL2m$Surf, na.rm=TRUE),col="blue",lty=2)
+lines(rowMeans(IADL2f$Surf, na.rm=TRUE),col="red",lty=2)
+lines(rowMeans(IADL3m$Surf, na.rm=TRUE),col="blue",lty=4)
+lines(rowMeans(IADL3f$Surf, na.rm=TRUE),col="red",lty=4)
+
+DatForAlyson <- list()
+DatForAlyson[["SRHpoor"]] <- list(Males = Male, Females = Female)
+DatForAlyson[["IADL1"]] <- list(Males = IADL1m, Females = IADL1f)
+DatForAlyson[["IADL2"]] <- list(Males = IADL2m, Females = IADL2f)
+DatForAlyson[["IADL3"]] <- list(Males = IADL3m, Females = IADL3f)
+DatForAlyson[["ADL1"]] <- list(Males = ADL1m, Females = ADL1f)
+DatForAlyson[["ADL2"]] <- list(Males = ADL2m, Females = ADL2f)
+DatForAlyson[["ADL3"]] <- list(Males = ADL3m, Females = ADL3f)
+
+save(DatForAlyson, file = "/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/Data/SmArrays.Rdata")
+
+
+
+
+

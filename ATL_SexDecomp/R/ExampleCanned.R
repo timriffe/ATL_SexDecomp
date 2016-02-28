@@ -141,12 +141,106 @@ plot(x, ga1 * Lx1, type = 'l', col = "red",ylim=c(0,.07))
 lines(x, ga2 * Lx2, col = "blue")
 lines(x, ga1 * Lx2, col = "red", lty = 2)
 
+#########################################
+
+gy2  <- cumprod(rep(.9,N)) * .3
+plot(gy)
+lines(gy2)
+morbComponent <- function(gy,mx1,mx2){
+	ga1         <- mxgay2gaLx(mx1, gy)
+	ga2         <- mxgay2gaLx(mx2, gy)
+	Lx2 <- mx2Lx(mx2)
+	Lx1 <- mx2Lx(mx1)
+	
+	sum((ga1+ga2)/2*(Lx2-Lx1))
+}
+
+mx2ex(mx2)
+
+coefs <- c(.33,.5,.75,1.5,2,3)
+MPdiff <- e0Diff <- MC <- rep(0,length(coefs))
+for (i in 1:length(coefs)){
+	mxcomp <- mx2 * coefs[i]
+	MC[i]  <- morbComponent(gy,mx2,mxcomp)
+	e0Diff[i] <- mx2ex(mx2) - mx2ex(mxcomp)
+	
+	ga1         <- mxgay2gaLx(mx2, gy)
+	ga2         <- mxgay2gaLx(mxcomp, gy)
+	Lx2         <- mx2Lx(mxcomp)
+	Lx1         <- mx2Lx(mx1)
+	
+	MPdiff[i] <- sum(ga2*Lx2) -  sum(ga1*Lx1)
+}
 
 
 
+plot(e0Diff,MC)
+lines(e0Diff2,MC2)
 
+MPdiff2 <- e0Diff2 <- MC2 <- rep(0,length(coefs))
+for (i in 1:length(coefs)){
+	mxcomp <- mx2 * coefs[i]
+	MC2[i]  <- morbComponent(gy2,mx2,mxcomp)
+	e0Diff2[i] <- mx2ex(mx2) - mx2ex(mxcomp)
+	
+	ga1         <- mxgay2gaLx(mx2, gy)
+	ga2         <- mxgay2gaLx(mxcomp, gy)
+	Lx2         <- mx2Lx(mxcomp)
+	Lx1         <- mx2Lx(mx1)
+	
+	MPdiff2[i] <- sum(ga2*Lx2) -  sum(ga1*Lx1)
+}
+plot(MPdiff,MC)
+lines(MPdiff2,MC2)
 
-
+mx <- mx2
+coefs <- c(.33,.5,.75,1.5,2,3)
+chge60 <-chgprop <- rep(0,length(coefs))
+for (i in 1:length(coefs)){
+	Lx1 <- mx2Lx(mx)
+	Lx2 <- mx2Lx(mx * coefs[i])
+	ga1         <- mxgay2gaLx(mx, gy)
+	ga2         <- mxgay2gaLx(mx * coefs[i], gy)
+	e601 <- mx2ex(mx)
+	e602 <- mx2ex(mx* coefs[i])
+	prop1 <- sum(ga1*Lx1) / e601
+	prop2 <- sum(ga2*Lx2) / e602
+	chge60[i]  <- e602 - e601
+	chgprop[i] <- prop2 - prop1
+}
+chge60.2 <-chgprop.2 <- rep(0,length(coefs))
+for (i in 1:length(coefs)){
+	Lx1 <- mx2Lx(mx)
+	Lx2 <- mx2Lx(mx * coefs[i])
+	ga1         <- mxgay2gaLx(mx, gy2)
+	ga2         <- mxgay2gaLx(mx * coefs[i], gy2)
+	e601 <- mx2ex(mx)
+	e602 <- mx2ex(mx* coefs[i])
+	prop1 <- sum(ga1*Lx1) / e601
+	prop2 <- sum(ga2*Lx2) / e602
+	chge60.2[i]  <- e602 - e601
+	chgprop.2[i] <- prop2 - prop1
+}
+plot(chge60, chgprop)
+lines(chge60.2, chgprop.2)
+# test 
+#PYD1 <- Lx1*ga1
+#PYD2 <- Lx2*ga2
+#
+#sum(PYD2) - sum(PYD1)
+#
+## change in person-years with disability over time
+#dPYD <- (ga1+ga2)/2*(Lx2-Lx1)+(ga2-ga1)*(Lx1+Lx2)/2
+#
+## decompose difference in person-years with disability between time 1 and time 2
+## into mortality and disability prevalence component # from Nusselder and Looman (2004)
+#MOR.C <- (ga1+ga2)/2*(Lx2-Lx1)
+#DIS.C <- (Lx1+Lx2)/2*(ga2-ga1)
+#
+#plot(dPYD)
+#sum(dPYD)
+#sum(MOR.C)
+#sum(DIS.C)
 ##############################################################
 # OLDER CODE, written on train between Prague and Rostock, now superceded by Functions.R
 #library(magrittr)
