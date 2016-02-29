@@ -4,8 +4,8 @@ setwd("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp")
 ####################################################################################
 # Digaram 2
 library(HMDHFDplus)
-LT <- readHMDweb("JPN","mltper_1x1",username=us,password=pw)
-lx <- LT$lx[LT$Year == 2010] / 1e5
+#LT <- readHMDweb("JPN","mltper_1x1",username=us,password=pw)
+#lx <- LT$lx[LT$Year == 2010] / 1e5
 
 
 drawRect <- function(y1,y2,L,ThanoStart = 5,ThanoMax = .8,ChronoStart = 45,ChronoOmega=110,ChronoMax = .8){
@@ -32,9 +32,9 @@ drawRect <- function(y1,y2,L,ThanoStart = 5,ThanoMax = .8,ChronoStart = 45,Chron
 	if (L < ThanoStart){
 		TinterceptLeft <- y1 + (ThanoStart - L) * Tslope
 		xleft <- 0
-		polygon(x=c(0,0,L,L),y=c(TinterceptLeft,y1,y1,Tintercept), border = "white", col = "#FFBB1190")
+		polygon(x=c(0,0,L,L),y=c(TinterceptLeft,y1,y1,Tintercept), border = "white", col = "#FFBB1170")
 	} else {
-		polygon(x=c(L-ThanoStart,L,L),y=c(y1,y1,Tintercept), border = "white", col = "#FFBB1190")
+		polygon(x=c(L-ThanoStart,L,L),y=c(y1,y1,Tintercept), border = "white", col = "#FFBB1170")
 	}
 	invisible(area)
 }
@@ -89,16 +89,16 @@ drawComparison <- function(lx,
 LT <- readHMDweb("JPN","mltper_1x1",username=us,password=pw)
 years <- sort(unique(LT$Year))
 
-library(animation)
-getwd()
-list.files()
-saveGIF({for (y in years){
-			lx <- LT$lx[LT$Year == y] / 1e5
-			drawComparison(lx,seq(1,0,by=-.1),
-					round=FALSE,main = y)
-			#Sys.sleep(1)
-		}}, movie.name = "JapanHealthDemo.gif", interval = 0.1, nmax = 50, ani.width = 600, 
-		ani.height = 600)
+#library(animation)
+#getwd()
+#list.files()
+#saveGIF({for (y in years){
+#			lx <- LT$lx[LT$Year == y] / 1e5
+#			drawComparison(lx,seq(1,0,by=-.1),
+#					round=FALSE,main = y)
+#			#Sys.sleep(1)
+#		}}, movie.name = "JapanHealthDemo.gif", interval = 0.1, nmax = 50, ani.width = 600, 
+#		ani.height = 600)
 
 ##########################
 # make prettier for the manuscript:
@@ -158,7 +158,7 @@ ThanoTotal  <- (ThanoStart * ThanoMax) / 2 * 10
 ChronoTotal <- sum(chronoA)
 
 width <- 10
-rect(120,0,130,((ThanoTotal / width) / 10),col = "#FFBB1190", border = "white")
+rect(120,0,130,((ThanoTotal / width) / 10),col = "#FFBB1170", border = "white")
 rect(131,0,141,((ChronoTotal / width) / 10),col = "#09BBFF50", border = "white")
 text(125,-.05,"TTD",srt=90)
 text(136,-.05,"Age",srt=90)
@@ -220,7 +220,7 @@ ThanoTotal  <- (ThanoStart * ThanoMax) / 2 * 10
 ChronoTotal <- sum(chronoA)
 
 width <- 10
-rect(120,0,130,((ThanoTotal / width) / 10),col = "#FFBB1190", border = "white")
+rect(120,0,130,((ThanoTotal / width) / 10),col = "#FFBB1170", border = "white")
 rect(131,0,141,((ChronoTotal / width) / 10),col = "#09BBFF50", border = "white")
 text(125,-.05,"TTD",srt=90)
 text(136,-.05,"Age",srt=90)
