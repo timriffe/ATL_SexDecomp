@@ -102,7 +102,8 @@ years <- sort(unique(LT$Year))
 
 ##########################
 # make prettier for the manuscript:
-
+LT$ex[LT$Year == 1970]
+LT$ex[LT$Year == 2010]
 # 1970 Figure
 q <- seq(1,0,by=-.1)
 ThanoMax   <- .8

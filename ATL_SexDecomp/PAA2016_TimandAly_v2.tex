@@ -148,21 +148,51 @@ on future mortality rates and the time-to-death pattern of $G$, $g(y)$.
 A function such as $g(y)$ would have implications for the interpretation of
 period age patterns of morbidity, and by extension, HLE. If a function such as $g(y)$ holds, it is tautologically true that the
 measurement of HLE in completed cohorts (or stationary populations)
-will be identical whether calculated on the basis of $g^\star(a)$ or the underlying $g(y)$ pattern. Distortions only arise in the interpretation of
-period HLE under changing mortality, or with HLE comparisons between
-populations with different mortality.
+will be identical whether calculated on the basis of $g^\star(a)$ or the
+underlying $g(y)$ pattern. Distortions only arise in the interpretation of
+period HLE under changing mortality, or with period HLE comparisons between
+populations with different mortality. 
 
 %Under changing mortality and a fixed $g(y)$, the age pattern of
 %morbidity, $g^\star(a)$, will change even as the morbidity process does not,
 % and this is why 
 
-Further, since morbidity prevalence is partly a function of mortality, it is
+Since morbidity prevalence is partly a function of mortality, it is
 difficult to compare the age patterns of morbidity for populations with different mortality
-levels or patterns. Under these circumstances, it is deceptively tricky to
+levels or patterns. Under these circumstances, it is also deceptively tricky to
 partition period HLE differences into true morbidity and mortality
-components, because the morbidity component will rely on some unknown future mortality quantity that is a driver of the apparent age pattern of morbidity.
+components, because the morbidity component will rely on an uncertain future
+mortality pattern that is a driver of the apparent age pattern of morbidity. Although cohort HLE (a gold standard) is theoretically unbiased \citep{imai2007estimation}\footnote{We
+confirm that this remains so even if morbidity prevalence in strongly patterned
+by time-to-death.}, and therefore comparable, this quantity cannot be faithfully
+decomposed into morbidity and mortality components based on age patterns of morbidity and mortality alone if
+the underlying morbidity pattern is a function of time-to-death.
+
+That morbidity prevalence may in cases be a function of time to death does not
+imply that morbidity incidence is necessarily a function of time to death. An
+age-patterned sequence of health states wherein mortality risk increases with
+passing states could also produce a time-to-death prevalence pattern. It is also
+plausible that some morbidity conditions are linked to a more general process of
+dying, thereby linking morbidity to a process that ends with death and
+thereby also producing a time-to-death prevalence pattern. Either of
+these explanations would circumvent the temptation to state that causes must
+precede effects, and that therefore death cannot cause the morbidity that
+precedes it. To model prevalence as a function of time-to-death requires no
+surreal understanding of how things work, but it is a modelling choice.
  
-We first illustrate this concept with a toy example. 
+We first illustrate these concepts with a toy example. Figure~\ref{fig:test}
+provides a schematic overview of two populations assumed stationary. The
+underlying survival pattern of these two populations is based on period survival
+curves from Japanese males in 1970 (a) and 2010 (b) (HMD), but the reader may
+imagine these as two hypothetical populations. Population (a) has a life
+expectancy of 69.3, while population (b) has a life expectancy of 79.5, about 10
+years higher. For demonstration, we partition each survival curve into 10
+lifespan quantiles, represented with horizontal bars. Our toy time-death
+prevalence, $g(y)$, is drawn with identical yellow triangles at the end of each
+lifespan bar. Onset begins 5 years before death and culminates with 80\%
+prevalence. The chronolgical prevalence function is drawn with blue triangles,
+with onset at age 50 reaching a maximum prevalence of 50\% at hypothetical age
+111.5. The both prevalence functions are identical for populations (a) and (b). 
 
 \begin{figure}
 \centering
@@ -182,12 +212,26 @@ We first illustrate this concept with a toy example.
 (\ref{fig:toypop2}) mortality populations. Each population is
 subjected to the same chronological age (blue) and time-to-death (yellow)
 morbidity prevalence patterns. The total prevalence of each sums to disability life years
-(DLY), drawn to scale on the right of each survival curve. In \ref{fig:toypop1}
+(DLY), drawn on the right of each survival curve. In \ref{fig:toypop1}
 the age and time-to-death prevalences imply the same DLY. In
 \ref{fig:toypop2} the time-to-death DLY is identical to \ref{fig:toypop1}, but
 the age DLY is two years higher, due entirely to improved longevity.}
 \label{fig:test}
 \end{figure}
+
+Disability life years (DLY) is shown with
+barplots next to each stationary population.
+In population (a) the chronological and time-to-death prevalence functions yield
+the same HLE. In population (b) the time-to-death DLY is identical to population
+(a), but the chronological DLY nearly doubled. For the chronological prevalence
+function, it is correct to conclude that increased longevity leads to
+increases in prevalence, but for the time-to-death prevalence function there is
+no trade-off. Instead, improved longevity leads to increased proportions of life
+lived disability-free. Analyses based on the standard Sullivan method are only
+capable of coming to the latter conclusion. In real life, prevalence functions
+are more complex, but our example provides a useful heuristic to understand the
+sources of bias in common applications of the Sullivan method.
+
 %Assume the population
 %process outlined in the Lexis diagram of Figure~\ref{fig:Fig_DiagramLexis}.
 % This diagram represents quantities that will induce the aforementioned
