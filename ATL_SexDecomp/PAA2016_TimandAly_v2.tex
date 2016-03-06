@@ -4,7 +4,7 @@
 %%There is just one section and two subsections.
 %\documentclass[12pt,oneside,a4paper,doublespacing]{article} % for submission
 \documentclass[11pt,oneside,a4paper]{article} % for sharing
-\usepackage[margin=3cm]{geometry}
+
 \usepackage{appendix}
 \usepackage{amsmath}
 \usepackage{caption}
@@ -26,6 +26,7 @@
 \usepackage{nth}
 \usepackage{authblk}
 \usepackage[most]{tcolorbox}
+\usepackage{xcolor}
 %\usepackage{hyperref}
 %\usepackage{color}
 %\usepackage{fontspec}
@@ -78,9 +79,7 @@
 \title{Accounting for temporal variation in morbidity measurement
 and projections}
 
-\author[1]{Alyson van Raalte\thanks{Authors are currently ordered in reverse
-alphabetical order. Correspondence to vanraalte@demogr.mpg.de or
-riffe@demogr.mpg.de}}
+\author[1]{Alyson van Raalte\thanks{Authors are currently ordered in reverse alphabetical order. Correspondence to vanraalte@demogr.mpg.de or tim.riffe@gmail.com}}
 \author[1]{Tim Riffe}
 \affil[1]{Max Planck Institute for Demographic Research}
 
@@ -89,37 +88,17 @@ riffe@demogr.mpg.de}}
 \maketitle
 
 \begin{abstract}
-In calculating healthy life expectancy, the use of age-specific morbidity
-prevalence data implicitly assumes a chronological age at onset, i.e. that the
-disabling process is related to how long an individual has lived. However, many
-common disabling processes are better measured by a time-to-death
-(thanatological) pattern.
-Since death occurs most often at advanced ages, the conflation a mortality
-pattern that increases with age and a thanatological morbidity pattern produces
-an apparent morbidity pattern that also increases with advancing age. In the
-cohort perspective the true and apparent morbidity patterns will imply the same
-health expectancies, but problems arise in the period perspective. Comparing the
-changes in period health expectancies over time cannot easily be partitioned
-into morbidity and mortality components, because the period morbidity component
-will depend on some unknown future time-to-death process. In this paper we
-illustrate these concepts formally and empirically, using morbidity data from
-the Health and Retirement Survey. While holding the time-to-death morbidity
-function fixed, we show that mortality reduction alone reduces the total life
-years with disability. We estimate the magnitude of this bias for different
-disabling processes. This has implications for projections, as well as any
-between- or within-population comparisons of period HLE with different age patterns of mortality.
+In calculating healthy life expectancy, our use of age-specific morbidity prevalence data implicitly assumes a chronological age at onset, i.e. that the disabling process is related to how long an individual has lived. However, many common disabling processes are better measured by a thanatological (time-to-death) age pattern. Nevertheless, because death occurs most often at advanced ages, the conflation of a chronological mortality pattern and a thanatological morbidity age pattern will produce an apparent morbidity pattern that also increases with advancing age. In the cohort perspective the true and apparent morbidity patterns will be the same. The problems arise in the period perspective. Comparing the changes in period HLE over time cannot easily be partitioned into morbidity and mortality components, because the period morbidity component will depend on some unknown future time-to-death process. In this paper we illustrate these concepts formally and empirically, using morbidity data from the Health and Retirement Survey. While holding the time-to-death morbidity function fixed, we show that mortality reduction alone reduces the total life years with disability (DLY). We estimate the magnitude of this bias for different disabling processes. This has implications for any between- or within-population comparisons of period HLE with different age patterns of mortality. 
 \end{abstract}
 
 \newpage
 \section{Introduction}
 
-%Healthy life expectancy (HLE) is among the most widely used metrics of
-% population health. It combines information on mortality and morbidity prevalence to summarize the expected years of life lived in good health, however measured. If healthy life expectancy is increasing faster than life expectancy, morbidity is being compressed into a smaller proportion of life. HLE can increase because of changes mortality, morbidity or both.
+Healthy life expectancy (HLE) is among the most widely used metrics of population health. It combines information on mortality and morbidity to summarize the expected years of life lived in good health, however measured. If healthy life expectancy is increasing faster than life expectancy, morbidity is being compressed into a smaller proportion of life. HLE can increase because of changes mortality, morbidity or both. 
 
-%In calculating HLE, our use of age-specific morbidity prevalence data
-% implicitly assumes a chronological age at onset, i.e. that the disabling process is related to how long an individual has lived. However, \citet{Riffe2015} have shown that many common disabling processes are better measured by a thanatological (time-to-death) age pattern. Nevertheless, because death occurs most often at advanced ages, the conflation of a chronological mortality pattern and a thanatological morbidity age pattern will produce an apparent morbidity pattern that also increases with advancing age. In the cohort perspective the true and apparent morbidity patterns will be the same. The problems arise in the period perspective. Comparing differences in period HLE between two populations cannot easily be partitioned into morbidity and mortality components, because the period morbidity component will depend on some unknown future time-to-death process. For the same reason, comparisons of disability prevalence rates by age are not recommended between populations with different underlying age schedules of mortality.
+In calculating HLE, our use of age-specific morbidity prevalence data implicitly assumes a chronological age at onset, i.e. that the disabling process is related to how long an individual has lived. However, \citet{riffe2015ttd} have shown that many common disabling processes are better measured by a thanatological (time-to-death) age pattern. Nevertheless, because death occurs most often at advanced ages, the conflation of a chronological mortality pattern and a thanatological morbidity age pattern will produce an apparent morbidity pattern that also increases with advancing age. In the cohort perspective the true and apparent morbidity patterns will be the same. The problems arise in the period perspective. Comparing differences in period HLE between two populations cannot easily be partitioned into morbidity and mortality components, because the period morbidity component will depend on some unknown future time-to-death process. For the same reason, comparisons of disability prevalence rates by age are not recommended between populations with different underlying age schedules of mortality.
 
-%In this paper we illustrate these concepts formally and empirically, using morbidity data from the Health and Retirement Survey. While assuming a fixed time-to-death morbidity function, we show that mortality reduction alone reduces the total life years with disability (DLY). We estimate the magnitude of this bias for different disabling processes, given different levels of mortality. 
+In this paper we illustrate these concepts formally and empirically, using morbidity data from the Health and Retirement Survey. While assuming a fixed time-to-death morbidity function, we show that mortality reduction alone reduces the total life years with disability (DLY). We estimate the magnitude of this bias for different disabling processes, given different levels of mortality. 
 
 
 \section{Morbidity as a function of time-to-death}
@@ -178,7 +157,7 @@ consequently producing a time-to-death prevalence pattern. Either of
 these explanations circumvents the temptation to state that causes must
 precede effects, and that therefore death cannot cause the morbidity that
 precedes it. To model prevalence as a function of time-to-death requires no
-surreal understanding of how things work, but it rather a modelling choice.
+surreal understanding of how things work, but is rather a modelling choice.
  
 We first illustrate these concepts with a toy example. Figure~\ref{fig:test}
 provides a schematic overview of two stationary populations. The
@@ -198,13 +177,13 @@ with onset at age 50 reaching a maximum prevalence of 50\% at hypothetical age
 \centering
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.98\linewidth]{Figures/Japan1970}
+  \includegraphics[width=.98\linewidth]{Japan1970}
   \caption{Higher mortality setting}
   \label{fig:toypop1}
 \end{subfigure}%
 \begin{subfigure}{.5\textwidth}
   \centering
-  \includegraphics[width=.98\linewidth]{Figures/Japan2010}
+  \includegraphics[width=.98\linewidth]{Japan2010}
   \caption{Lower mortality setting}
   \label{fig:toypop2}
 \end{subfigure}
@@ -233,249 +212,118 @@ are more complex, but our example provides a useful heuristic to understand a
 previously-undescribed source of bias in common applications of the Sullivan
 method.
 
-%Assume the population
-%process outlined in the Lexis diagram of Figure~\ref{fig:Fig_DiagramLexis}.
-% This diagram represents quantities that will induce the aforementioned
-% inconsistency.
-%Blue numbers on the horizontal age bars represent the number of birthdays,
-% while black numbers represent census counts. Red numbers represent deaths in the
-%Lexis triangle, and finally, green numbers next to birthdays represent the
-%number of unhealthy people that would be alive assuming the pattern of $g(y)$
-%found in Figure~\ref{fig:Fig_TTDgy} (given in Appendix Table~\ref{tab:gy}) and
-%the given mortality pattern, assuming deaths are distributed uniformly in Lexis
-%triangles, and the average values given in Table~\ref{tab:gy} apply. The
-% example moves from a higher mortality stationary setting to a lower mortality stationary
-%setting.
-%
-%\begin{figure}
-%\begin{adjustwidth}{-1.5cm}{}
-%	\centering
-%	\includegraphics[scale=.6]{DiagramLexis.pdf}
-%	\caption{The Lexis diagram}
-%	\label{fig:Fig_DiagramLexis}
-%\end{adjustwidth}
-%\end{figure}
-%
-%
-%
-%\begin{figure}
-%\begin{adjustwidth}{-1.5cm}{}
-%	\centering
-%	\includegraphics[scale=.6]{TTDgy.pdf}
-%	\caption{The time-to-death profile of disability of the toy example}
-%	\label{fig:Fig_TTDgy}
-%\end{adjustwidth}
-%\end{figure}
-%
-%To calculate the numbers unhealthy in any given birthday line, first note that
-%the average years lived in a Lexis triangle by those dying in the triangle is
-%$\sfrac{1}{3}$. For example, 20 of the
-%babies born in the year 2003 will die within the year. These deaths have an
-%average lifespan of $\sfrac{1}{3}$, and so they contribute $20\times0.90$
-%% unhealthy people to the birth cohort at age 0 (value from appendix
-% table~\ref{tab:gy}.
-%Those dying from the same cohort before age 1 in the year 2004 contribute
-%$15\times0.6$ unhealthy persons to age 0 in 2003, and so forth iteratively up
-%the cohort.
-%
-%In this controlled setting, where the underlying $g(y)$ is held fixed, we can
-%calculate both the period and cohort HLE values.\footnote{See Appendix
-%explanations for the details used to calculate lifetables and mean values of
-%$G(a)$. } Figure~\ref{fig:e0eHtoy} shows trends in period and cohort total and
-%healthy life expectancy. In the initial and final stages, period and cohort
-%healthy and total life expectancies agree, because these are the stationary
-%start and end of the series. As is usually the case, there is no perfect way to
-%compare cohort and period line graphs, since the x-axis refers to both cohort
-%and period. 
+\section{How changing mortality affects morbidity prevalence}
 
-%\begin{figure}
-%\begin{adjustwidth}{-1.5cm}{}
-%	\centering
-%	\includegraphics[scale=.6]{e0eHtoy.pdf}
-%	\caption{Cohort and period life expectancy and healthy life expectancy.}
-%	\label{fig:e0eHtoy}
-%\end{adjustwidth}
-%\end{figure}
-%
-%The gap between year 2001 and 2005 marks an inconsistency. In
-%this case, the inconsistency is entirely driven by mortality change. Further
-% the gap in HLE is due not only to the change in the survival function used to
-%calculate HLE, but also to changes in the pattern of $g^\star(a)$. That is,
-%if we were to decompose the difference in 2001 and 2007 HLE using conventional
-%methods, there would appear to be a morbidity contribution to the difference,
-%even though morbidity in this case is held fixed. We demonstrate such an
-%inconsistency using somewhat more realistic data in the following section.
-% 
-%
+The age pattern of disability prevalence observed in the cross-section depends on the extent to which the disabling prevalence is better modeled by years lived versus time-to-death, the shape of the disabling time-to-death prevalence curve, and the underlying mortality level. The effect of these latter two dimensions are shown on a fictitious population in Figure~\ref{fig:Fig_schematic3}, where for simplicity, we assume a disabling prevalence that is completely determined by thanatological age and stationary populations. 
+
+\begin{figure}
+\begin{adjustwidth}{-1.5cm}{}
+	\centering
+	\includegraphics[scale=.8]{schematic3.pdf}
+	\caption{Schematic...}
+	\label{fig:Fig_schematic3}
+\end{adjustwidth}
+\end{figure}
+
+The first column contains three different types of disability, all of which are experienced by half of the population at the time of death, but which differ in the timing of onset prior to death. The first type of disability is virtually nonexistent 5 years prior to death, but then increases very rapidly as death approaches. The middle variant of disability is rare 15 years before death, but increases to about 20 percent of the population 5 years before death and rises sharply thereafter. The bottom figure depicts a disabling process that although still strictly determined by time-to-death, is common and accumulates very slowly starting from about 50 years before death. 
+
+The second column translates the thanatological age prevalence curves of disability into chronological age prevalence of disability, for different mortality levels depicted by the death density curves above. These mortality levels roughly correspond to USA males in 2002 $e_{60} = 20.0$ years, Canadian females in 2004 $e_{60} = 25.0$ years, and projected Japanese females a decade or so from now $e_{60} = 30.0$ years (latest observed level in 2012 was $e_{60} = 28.3$ years \citep{HMD2015}).  In all cases increasing remaining life expectancy results in decreasing age-specific disability prevalence by chronological age.  With steeply increasing disability prior to death (first row), the differences in disability prevalence are largest above age 80, where the bulk of mortality occurs, while with more gently increasing disability (second and third rows) the differences in disability prevalence curves appear at younger ages. 
+
+These differences induced by mortality change alone are not trivial. In the middle variant, which closely resembles the thanatological age prevalence of disability in bathing, a 10-year increase in $e_{60}$  resulted in a 50 percent drop in disability prevalence at age 80 from around 20 to 10 percent. Meanwhile, the age at which a quarter of the population were considered disabled in this scenario differed by about 5 years with a 5-year improvement in $e_{60}$ from 20 to 25.
+Of course the disability prevalence is rarely a function of thanatological age alone. For example, Figure~\ref{fig:Fig_ADL_thana-chrono_rev} \textcolor{red}{should change this figure to the new way of calculating ADL} shows US male ADL-disability prevalence as a function of chronological and thanatological age. The horizontally running gradients indicate that time-to-death is a more important time axis to predict deterioration in ADL than time since birth. Thus our assumption of fixed morbidity prevalence on the thanatological age axis is not altogether unrealistic. This is the case for many, but not all, indicators of health and disability \citep{riffe2015ttd}. Thus in reality, the prevalence of disability will vary on both the chronological and thanatological age axes. The degree to which prevalence is better measured on a chronological versus thanatological axes for different disabling conditions remains an open research question.
 
 
-%\section{Sex differences in Healthy Life Expectancy}
-%
-%Let's again assume that morbidity is a thanatological age function. Using empirically observed US data we can initiate changing sex differences in age-specific morbidity prevalence and healthy life expectancy, arising solely from period mortality decline.
-%
-%Morbidity data come from the US Health and Retirement Study, specifically difficulties in carrying out functional Activities of Daily Living. The disability prevalence was calculated by the average number of difficulties in ADL experienced at each age for the 1915 birth cohort divided by the total ADLs. Because the cohort was nearly extinct, we were able to calculate both the thanatological $g(y)$ and chronological $g(a)$ age profiles of disability prevalence, borrowing information from neighbouring cohorts to obtain smooth age profiles using a Loess filter. 
-%
-%The resulting ADL-disability prevalence is illustrated in Figure \ref{fig:ADL_thana-chrono}. The horizontally running gradients indicate that time-to-death is the more important time axis to predict deterioration in ADL than time since birth. Thus our assumption of a thanatological age function of morbidity is not unrealistic. This is the case for many, but not all, indicators of health \citep{Riffe2015}. At our oldest observed age, 6 percent of males and 11 percent of females were still alive. Both morbidity and mortality rates were forecasted to close the cohort out at age 110.  Mortality and exposure data came from the Human Mortality Database \citep{HMD2015}. 
-%
-%Next we calculated the apparent age function of morbidity $g^\star(a)$ that would have occurred in 1995 and 2010, had the individuals been subject to the 1915 cohort $g(y)$ (Figure \ref{fig:morb_age}). For simplicity we assumed that the 1995 and 2010 period life tables came from stationary populations. Thus any changes to the 1995 and 2010 $g^\star(a)$ schedules resulted exclusively from observed mortality change between the periods, and not by the underlying morbidity function. For both men and women, the disability prevalence declined below age 100. Had we observed these patterns, we would have artificially congratulated ourselves on reducing or postponing the disabling process, when in fact all we did was to reduce mortality. That males showed greater declines in age-specific disability prevalence was strictly owing to their stronger mortality decline than females.
-%
-%Although the changes in disability prevalence induced by mortality decline are not large, they do result in absolute increases in expected years of life in a state of disability at age 74 (Table \ref{tab:HLE_HRS}). If we were to decompose temporal differences in healthy life expectancy, at each age we would have non-zero components that are conventionally thought of as mortality and morbidity effects even though we have not changed the underlying morbidity function. 
-%
-%\begin{table}[ht]
-%	\centering
-%		\begin{tabular}{l|rrrr}
-%			\toprule
-%		 \quad & \textbf{Females} & \quad & \textbf{Males} & \quad  \\	
-%		 \quad & \textbf{1995} & \textbf{2010} & \textbf{1995} & \textbf{2010} \\
-%	\midrule
-%	Expected Healthy Life Years&10.3&11.2&8.7&10.3\\
-%	Expected Disabled Life Years&2.5&2.5&1.4&1.5\\
-%	Expected Total Life Years&12.7&13.8&10.1&11.8\\
-%	Proportion of Life healthy&0.81&0.82&0.86&0.88\\
-%
-%	\bottomrule		
-%		\end{tabular}
-%	\caption{HLE at age 74 and its components under changing period mortality but morbidity fixed to the observed 1915 cohort g(y)}
-%	\label{tab:HLE_HRS}
-%\end{table}
-%
-%
-%
-%
-%\begin{figure}
-%	\centering
-%		\includegraphics[width=1.1\textwidth]{Fig_ADL_thana-chrono_rev.pdf}
-%	\caption{The prevalence of ADL impairment as a function of both thanatological and chronological age}
-%	\label{fig:ADL_thana-chrono}
-%\end{figure}
-%
-%
-%
-%
-%\begin{figure}
-%	\centering
-%		\includegraphics[width=0.7\textwidth]{morb_by_age_1915gy.pdf}
-%	\caption{The changing age-specific disability prevalence induced by mortality change alone}
-%	\label{fig:morb_age}
-%\end{figure}
-%
-%
-%
-%\section{Future considerations}
-%The results using the US HRS data at this point are meant to be illustrative, but robustness checks are still needed. Specifically, we will check the robustness of our smoothing technique of the ADL prevalence surface and our mortality forecasts for the 6 and 11 percent of the cohort still alive in the most recent survey. Using established decomposition techniques \citep{Andreev2002,Horiuchi2008}, we will further explore the implications of mortality and morbidity perturbations on sex differences in healthy life expectancy. 
-%Finally, the paper as it stands now is mostly theoretical. By PAA we hope to further develop the empirical components. Specifically, we aim to see whether we can explain some of the observed sex differences in HLE by accounting for different thanatological vs chronological patterning of morbidity.
-%
-%
-%\section{Discussion}
-%
-%
-%
-%
-%Healthy life expectancy remains a popular tool for analyzing population health. At any given time, a snapshot of the life years lived in good or poor health are captured. This information is accurately summarized in both the period and cohort perspective, regardless of whether morbidity is a function of chronological or thanatological age. The difficulties arise in the interpretation of period differences in this quantity. The chronological age pattern of disability can increase or decrease solely as a function of mortality change even when the underlying morbidity function is held constant. Thus, for instance, observed widening ratios in the age profiles of disability prevalence between subgroups \citep{Crimmins2001} cannot be attributed to changes in the disabling process without taking into account changing mortality profiles. This also calls into question the practice of forecasting observed age-specific rates of decline in disability \citep{Manton2006,Khaw1999}. Health economists refer to a similar 'red herring' argument, namely that medical costs are more closely associated with time-to-death than with chronological age. As a result, health care cost projections based on a chronological rather than thanatological age pattern of mortality are artificially inflated \citep{Zweifel1999,Geue2014}.
-%
-%Instead, we argue that the better way to measure changes in health or disability is from a cohort perspective \citep{Manton2000,Manton2008,Christensen2013}. \citet{Manton2000}, for instance, found large differences between period and cohort estimates of active life expectancy (ALE). ALE at ages 65 and 85 was between 1.6 and 2.6 times larger in the cohort perspective than for similar period estimates, and the expected years of life disabled were smaller. Additionally, they uncovered larger differences between the cohort and period perspectives for men than women, which they attribute to differences in disability transition rates between the sexes. We theorize that some of these larger differences might also be attributable to larger mortality reduction among men.
-%
-%Several studies have looked at the macro relationship between overall mortality levels and sex differences in HLE. At higher levels of life expectancy, female advantage in healthy life expectancy diminishes, or even reverses into male advantage \citep{vanOyen2013}. Meanwhile, the larger the proportional female advantage in longevity, the larger the female excess in the proportion of life in poor health \citep{Luy2014}. That mortality levels and disability prevalence are related is perhaps not surprising. As our example illustrates, differences in the underlying mortality lead to differences in the age profile of disability. Additionally, although the association between the severity of chronic conditions and poor health was found to be similar for men and women, morbidity prevalence rates are generally higher among women, particularly for arthritis and chronic pain \citep{Case2005}. It would be worthwhile to investigate whether there might not only be differences in the composition of chronic conditions between the sexes, but whether the underlying morbidity process itself might differ between the sexes in its chronological versus thanatological axis \citep{Riffe2015}. 
-%
-%In reality, not all end-of-life health conditions are exclusive functions of
-%time-to-death, but morbidity often varies as a function of
-%both chronological and thanatological age, and it is best to express morbidity
-%as a function of both age and time-to-death, $g(a,y)$. There is great variety in
-%the temporal variation of late-life health conditions \citep{Riffe2015}.
-%Further, the function $g(a,y)$ changes over time and it is not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations
-%and over time, since many health conditions appear to show strong time-to-death
-%components. Trends in mortality may offset or amplify changes in morbidity.
-%Therefore, in order to separate effects, more careful measurements are required
-%than is typically the case. 
-%
-%\section{Appendix}
-%
-%Given the numbers from Figure~\ref{fig:Fig_DiagramLexis}, there are various methods that one can use to
-%calculate period and cohort lifetables. For the sake of reproducibility for our
-%toy example, we describe steps as follows, first for periods, then for cohorts.
-%\subsection{Period quantities}
-%We use event exposure lifetables, though it would be possible to jump straight
-%to death quotients from the given Lexis diagram.
-%Exposures for age $x$ in year $t$, $E(x,t)$, are calculated, per the HMD Methods
-%Protocol \citep{Wilmoth2007} as:
-%\begin{equation}
-%E(x,t) = \frac{C(x,t) + C(x,t+1)}{2} + \frac{D_L(x,t) - D_U(x,t)}{6} \tc
-%\end{equation}
-%where $C(x,t)$ is the census population in age interval $[x,x+1)]$ on January 1
-%of year $t$, $D_L(x,t)$ are deaths in the lower Lexis triangle of age $x$ in
-%year $t$, i.e., belonging to the cohort born in the year interval $[t-x,t-x+1)$.
-%$D_U(x,t)$ are deaths in the upper Lexis triangle of age $x$ in
-%year $t$, i.e., belonging to the cohort born in the year interval
-%$[t-x-1,t-x)$. All standard period lifetable steps are followed from the HMD
-%Methods Protocol, with the exception of the $a(x)$ assumption. The HMD assumes period $a(x)$
-%values of $\frac{1}{2}$. Instead, we apply the following formula:
-%\begin{equation}
-%a(x,t) = \frac{D_L(x,t)\frac{1}{3} + D_U(x,t)\frac{2}{3}}{D_L(x,t) + D_U(x,t)}
-%\tp
-%\end{equation}
-%We then proceed to calculate all columns through $e(x)$. 
-%
-%The average value of the unhealthy condition $G$ at age $x$in year $t$, $g(x,t)$
-%is calculated as follows. We first convert counts unhealthy on birthdays to
-%proportions, and then take the arithmetic average of the proportion unhealthy at
-%age $x$ and age $x+1$. Expectancies are then calculated as follows:
-%\begin{align}
-%e(0,t) =&\sum _0^2 L(x,t) \\
-%e_U(0,t) =&\sum _0^2 L(x,t) g(x,t) \\
-%e_H(0,t) =& e(0,t) - e_U(0,t) \tc
-%\end{align}
-%where $e(0,t)$ is the life expectancy at birth in year $t$, $e_U(0,t)$ is
-%unhealthy life expectancy, and $e_H(0,t)$ is healthy life expectancy.
-%
-%\subsection{Cohort quantities}
-%For cohorts we proceed directly from within-cohort age interval survival
-%probabilities, $p(x,c)$, as follows:
-%\begin{equation}
-%p(x,c) = \frac{B(x+1,c)}{B(x,c)} \tc
-%\end{equation}
-%where $B$ are birthdays (horizontal counts), $x$ indexes the lower age interval
-%bound, and $c$ is the cohort born in the year interval $[c,c+1)]$. Starting with
-%a radix of 1, we calculate $l(x,c)$ as:
-%\begin{equation}
-%l(x,c) = \prod_0^x p(a,c)
-%\end{equation}
-%$L(x,c)$ is calculated as the arithmetic average of lower $l(x,c)$ and
-%$l(x+1,c)$. The average value of $G$ for the AC parallelogram is calculated
-%similarly as for period squares, except that we take the arithmetic average of
-%the proportions unhealthy at birthday $x$ and $x+a$ within the same cohort.
-%Expectancies are then calculated in the same way.
-%
-%\subsection{Values assumed for $g(y)$ in toy example}
-%If deaths in Lexis triangles are distributed uniformly, then the average year
-%lived of those dying in the triangle is $\sfrac{1}{3}$. Since deaths in the
-%example Lexis diagram are given in triangles, we assume values of $g(y)$ for the
-%average years lived for the deaths in each triangle. For example, 20 of the
-%babies born in the year 2003 will die within the year, and these have an average
-%lifespan of $\sfrac{1}{3}$, and so they contribute $20\times0.90$ unhealthy
-%people to the birth cohort at age 0. 
-%
-% \begin{table}[ht]
-%\centering
-%\begin{tabular}{rr}
-%\hline
-%TTD & $g(y)$ \\
-%\hline
-%$\sfrac{1}{3}$ & 0.90 \\
-%$\sfrac{2}{3}$ & 0.60 \\
-%$1\sfrac{1}{3}$ & 0.20 \\
-%$1\sfrac{2}{3}$ & 0.10 \\
-%$2\sfrac{1}{3}$ & 0.05 \\
-%$2\sfrac{2}{3}$ & 0.02 \\
-%\hline
-%\end{tabular}
-%\caption{$g(y)$ used in toy example.}
-%\label{tab:gy}
-%\end{table}
-%
-%
-%
+\begin{figure}
+\begin{adjustwidth}{-1.5cm}{}
+	\centering
+	\includegraphics[scale=.8]{Fig_ADL_thana-chrono_rev.pdf}
+	\caption{...}
+	\label{fig:Fig_ADL_thana-chrono_rev}
+\end{adjustwidth}
+\end{figure}
+
+
+
+\section{Estimating bounds for the impact of mortality differences on estimates of disabled life years}
+
+The Sullivan method is the most commonly used method to partition life expectancy into estimates of the total life years lived in a state of good health (HLY) or disability (DLY). Its popularity is owing to its minimal data requirements. Only current age-specific disability prevalence rates are needed in addition to a life table or age-specific mortality rates. Specifcally, the number of person-years with disability $_{n}\pi _{x} \cdot _{n}L _{x}$ in age-group $x$ to $x+n$ are the product of the person-years lived from the life table $_{n}L _{x}$ and the proportion disabled $_{n}\pi _{x}$. The total DLY is the sum of  $_{n}\pi _{x} \cdot _{n}L _{x}$ over all age groups.
+
+It has long been recognized that the Sullivan method does not produce a pure synthetic measure of health expectancy, since it combines flow data of current mortality incidence with stock data of morbidity prevalence. While the mortality flow responds immediately to period change, for instance from medical innovations, the morbidity stock is slower to change because it reflects past cohort experiences with disability incidence and recovery \citep{Mathers1997,Barendregt1994}. Moreover, as was illustrated in Figure~\ref{fig:Fig_schematic3}, the prevalence stock at any age depends not only on past flows into and out of disability but also on future flows into death. \textcolor{red}{Does this make sense to say?}
+
+Nevertheless, comparing populations on the basis of life years lived in a state of good health (HLY) or disability (DLY) is standard practice in population health. The difference in either metric, either a within-population difference over two time periods or a between-population difference at the same time period, is often decomposed into mortality and morbidity components on the basis of changes in survivorship and morbidity prevalence respectively \citep{Nusselder2004,Andreev2002}. According to \citet{Nusselder2004}, the corresponding mortality and disability effects at each age group for a within-population decomposition are:
+
+\begin{equation}\label{eq:MORcomp}
+	{_{n}{MOR}_{x}}=\left [ \frac{_{n}\pi_{x\left ( t \right )} + _{n}\pi_{x\left ( t+y \right )}  }{2}\right ]\cdot \Delta _{n}L_{x}.
+\end{equation}
+
+\begin{equation}\label{eq:DIScomp}
+	{_{n}{DIS}_{x}}=\left [ \frac{_{n}L_{x\left ( t \right )} + _{n}L_{x\left ( t+y \right )}  }{2}\right ]\cdot \Delta _{n}\pi_{x}.	
+\end{equation}
+
+where $\Delta$ refers to the change in the variable from time $t$ to $t+y$. The sum of the two components over all ages equal the total change in DLY.
+
+Although it is true that these two components arise from changes in survivorship and morbidity prevalence respectively, difficulties arise in the interpretation of the components as pure mortality and disability effects. If the thanatological age profile of disability prevalence does not change over different mortality regimes, inducing mortality decline alone will result in declines in the disability component.
+
+To get a sense of the upper magnitude of this bias, we tested how the disability component would change when a fixed thanatological age prevalence of morbidity was applied to different mortality regimes using empirical data. Morbidity data came from the US Health and Retirement Study while mortality and exposure data came from the Human Mortality Database \citep{HMD2015}.
+
+Specifically, we considered the age prevalence of difficulties in carrying out at least 1, 2, or 3 functional Activities of Daily Living (ADL), difficulties in carrying out at least 1, 2, or 3 instrumental Activities of Daily Living (IADL), living in a nursing home, having poor self-rated health, and being unable to name the month of the year. We calculated these age prevalences for cohorts 1905 to 1930, separately for males and females. Because these cohorts were extinct or near-extinct, we were able to calculate the thanatological $g(y)$ age profiles of disability prevalence, borrowing information from neighboring cohorts to obtain smooth age profiles using a Loess filter. For more recent cohorts, we forecasted morbidity and mortality rates to close the cohort out at age 110. This was generally a small proportion of the total cohort, for instance from the 1915 birth cohort 6 percent of males and 11 percent of females were still alive. Finally we averaged our thanatological age profiles of disability over the 6 cohorts. The thanatological prevalence of morbidity for each disability type is presented in \textcolor{red}{Figure to be made}.
+
+In the next step we calculated the apparent period chronological age prevalence of morbidity, $g^\star(a)$, for all medium to large populations of the Human Mortality Database, had they experienced the American thanatological age profile of morbidity. To do so, we assumed that the population behind each life table was stationary. This means that for each age group, we created a vector of the distribution of remaining lifespans by time to death which we then multiplied by the corresponding disability prevalence by thanatological age. \textcolor{red}{Is this clear or would it be better to put in equations?}
+
+Eastern European countries were excluded because of their very different age patterns of mortality and morbidity, particularly in the years surrounding political transition. We then made pair-wise comparisons of DLY in each population. For within-country comparisons, we compared each population 10 years apart, in all years starting from 1950 and ending in 0. For between-country comparisons, we compared each population with another in the same year, in years 1980, 1990 and 2000. Altogether this led to 187 within-population comparisons and 1785 between-population comparisons for each sex. Finally we decomposed the change or difference in DLY between the population pairs into mortality and morbidity components using the \citet{Nusselder2004} method described above.
+
+We compared the association between the change in the disability component (equation \ref{eq:DIScomp}) and the increase or difference in remaining life expectancy at age 60 for each population pair in Figure~\ref{fig:Fig_Decomp_3x3}. By doing so we aim to provide a rough empirically-based estimate of the upper bound of the change in the disability component that is attributable to the different underlying mortality schedules of any two populations being compared. Thus if female $e_{60}$ increases in a country by 5 years, up to about 1 year of the reduction in DLY that is attributed to the disability component could be solely arising from the decrease in mortality, in hte case where disability is measured as having difficulty in at least three ADLs. Departure from this upper bound depends on the degree to which the disability prevalence changes on a thanatological versus chronological age axis, the extent to which the American average thanatological age prevalence is applicable to the populations being compared, and the departure from the stationary population assumption.
+
+Overall, the relationship between the change in disability component and the increase in $e_{60}$ is strikingly linear although the slopes differ for men and women and by disability type. To some extent this is because the final level of disability prevalence (i.e. at death or thanatological age equal to 0) differs by disability type. In Appendix Figure~\ref{fig:Fig_Decomp_3x3_rel} we standardized for the maximum disability prevalence to give a clearer comparison between disability types. Even in the standardized case, however, the change in disability component was greater with larger $e_{60}$ differences for disability types with more gradually changing prevalence levels by thanatological age and for women who likewise have more gradually changing prevalence levels by thanatological age. This is because with a steep thanatological age profile of disability the prevalence rates will approach the death distribution in the chronological axis, while with a more gradually changing but still entirely thanatological age profile of disability the prevalence rates will begin to change at ages farther from the actual ages at death \textcolor{red}{Does this make sense?}.
+
+
+\begin{figure}
+\begin{adjustwidth}{-1.5cm}{}
+	\centering
+	\includegraphics[scale=.8]{Decomp_3x3.pdf}
+	\caption{...}
+	\label{fig:Fig_Decomp_3x3}
+\end{adjustwidth}
+\end{figure}
+
+
+
+
+\section{Discussion}
+
+Healthy life expectancy remains a popular tool for analyzing population health. At any given time, a snapshot of the life years lived in good or poor health are captured. This information is accurately summarized in both the period and cohort perspective, regardless of whether morbidity is a function of chronological or thanatological age. The difficulties arise in the interpretation of period differences in this quantity. The chronological age pattern of disability can increase or decrease solely as a function of mortality change even when the underlying morbidity function is held constant. Thus, for instance, observed widening ratios in the age profiles of disability prevalence between subgroups \citep{Crimmins2001} cannot be attributed to changes in the disabling process without taking into account changing mortality profiles. This also calls into question the practice of forecasting observed age-specific rates of decline in disability \citep{Manton2006,Khaw1999}. Health economists refer to a similar 'red herring' argument, namely that medical costs are more closely associated with time-to-death than with chronological age. As a result, health care cost projections based on a chronological rather than thanatological age pattern of mortality are artificially inflated \citep{Zweifel1999,Geue2014}.
+
+Instead, we argue that the better way to measure changes in health or disability is from a cohort perspective \citep{Manton2000,Manton2008,Christensen2013}. \citet{Manton2000}, for instance, found large differences between period and cohort estimates of active life expectancy (ALE). ALE at ages 65 and 85 was between 1.6 and 2.6 times larger in the cohort perspective than for similar period estimates, and the expected years of life disabled were smaller. Additionally, they uncovered larger differences between the cohort and period perspectives for men than women, which they attribute to differences in disability transition rates between the sexes. We theorize that some of these larger differences might also be attributable to larger mortality reduction among men.
+
+Several studies have looked at the macro relationship between overall mortality levels and sex differences in HLE. At higher levels of life expectancy, female advantage in healthy life expectancy diminishes, or even reverses into male advantage \citep{vanOyen2013}. Meanwhile, the larger the proportional female advantage in longevity, the larger the female excess in the proportion of life in poor health \citep{Luy2014}. That mortality levels and disability prevalence are related is perhaps not surprising. As our example illustrates, differences in the underlying mortality lead to differences in the age profile of disability. Additionally, although the association between the severity of chronic conditions and poor health was found to be similar for men and women, morbidity prevalence rates are generally higher among women, particularly for arthritis and chronic pain \citep{Case2005}. It would be worthwhile to investigate whether there might not only be differences in the composition of chronic conditions between the sexes, but whether the underlying morbidity process itself might differ between the sexes in its chronological versus thanatological axis \citep{riffe2015ttd}. 
+
+In reality, not all end-of-life health conditions are exclusive functions of
+time-to-death, but morbidity often varies as a function of
+both chronological and thanatological age, and it is best to express morbidity
+as a function of both age and time-to-death, $g(a,y)$. There is great variety in
+the temporal variation of late-life health conditions \citep{riffe2015ttd}.
+Further, the function $g(a,y)$ changes over time and it is not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations
+and over time, since many health conditions appear to show strong time-to-death
+components. Trends in mortality may offset or amplify changes in morbidity.
+Therefore, in order to separate effects, more careful measurements are required
+than is typically the case. 
+
+\section{Appendix}
+
+
+\begin{figure}
+\begin{adjustwidth}{-1.5cm}{}
+	\centering
+	\includegraphics[scale=.8]{Decomp_3x3_rel.pdf}
+	\caption{Decomp results...}
+	\label{fig:Fig_Decomp_3x3_rel}
+\end{adjustwidth}
+\end{figure}
+
+
+
 \newpage%% this forces a new page, so that things end up a bit more where you think they should
 \bibliographystyle{chicago}
-\bibliography{refs}
+\bibliography{referencesTim}
 
 \end{document}
