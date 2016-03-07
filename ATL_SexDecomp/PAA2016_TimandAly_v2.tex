@@ -180,21 +180,6 @@ gold standard) is theoretically unbiased \citep{imai2007estimation}\footnote{We 
 decomposed into morbidity and mortality components based on age patterns of morbidity and mortality alone if
 the underlying morbidity pattern is a function of time-to-death.
 
-That morbidity prevalence may for certain health conditions be a function of
-time to death does not imply that morbidity incidence is necessarily a function of time to death. An
-age-patterned sequence of health states wherein mortality risk increases with
-passing states could also produce a time-to-death prevalence pattern. It is also
-plausible that some morbidity conditions are linked to a more general process of
-dying, thereby linking morbidity to a process that ends with death and
-consequently producing a time-to-death prevalence pattern. Either of
-these explanations circumvents the temptation to state that causes must
-precede effects, and that therefore death cannot cause the morbidity that
-precedes it. To model prevalence as a function of time-to-death requires no
-surreal understanding of how things work, but is rather a modelling choice. In
-this case, the reader may understand the time-to-death morbidity prevalence
-pattern $g(y)$ as hypothetical, since the current evidence base is limited in
-scope.
- 
 A toy example serves to illustrate these concepts. Figure~\ref{fig:test}
 provides a schematic overview of two stationary populations. The
 underlying survival pattern of these two populations is based on period survival
@@ -295,14 +280,12 @@ curves appear at younger ages.
 These differences induced by mortality change alone are not trivial. In the middle variant, which closely resembles the thanatological age prevalence of disability in bathing, a 10-year increase in $e_{60}$  resulted in a 50 percent drop in disability prevalence at age 80 from around 20 to 10 percent. Meanwhile, the age at which a quarter of the population were considered disabled in this scenario differed by about 5 years with a 5-year improvement in $e_{60}$ from 20 to 25.
 
 Of course the disability prevalence is rarely a function of thanatological age
-alone. For example, Figure~\ref{fig:Fig_ADL_thana-chrono_rev}
-\textcolor{red}{should change this figure to the new way of calculating ADL.
-(SRHpoor is more thano than ADL under new measurement)} shows US male
-ADL-disability prevalence as a function of chronological age and time-to-death. The horizontally running gradients indicate that
-time-to-death is a more important time axis to predict deterioration in ADL than
+alone. For example, Figure~\ref{fig:IADL_ATL} shows US male
+IADL-disability prevalence as a function of chronological age and time-to-death.
+The horizontally running gradients indicate that time-to-death is a more important time axis to predict deterioration in ADL than
 time since birth. Thus our assumption of fixed morbidity prevalence on the
-time-to-death axis is not unrealistic. This is the case for many,
-but not all, indicators of health and disability \citep{riffe2015ttd}. Thus in
+time-to-death axis is not unrealistic, at least for some characteristics. This
+is the case for many, but not all, indicators of health and disability \citep{riffe2015ttd}. In
 reality, the prevalence of disability varies on both the age and
 time-to-death axes. The degree to which prevalence is better measured by age or
 time-to-death for different disabling conditions remains an open research
@@ -311,11 +294,10 @@ question.
 \begin{figure}
 \begin{adjustwidth}{-1.5cm}{}
 	\centering
-	\includegraphics[scale=.8]{Fig_ADL_thana-chrono_rev.pdf}
-	\caption{Proportion with at least one ADL plotted over age and time-to-death.
-	In this case, the prevalence pattern is due to an interaction between both
-	time axes.}
-	\label{fig:Fig_ADL_thana-chrono_rev}
+	\includegraphics[scale=.8]{IADL1_Males.pdf}
+	\caption{Proportion of males from the 1915-1919 cohort with at least one (of
+	five) instrumental activity disabilities, by time-to-death and age.}
+	\label{fig:IADL_ATL}
 \end{adjustwidth}
 \end{figure}
 
@@ -349,39 +331,46 @@ of good health (HLE) or disability (DLY) is standard practice in population
 health. The difference in either metric, either a within-population difference
 over two time periods or a between-population difference in the same time
 period, is often decomposed into mortality and morbidity components on the basis
-of differences in survivorship and morbidity prevalence respectively
+of differences in survivorship and morbidity age-prevalence respectively
 \citep{Nusselder2004,Andreev2002}. According to \citet{Nusselder2004}, the corresponding mortality and disability effects at each age group for a within-population decomposition are:
 
-\begin{align}\label{eq:MORcomp}
-\label{eq:nuss}
+\begin{align}
 	{_{n}{MOR}_{x}}&=\left [ \frac{_{n}\pi_{x\left ( t \right )} + _{n}\pi_{x\left
-	( t+y \right )}  }{2}\right ]\cdot \Delta _{n}L_{x} \label{eq:DIScomp} \\
+	( t+y \right )}  }{2}\right ]\cdot \Delta _{n}L_{x} \label{eq:MORcomp}\\
 	{_{n}{DIS}_{x}}&=\left [ \frac{_{n}L_{x\left ( t \right )} + _{n}L_{x\left (
-	t+y \right )}  }{2}\right ]\cdot \Delta _{n}\pi_{x}	\tc
+	t+y \right )}  }{2}\right ]\cdot \Delta _{n}\pi_{x}	\tc \label{eq:DIScomp}
 \end{align}
-where $\Delta$ refers to the change in the variable from time $t$ to $t+y$. The sum of the two components over all ages equal the total change in DLY.
+where $\Delta$ refers to the change in the variable from time $t$ to $t+y$,
+$_{n}\pi_x$ is prevalence in the discrete age group $[x,x+n)$, and $L_x$ is
+lifetable exposure. Discrete prevalence $_{n}\pi_x$ is essentially our
+$g^\star(a)$ from equation~\eqref{eq:gyfya}. The sum of the two components over
+all ages is equal to the total change in DLY. These formulas are essentially an
+application of standard \citet{kitagawa1955components} decomposition.
 
 Although it is true that these two components arise from changes in survivorship
 and morbidity prevalence respectively, difficulties arise in the interpretation
 of the components as pure mortality and disability effects. If the time-to-death
 profile of disability prevalence does not change over different mortality
 regimes, inducing mortality decline alone will result in declines in the
-disability component, as we demonstrated.
+age-pattern of prevalence component, as we demonstrated. This method of
+decomposition will therefore still attribute a portion of the
+change in DLY to morbidity, and we consider this to be a source of bias.
 
 To get a sense of the upper magnitude of this bias, we test how the disability
-component would change when a fixed time-to-death prevalence of morbidity is
-applied to different mortality regimes using empirical data. Morbidity data came from the US Health and Retirement Study while mortality and exposure data came from the Human Mortality Database \citep{HMD2015}.
+component of this decomposition method would change when a fixed time-to-death
+prevalence of morbidity is applied to different mortality regimes using empirical data. Morbidity data come from the US Health and Retirement Study while mortality and exposure data come from the Human Mortality Database \citep{HMD2015}.
 
 Specifically, we consider the age prevalence of difficulties in carrying out at
 least 1, 2, or 3 (out of 5) functional Activities of Daily Living (ADL),
 difficulties in carrying out at least 1, 2, or 3 (out of 5) instrumental
 Activities of Daily Living (IADL), living in a nursing home, having poor
-self-rated health, and being unable to name the month of the year. We calculated
-these time-to-death prevalences for cohorts 1905 to 1930, separately for males
-and females. We were able to calculate the time-to-death $g(y)$ profiles of
-disability prevalence for non-extinct cohorts, by borrowing information from
-neighboring cohorts to obtain smooth profiles using a Loess filter. We averaged
-the time-to-death profiles of disability over the 6 cohorts. 
+self-rated health, and being unable to name the month of the year. We estimate
+these time-to-death prevalences for quinquennial cohorts from 1905 to 1930,
+separately for males and females. We calculate the time-to-death $g(y)$ profiles of
+disability prevalence for all extinct lifespans above age 65 for each cohort.
+Estimation is done via a loess smooth over age, time-to-death, and birth
+cohorts. We
+then average the time-to-death profiles of disability over lifespans and over the 6 cohorts.
 % TR: no mort assumptions needed to blend thano profiles, as these are in
 % principle purged of mortality.
 % For more
@@ -389,47 +378,44 @@ the time-to-death profiles of disability over the 6 cohorts.
 %out at age 110. This was generally a small proportion of the total cohort, for
 %instance from the 1915 birth cohort 6 percent of males and 11 percent of
 % females were still alive. 
-We average our time-to-death profiles of
-disability over the 6 cohorts. The time-to-death prevalence of morbidity for
+ The time-to-death prevalence of morbidity for
 each disability type is shown in \textcolor{red}{Figure to be made}.
 
 We calculate the apparent period chronological age prevalence of morbidity,
 $g^\star(a)$, for all medium to large populations of the Human Mortality
-Database, had they experienced the US time-to-death profile of morbidity. To
-do so, we assume the survival pattern of each lifetable to be a stationary
-population.
-This means that for each age group, we create a vector of the distribution of
-remaining lifespans by time to death which we then multiply by the corresponding
-disability prevalence by time-to-death, per a reasonable
-discretization of equation~\eqref{eq:gyfya}. For the case of this exercise, the
-true value of the disability component is zero by design, making the estimated
-disability component a gauge of bias.
-
-Eastern European countries are excluded from this exercise due to widely varying
+Database, had they experienced the US time-to-death profile of morbidity. Eastern European countries are excluded from this exercise due to widely varying
 age patterns of mortality, particularly in the years surrounding political
-transition. We then make pair-wise comparisons of DLY between each population in
+transition. To calculate the age-pattern of morbidity, we assume the survival
+pattern of each lifetable to be a stationary population and apply a
+discretization of equation~\eqref{eq:gyfya}. 
+
+We then make pair-wise comparisons of DLY between each population in
 the same year for the years 1980, 1990, and 2000.
 For within-country comparisons, we compare each population in
 10-year jumps, for all years starting from 1950. Altogether this leads to
 187 within-population comparisons and 1785 between-population comparisons for
 each sex. Finally we decompose the change or difference in DLY between the
 population pairs into mortality and morbidity components using the
-\citet{Nusselder2004} method described above and in Equation~\eqref{eq:nuss}.
+\citet{Nusselder2004} method described above and in
+Equations~\eqref{eq:MORcomp} and \eqref{eq:DIScomp}. The
+true value of the change in DLY and the true value of the disability component
+are both zero by design. Thus, the estimated disability component from this
+decomposition gives a gauge of bias.
 
 We compare the association between the change in the disability component
-(equation \ref{eq:DIScomp}) and the increase or difference in remaining life
+(Equation \ref{eq:DIScomp}) and the increase or difference in remaining life
 expectancy at age 60 for each population pair in
 Figure~\ref{fig:Fig_Decomp_3x3}. By doing so we aim to provide a rough
 empirically-based estimate of the upper bound of the change in the disability
-component that is attributable to the different underlying mortality schedules
+component that is attributable to the different underlying mortality levels
 of any two populations being compared. Thus if female $e_{60}$ increases in a
 country by 5 years, up to about 1 year of the reduction in DLY that is
 attributed to the disability component could be solely arising from the decrease
 in mortality, in the case where disability is measured as having difficulty in
-at least three ADLs. Departure from this upper bound depends on the degree to
-which the disability prevalence changes on a time-to-death versus chronological
-age axis, the extent to which the US average time-to-death prevalence pattern is
-applicable to the populations being compared, and the departure from the stationary population assumption.
+at least three ADLs. Departure from this upper bound in real life depends on
+the degree to which the disability prevalence changes on a time-to-death versus chronological
+age axis, the extent to which the US average time-to-death prevalence is
+representative, and the departure from the stationary population assumption.
 
 Overall, the relationship between the change in disability component and the
 increase in $e_{60}$ is strikingly linear although the slopes differ for males
@@ -445,20 +431,23 @@ likewise have more gradually changing prevalence levels by time-to-death.
 This is because steep time-to-death profiles of disability concentrate
 disability prevalence near the death distribution,
 whereas gradually changing (but still entirely time-to-death) disability
-profiles are spread out disability prevalence over a wider range of ages before
+profiles spread out disability prevalence over a wider range of ages before
 each age at death.
-
 
 \begin{figure}
 \begin{adjustwidth}{-1.5cm}{}
 	\centering
 	\includegraphics[scale=.8]{Decomp_3x3.pdf}
-	\caption{...}
+	\caption{Results of the hypothetical decomposition exercise. The size of the
+	morbidity component using a standard decompositon method is plotted against
+	the difference in remaining life expectancy at age 60 ($e_{60}$) in each
+	pair of populations.}
 	\label{fig:Fig_Decomp_3x3}
 \end{adjustwidth}
 \end{figure}
 
-
+If projecting morbidity prevalence, one can also refer to these results as a
+heuristic on the bias inherent in assuming a fixed age-pattern of morbidity.
 
 \FloatBarrier
 \section{Discussion}
@@ -493,13 +482,11 @@ Additionally, they uncovered larger differences between the cohort and period
 perspectives for men than women, which they attribute to differences in
 disability transition rates between the sexes. We hypothesize that some of these
 larger differences might also be attributable to larger mortality reduction
-among men. 
-
-Further, while cohort HLE estimates are unproblematic as an index,
+among men. Further, while cohort HLE estimates are unproblematic as an index,
 decompositions of HLE differencs between cohorts into morbidity and
 mortality components are usually biased. This is because the age pattern of
 morbidity is itself decomposable into morbidity and
-mortality components, as we demonstrate.
+mortality components, as we demonstrate.  
 
 Several studies have looked at the macro relationship between overall mortality
 levels and sex differences in HLE. At higher levels of life expectancy, female
@@ -508,9 +495,9 @@ advantage \citep{vanOyen2013}. Meanwhile, the larger the proportional female
 advantage in longevity, the larger the female excess in the proportion of life
 in poor health \citep{Luy2014}. That mortality levels and disability prevalence
 are related is perhaps not surprising. As our example illustrates, differences
-in the underlying mortality lead to differences can be associated with
-differences in the age profile of disability. Additionally, although the
-association between the severity of chronic conditions and poor health was found
+in underlying mortality can lead to differences in the age profile of
+disability.
+Additionally, although the association between the severity of chronic conditions and poor health was found
 to be similar for men and women, morbidity prevalence rates are generally higher
 among women, particularly for arthritis and chronic pain \citep{Case2005}. It
 would be worthwhile to investigate whether there might not only be differences
@@ -520,13 +507,32 @@ chronological versus time-to-death axis \citep{riffe2015ttd}.
 
 In reality, not all end-of-life health conditions are exclusive functions of
 time-to-death, but morbidity often varies as a function of
-both aspects of time, and it is most precise to express morbidity
-as a function of both age and time-to-death, $g(a,y)$. There is great variety in
-the temporal variation of late-life health conditions \citep{riffe2015ttd,
-lunney2003patterns}.
-Further, the function $g(a,y)$ changes over time and it is not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations
-and over time, since many health conditions appear to show strong time-to-death
-components. Trends in mortality may offset or amplify changes in morbidity.
+both aspects of time, and it is most precise to express morbidity prevalence
+as a function of both age and time-to-death, $g(a,y)$
+\citep{wolf2015disability,riffe2015ttd}.
+There is great variety in the temporal variation of the prevalence of late-life
+health conditions. There is also great variety in individual trajectories with
+the approach to death \citep{lunney2003patterns}. That morbidity prevalence may for certain health conditions be a function of
+time to death does not imply that morbidity incidence is necessarily a function of time to death. An
+age-patterned sequence of health states wherein mortality risk increases with
+passing states could also produce a time-to-death prevalence pattern. It is also
+plausible that some morbidity conditions are linked to a more general process of
+dying, thereby linking morbidity to a process that ends with death and
+consequently producing a time-to-death prevalence pattern. Either of these explanations circumvents the
+temptation to state that causes must precede effects, and that therefore death cannot cause the morbidity that
+precedes it \citep{lynch2015commentary}. 
+
+To model prevalence as a function of
+time-to-death requires no surreal understanding of how things work, but is
+rather a modelling choice \citep{wolf2015disability}. In this case, the reader may understand the
+time-to-death morbidity prevalence pattern $g(y)$ as generally hypothetical,
+since the current evidence base is limited in scope. Much more
+empirical work is needed in order to determine whether modeling morbidity
+prevalence as a function of time-to-death is more widely applicable to
+other health conditions, younger ages, more recent birth
+cohorts, and other populations in different stages of epidemiological
+transition. Further, the more nuanced function $g(a,y)$ changes over time and it
+is not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations and over time, since many health conditions appear to show strong time-to-death components. Trends in mortality may offset or amplify changes in morbidity.
 Therefore, in order to separate effects, more careful measurements are required
 than is typically the case. 
 
