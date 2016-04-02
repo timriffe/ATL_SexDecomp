@@ -346,7 +346,43 @@ DatForAlyson[["ADL3"]] <- list(Males = ADL3m, Females = ADL3f)
 
 save(DatForAlyson, file = "/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/Data/SmArrays.Rdata")
 
+Dat <- local(get(load("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/Data/SmArrays.Rdata")))
 
+library(RColorBrewer)
+Surf<- Dat$IADL1$Males$Surf[,,"1915"]
+Ramp <- colorRampPalette(brewer.pal(9,"Reds"),space="Lab")
+getwd()
 
+ttd <- 12
+age <- 30
+
+pdf("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/PAApresentation/Figures/IADLttdlines.pdf",width=ttd/3+1.2,height=5)
+par(xpd=TRUE,xaxs='i',yaxs='i',mai=c(.8,.8,.3,.3))
+matplot(0:12,Surf, type= 'l', lty = 1, col = Ramp(ncol(Surf)+5)[-c(1:5)], lwd=2, axes=FALSE,xlab="",ylab="")
+segments(0,0,12,0)
+segments(c(0,5,10),0,c(0,5,10),-.01)
+text(c(0,5,10),-.01,c(0,5,10),pos=1)
+segments(0,0,0,.8)
+segments(0,seq(0,.8,by=.2),-.15,seq(0,.8,by=.2))
+text(0,seq(0,.8,by=.2),seq(0,.8,by=.2),pos=2)
+text(6,-.08,"time-to-death",cex=1.5)
+text(-1.2,.45,"Prevalence",srt=90,cex=1.5,pos=2)
+dev.off()
+
+#----------------------------------
+pdf("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/PAApresentation/Figures/IADLagelines.pdf",width=age/3+1.2,height=5)
+ages <- as.integer(colnames(Surf))
+par(xpd=TRUE,xaxs='i',yaxs='i',mai=c(.8,.8,.3,.3))
+matplot(as.integer(colnames(Surf)),t(Surf), type= 'l', lty = 1, 
+		col = rev(Ramp(nrow(Surf)+5)[-c(1:5)]), lwd=2, axes=FALSE,xlab="",ylab="")
+segments(min(ages),0,max(ages),0)
+segments(ages[ages%%5==0],0,ages[ages%%5==0],-.01)
+text(ages[ages%%5==0],-.01,ages[ages%%5==0],pos=1)
+segments(min(ages),0,min(ages),.8)
+segments(min(ages),seq(0,.8,by=.2),min(ages)-.2,seq(0,.8,by=.2))
+text(min(ages)-.2,seq(0,.8,by=.2),seq(0,.8,by=.2),pos=2)
+text(85,-.08,"Age",cex=1.5)
+text(68,.4,"Prevalence",srt=90,cex=1.5)
+dev.off()
 
 
