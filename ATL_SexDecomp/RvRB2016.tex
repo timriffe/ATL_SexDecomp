@@ -76,8 +76,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
-\title{Accounting for temporal variation in morbidity measurement
-and projections}
+\title{Healthy life expectancy, mortality, and age prevalence of morbidity}
 
 \author[1]{Alyson van Raalte\thanks{Authors are currently ordered in reverse
 alphabetical order. Correspondence to vanraalte@demogr.mpg.de or
@@ -252,7 +251,7 @@ interacted with fictitious stationary populations under different mortality leve
 \begin{adjustwidth}{-1.5cm}{}
 	\centering
 	\includegraphics[scale=.8]{Figures/schematic3.pdf}
-	\caption{Schematic...}
+	\caption{The chronological age pattern of morbidity prevalence derived from interacting different time-to-death prevalence patterns (left column) with fictitious stationary populations under the different mortality levels depicted in the top right figure}
 	\label{fig:Fig_schematic3}
 \end{adjustwidth}
 \end{figure}
@@ -282,7 +281,7 @@ These differences induced by mortality change alone are not trivial. In the midd
 Of course the disability prevalence is rarely a function of thanatological age
 alone. For example, Figure~\ref{fig:IADL_ATL} shows US male
 IADL-disability prevalence as a function of chronological age and time-to-death.
-The horizontally running gradients indicate that time-to-death is a more important time axis to predict deterioration in ADL than
+The horizontally running gradients indicate that time-to-death is a more important time axis to predict deterioration in IADL than
 time since birth. Thus our assumption of fixed morbidity prevalence on the
 time-to-death axis is not unrealistic, at least for some characteristics. This
 is the case for many, but not all, indicators of health and disability \citep{riffe2015ttd}. In
@@ -379,7 +378,18 @@ then average the time-to-death profiles of disability over lifespans and over th
 %instance from the 1915 birth cohort 6 percent of males and 11 percent of
 % females were still alive. 
  The time-to-death prevalence of morbidity for
-each disability type is shown in \textcolor{red}{Figure to be made}.
+each disability type is shown for females in Figure~\ref{fig:DisbyTTD}.
+
+
+\begin{figure}
+\begin{adjustwidth}{-1.5cm}{}
+	\centering
+	\includegraphics[scale=.6]{Figures/DisbyTTD.pdf}
+	\caption{The disability prevalence by time to death for various disability types, based on American HRS data (females).}
+	\label{fig:DisbyTTD}
+\end{adjustwidth}
+\end{figure}
+
 
 We calculate the apparent period chronological age prevalence of morbidity,
 $g^\star(a)$, for all medium to large populations of the Human Mortality
@@ -441,7 +451,7 @@ each age at death.
 	\caption{Results of the hypothetical decomposition exercise. The size of the
 	morbidity component using a standard decompositon method is plotted against
 	the difference in remaining life expectancy at age 60 ($e_{60}$) in each
-	pair of populations.}
+	pair of populations. Linear trend lines are also provided for each sex and decomposition type.}
 	\label{fig:Fig_Decomp_3x3}
 \end{adjustwidth}
 \end{figure}
@@ -467,7 +477,7 @@ observation calls into question the practice of forecasting observed
 age-specific rates of decline in disability \citep{Manton2006,Khaw1999}, and
 especially the more common practice of holding age-patterns of disability fixed
 in morbidity projections.
-Health economists refer to a similar 'red herring' argument, namely that medical costs are more closely associated with time-to-death than with chronological age. As a result, health
+Health economists refer to a similar `red herring' argument, namely that medical costs are more closely associated with time-to-death than with chronological age. As a result, health
 care cost projections based on a chronological age rather than time-to-death
 pattern of expenditure are artificially inflated \citep{Zweifel1999,Geue2014}.
 
@@ -522,6 +532,16 @@ consequently producing a time-to-death prevalence pattern. Either of these expla
 temptation to state that causes must precede effects, and that therefore death cannot cause the morbidity that
 precedes it \citep{lynch2015commentary}. 
 
+Increasingly, data on mortality incidence and recovery are available from
+multiple waves of survey panels such as the HRS, allowing researchers to
+calculate healthy life expectancy using sophisticated multistate models.
+Unfortunately such data is not available in all countries, or if it is, time
+trends are limited to the recent past. We are not arguing that a TTD approach
+should replace multistate models when such data is available. Our aim is rather
+to expose the implications of comparing healthy life expectancy from
+age-structured prevalence-based models with different underlying mortality
+regimes.
+
 To model prevalence as a function of
 time-to-death requires no surreal understanding of how things work, but is
 rather a modelling choice \citep{wolf2015disability}. In this case, the reader may understand the
@@ -543,7 +563,10 @@ than is typically the case.
 \begin{adjustwidth}{-1.5cm}{}
 	\centering
 	\includegraphics[scale=.8]{Figures/Decomp_3x3_rel.pdf}
-	\caption{Decomp results...}
+	\caption{Results of the hypothetical decomposition exercise standardized to the maximum disability prevalence for each disability type. The size of the
+	morbidity component using a standard decompositon method is plotted against
+	the difference in remaining life expectancy at age 60 ($e_{60}$) in each
+	pair of populations. Linear trend lines are also provided for each sex and decomposition type.}
 	\label{fig:Fig_Decomp_3x3_rel}
 \end{adjustwidth}
 \end{figure}
@@ -552,6 +575,6 @@ than is typically the case.
 
 \newpage%% this forces a new page, so that things end up a bit more where you think they should
 \bibliographystyle{chicago}
-\bibliography{referencesTim}
+\bibliography{RvR2016refs}
 
 \end{document}

@@ -71,7 +71,7 @@ Dat <- Dat[Dat$ta >= 0,]
 expit <- function(x){
 	exp(x) / (exp(x) + 1)
 }
-newdata <- function(newdata, year1 = 1992, year2 = 2011){
+cutla <- function(newdata, year1 = 1992, year2 = 2011){
 	# cut age
 	newdata$la <- newdata$ca + newdata$ta
 	mini       <- newdata$la > (year1 - newdata$b_yr - 1)
@@ -127,5 +127,21 @@ ns(ca, knots = seq(72.5,97.5,by=5))")
 }
 
 # continue on to iteration. implement bootstrapping.
+varname <- "adl3_"
+nsResults <- lapply(varnames, function(varname, Dat){
+	Male        <- fitns(varname, Dat, sex = "m")	
+	Female      <- fitns(varname, Dat, sex = "f")	
+	# add meta vars
+	Male$Sex    <- "m"
+    Female$Sex  <- "f"
+    out         <- rbind(Male, Female)
+	out$varname <- varname
+	out$ca      <- floor(out$ca)
+	out$ta      <- floor(out$ta)
+	out$la      <- NULL
+	out
+		}, Dat = Dat)
 
 
+source("R/SurfMap.R")
+args(SurfMap)
