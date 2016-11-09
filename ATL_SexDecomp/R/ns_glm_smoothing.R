@@ -198,6 +198,8 @@ Dat$L          <- Dat$ca + Dat$ta
 
 
 # TR: Maarten, look at this function.
+#     something is off with prediction methinks
+
 fitns2 <- function(
 		varname, 
 		Dat, 
@@ -300,7 +302,6 @@ for (i in dimnames(SurfA)[[3]]){
 	title(i,"with L")
 	locator(1)
 }
-
 
 
 
