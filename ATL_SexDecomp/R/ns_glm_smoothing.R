@@ -90,9 +90,10 @@ cutla <- function(newdata, year1 = 1992, year2 = 2011, maxl = 100){
 	newdata
 }
 
-# ideally using the weights is done in a bootstrap
-# type step, cause otherwise we use them twice
-# and binomial hates them
+# TR: work just with this function, have different specifications of ns
+# happen inside the same function and save to new output columns.
+# consider C + (TAL), with C intercept and two of TAL detrended.
+# CTL, or CAL also (currently have CAT)
 
 fitns <- function(
 		varname, 
@@ -102,10 +103,10 @@ fitns <- function(
 		c.age = 70:100) {
 	
 	# compose call, explicit knots, artisanally chosen
-	this.call <- paste(varname, "~ 
-ns(b_yr, knots = seq(1902.5,1925.5,by=5)) + 
-ns(ta, knots = c(.5,1,2,4,7.5,10)) +  
-ns(ca, knots = seq(72.5,97.5,by=5))")
+#	this.call <- paste(varname, "~ 
+#ns(b_yr, knots = seq(1902.5,1925.5,by=5)) + 
+#ns(ta, knots = c(.5,1,2,4,7.5,10)) +  
+#ns(ca, knots = seq(72.5,97.5,by=5))")
 
     # sex could jsut as easily be filtered before the call...
 	Dat  <- Dat[Dat$sex == sex, ]
@@ -116,48 +117,72 @@ ns(ca, knots = seq(72.5,97.5,by=5))")
 #	Mca  <- ns(ca, knots = seq(72.5,97.5,by=5))
 	if(max(Dat[, varname], na.rm = TRUE) == 1) {
 		# where possible, respect bounded data
-		fit        <- glm(this.call, 
+		fit        <- glm(Dat[, varname]~ 
+						      ns(b_yr, knots = seq(1902.5,1925.5,by=5)) + 
+						      ns(ta, knots = c(.5,1,2,4,7.5,10)) +  
+						      ns(ca, knots = seq(72.5,97.5,by=5)), 
 				          data = Dat, 
 						  family = quasibinomial) # removes warning message
 				  
 	} else {
-		fit        <- glm(this.call, data = Dat)
+		fit        <- glm(Dat[, varname]~ 
+						ns(b_yr, knots = seq(1902.5,1925.5,by=5)) + 
+						ns(ta, knots = c(.5,1,2,4,7.5,10)) +  
+						ns(ca, knots = seq(72.5,97.5,by=5)), data = Dat)
 	}
 	#pred           <- predict(fit, Dat, type='response')
 	newdata        <- expand.grid(ta = t.age+.5, ca = c.age+.5, b_yr = min(Dat$b_yr):max(Dat$b_yr))
 	# remove extrapolation points
 	newdata        <- cutla(newdata, year1 = 1992, year2 = 2011)
-	#pred           <- predict(fit, Dat, type='response')
+	out <- newdata
 	# easier to keep dimensions straight if we predict over rectangular grid, 
 	# then throw out values outside range
-	#newdata        <- newdata + .5
-	logitpi        <- predict(fit, newdata)
-	newdata$pi     <- expit(logitpi)
-	newdata
+	out$pi     <- predict(fit, newdata,type='response')
+	
+	loessfit <- loess(Dat[, varname] ~ b_yr + ta + ca,
+			data = Dat, 
+			weights = p_wt2, # this, plus point density both act as weights
+			span = 0.5,     # a variable passed in, or smoothness
+			# is similiar conceptually to a 1:1:1 aspect ratio. 
+			# Everything is in years...
+			normalize = FALSE,
+			control = loess.control(trace.hat = "approximate"))
+	
+    #return(loessfit$residual)
+    newdata     <- expand.grid(ta = t.age+.5, ca = c.age+.5, b_yr = min(Dat$b_yr):max(Dat$b_yr))
+    lpred       <- melt(predict(loessfit,newdata))
+	
+	lpred$ta    <- as.numeric(gsub("ta=","",gsub("ta= ","",lpred$ta)))
+	lpred$ca    <- as.numeric(gsub("ca=","",gsub("ca= ","",lpred$ca)))
+	lpred$b_yr  <- as.numeric(gsub("b_yr=","",lpred$b_yr))
+	
+	lpred       <- cutla(lpred)
+	
+	lpred       <- lpred[with(lpred,order(b_yr,ca,ta)), ]
+	out         <- out[with(out,order(b_yr,ca,ta)), ]
+	
+	
+	out$piloess <- lpred$value
+    out
 }
 
-# continue on to iteration. implement bootstrapping.
-nsResults <- lapply(varnames, function(varname, Dat){
-	Male        <- fitns(varname, Dat, sex = "m")	
-	Female      <- fitns(varname, Dat, sex = "f")	
-	# add meta vars
-	Male$Sex    <- "m"
-    Female$Sex  <- "f"
-    out         <- rbind(Male, Female)
-	out$var     <- varname
-	out$ca      <- floor(out$ca)
-	out$ta      <- floor(out$ta)
-	out$la      <- NULL
-	out
-		}, Dat = Dat)
-#
-#
-#source("R/SurfMap.R")
-#args(SurfMap)
-#
-#head(nsResults[[1]])
-#library(reshape2)
-#Surfi <- nsResults[[10]]
+## continue on to iteration. implement bootstrapping.
+#nsResults <- lapply(varnames, function(varname, Dat){
+#	Male        <- fitns(varname, Dat, sex = "m")	
+#	Female      <- fitns(varname, Dat, sex = "f")	
+#	# add meta vars
+#	Male$Sex    <- "m"
+#    Female$Sex  <- "f"
+#    out         <- rbind(Male, Female)
+#	out$var     <- varname
+#	out$ca      <- floor(out$ca)
+#	out$ta      <- floor(out$ta)
+#	out$la      <- NULL
+#	out
+#		}, Dat = Dat)
+##
+
+
 #SurfA <- acast(Surfi[Surfi$Sex == "m", ], ta~ca~b_yr,value.var = "pi")
 #dim(SurfA)
 #range(SurfA, na.rm=TRUE)
@@ -177,37 +202,19 @@ nsResults <- lapply(varnames, function(varname, Dat){
 #SurfMap(SurfA[,,"1922"],ticks=ticks,bg=TRUE)
 #title(1922)
 
-nsResultsLong  <- do.call(rbind, nsResults)
+#nsResultsLong  <- do.call(rbind, nsResults)
 # ----------------------------------------------------
 # try a more APC-style model, with term for L
 # ----------------------------------------------------
 # save this object for ThanoEmpirical replication, if desired (at end)
-Dat$L          <- Dat$ca + Dat$ta
-
-
-#Ma <- ns( lung.dat$age, knots=a.kn, intercept=TRUE)
-#Mp <- ns( lung.dat$per, knots=p.kn)
-#Mc <- ns( lung.dat$coh, knots=c.kn)
-#Mp <- detrend( Mp, lung.dat$per, weight=lung.dat$D )
-#Mc <- detrend( Mc, lung.dat$per-lung.dat$age, weight=lung.dat$D )
-#
-#sex.apc <- glm( D ~ -1 + Ma:sex + Mp:sex + Mc:sex +
-#				offset(log(Y)), data=lung.dat, family=poisson)
-#DatX <- Dat
-# Dat <- DatX
-
-
-# TR: Maarten, look at this function.
-#     something is off with prediction methinks
-
 fitns2 <- function(
 		varname, 
 		Dat, 
 		sex = "m",
 		t.age = 0:12,
 		c.age = 70:100) {
-	# sex could jsut as easily be filtered before the call...
-	Dat  <- Dat[Dat$sex == sex, ]
+	# sex could just as easily be filtered before the call...
+	Dat            <- Dat[Dat$sex == sex, ]
 	# compose call, explicit knots, artisanally chosen
 
 	newdata        <- expand.grid(ta = 0:12+.5, ca = 70:100+.5, b_yr = min(Dat$b_yr):max(Dat$b_yr))
@@ -215,52 +222,24 @@ fitns2 <- function(
 # remove extrapolation points
 	newdata        <- cutla(newdata, year1 = 1992, year2 = 2011)
 	newdata$la     <- NULL
-	# manewdatake it easy to append to...
+	Dat$L          <- Dat$ca + Dat$ta
 
-	Dat            <- Dat[, c(varname, "ta", "ca", "L","b_yr")]
-	newdata        <- cbind(NA, newdata)
-	colnames(newdata)[1] <- varname
-
-	Dat <- rbind(Dat, newdata)
+	this.call <- paste(varname, "~ ns(b_yr, knots = seq(1902.5,1925.5,by=5)) + 
+					ns(ta, knots = c(.5,1,2,4,7.5,10)) +  
+					ns(L, knots = seq(70,100,by=5))")
 	
-	# do splines outside function call
-	Mc <- ns(Dat$b_yr, knots = seq(1902.5,1925.5,by=5), intercept = TRUE)
-	
-	Mt <- ns(Dat$ta, knots = c(.5,1,2,4,7.5,10))
-	Ma <- ns(Dat$ca, knots = seq(72.5,97.5,by=5))
-	Ml <- ns(Dat$L, knots = seq(70,100,by=5))
-	
-	#Mt <- detrend( Mt, Dat$ta)
-	Ma <- detrend( Ma, Dat$ca)
-	Ml <- detrend( Ml, Dat$ca + Dat$ta)
-	
-	
-# Tr: include splines in call to make prediction easier.
-#	Mcoh <- ns(Dat$b_yr, df = nk + 1)
-#	Mta  <- ns(Dat$ta, knots = c(.5,1,2,4,7.5,10))
-#	Mca  <- ns(ca, knots = seq(72.5,97.5,by=5))
 	if(max(Dat[, varname], na.rm = TRUE) == 1) {
 		# where possible, respect bounded data
-		fit        <- glm(Dat[, varname] ~ -1 + Mc + Mt + Ma + Ml, 
+		fit        <- glm(this.call, 
 				          data = Dat, 
-				family = quasibinomial) # removes warning message
+				family = binomial) # removes warning message
 		
 	} else {
-		fit        <- glm(Dat[, varname] ~ -1 + Mc + Mt + Ma + Ml, data = Dat)
+		fit        <- glm(this.call, data = Dat)
 	}
-	pred           <- predict(fit, Dat, type='response')
-	newdata[, varname] <- pred[(nrow(Dat)-nrow(newdata)+1):nrow(Dat)]
-#	newdata        <- expand.grid(ta = t.age+.5, ca = c.age+.5, b_yr = min(Dat$b_yr):max(Dat$b_yr))
-#	newdata$L      <- newdata$ta + newdata$ca
-#	# remove extrapolation points
-#	newdata        <- cutla(newdata, year1 = 1992, year2 = 2011)
-#	#pred           <- predict(fit, Dat, type='response')
-	# easier to keep dimensions straight if we predict over rectangular grid, 
-	# then throw out values outside range
-	#newdata        <- newdata + .5
-	#logitpi        <- predict(fit, newdata)
-	#newdata$pi     <- expit(logitpi)
-	#newdata$L      <- NULL
+
+	newdata$pi     <- predict(fit, newdata, type ="response")
+	newdata$L      <- NULL
 	newdata
 }
 
@@ -282,14 +261,22 @@ nsResults2 <- lapply(varnames, function(varname, Dat){
 
 
 
+#source("R/SurfMap.R")
+Loess <- local(get(load("/home/tim/git/ThanoEmpirical/ThanoEmpirical/Data/LoessQuinquenal.Rdata")))
+sum(Loess[["adl3__0.7"]]$Male$Surf[,,"1915"], na.rm=TRUE) 
+Surfi  <- nsResults[[1]]
 
+Loess[["adl3__0.7"]]$Male$Surf["5","80","1915"]
+SurfA["5","80","1914"]
+#Surfii <- nsResults2[[1]]
+SurfA  <- acast(Surfi[Surfi$Sex == "m", ], ta~ca~b_yr,value.var = "pi")
+#SurfB  <- acast(Surfii[Surfii$Sex == "m", ], ta~ca~b_yr,value.var = "pi")
 
+sum(SurfA[,,"1914"], na.rm=TRUE)
 
+sum(SurfA, na.rm=TRUE)
+sum(SurfB, na.rm=TRUE)
 
-Surfi <- nsResults[[1]]
-Surfii <- nsResults2[[1]]
-SurfA <- acast(Surfi[Surfi$Sex == "m", ], ta~ca~b_yr,value.var = "pi")
-SurfB <- acast(Surfii[Surfii$Sex == "m", ], ta~ca~b_yr,value.var = "pi")
 dim(SurfA)
 range(SurfA, na.rm=TRUE)
 range(SurfB, na.rm=TRUE)
@@ -303,10 +290,15 @@ for (i in dimnames(SurfA)[[3]]){
 	locator(1)
 }
 
+par(mfrow=c(3,1))
+SurfMap(Loess[["adl3__0.7"]]$Male$Surf[,,"1915"],ticks=ticks,bg=TRUE)
+title("Loess, 1915-1919")
+SurfMap(SurfA[,,"1917"],ticks=ticks,bg=TRUE)
+title(i,"no L")
+SurfMap(SurfB[,,"1917"],ticks=ticks,bg=TRUE)
+title(i,"with L")
 
 
-
-getwd()
 
 replicateThanoEmpirical <- FALSE
 if (replicateThanoEmpirical){
