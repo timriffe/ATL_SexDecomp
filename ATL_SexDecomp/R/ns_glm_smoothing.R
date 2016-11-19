@@ -93,7 +93,8 @@ cutla <- function(newdata, year1 = 1992, year2 = 2011, maxl = 100){
 # TR: work just with this function, have different specifications of ns
 # happen inside the same function and save to new output columns.
 # consider C + (TAL), with C intercept and two of TAL detrended.
-# CTL, or CAL also (currently have CAT)
+# CTL, or CAL also (currently have CAT). Remember for detrending,
+# ns() needs to happen outside the call
 
 fitns <- function(
 		varname, 
@@ -115,6 +116,8 @@ fitns <- function(
 #	Mcoh <- ns(Dat$b_yr, df = nk + 1)
 #	Mta  <- ns(Dat$ta, knots = c(.5,1,2,4,7.5,10))
 #	Mca  <- ns(ca, knots = seq(72.5,97.5,by=5))
+	
+	
 	if(max(Dat[, varname], na.rm = TRUE) == 1) {
 		# where possible, respect bounded data
 		fit        <- glm(Dat[, varname]~ 
@@ -130,14 +133,18 @@ fitns <- function(
 						ns(ta, knots = c(.5,1,2,4,7.5,10)) +  
 						ns(ca, knots = seq(72.5,97.5,by=5)), data = Dat)
 	}
-	#pred           <- predict(fit, Dat, type='response')
-	newdata        <- expand.grid(ta = t.age+.5, ca = c.age+.5, b_yr = min(Dat$b_yr):max(Dat$b_yr))
-	# remove extrapolation points
-	newdata        <- cutla(newdata, year1 = 1992, year2 = 2011)
-	out <- newdata
+	
+	# data for prediction, grid
+	newdata    <- expand.grid(ta = t.age+.5, 
+			                  ca = c.age+.5, 
+							  b_yr = min(Dat$b_yr):max(Dat$b_yr))
+					  
+	# remove extrapolation points for glm prediction
+	out        <- cutla(newdata, year1 = 1992, year2 = 2011)
+	
 	# easier to keep dimensions straight if we predict over rectangular grid, 
 	# then throw out values outside range
-	out$pi     <- predict(fit, newdata,type='response')
+	out$pi     <- predict(fit, out,type='response')
 	
 	loessfit <- loess(Dat[, varname] ~ b_yr + ta + ca,
 			data = Dat, 
@@ -148,24 +155,75 @@ fitns <- function(
 			normalize = FALSE,
 			control = loess.control(trace.hat = "approximate"))
 	
-    #return(loessfit$residual)
-    newdata     <- expand.grid(ta = t.age+.5, ca = c.age+.5, b_yr = min(Dat$b_yr):max(Dat$b_yr))
-    lpred       <- melt(predict(loessfit,newdata))
+    # newdata must be a complete grid here, per expand.grid(),
+    # otherwise stuff gets out of order.
+    lpred       <- melt(predict(loessfit, newdata))
 	
+	# note that it messes up margin names
 	lpred$ta    <- as.numeric(gsub("ta=","",gsub("ta= ","",lpred$ta)))
 	lpred$ca    <- as.numeric(gsub("ca=","",gsub("ca= ","",lpred$ca)))
 	lpred$b_yr  <- as.numeric(gsub("b_yr=","",lpred$b_yr))
 	
+	# now cut down to size
 	lpred       <- cutla(lpred)
 	
+	# match ordering
 	lpred       <- lpred[with(lpred,order(b_yr,ca,ta)), ]
 	out         <- out[with(out,order(b_yr,ca,ta)), ]
 	
-	
+	# append loess results
 	out$piloess <- lpred$value
+	
+	# return results
     out
 }
+nsResults <- lapply(varnames, function(varname, Dat){
+	Male        <- fitns(varname, Dat, sex = "m")	
+	Female      <- fitns(varname, Dat, sex = "f")	
+	# add meta vars
+	Male$Sex    <- "m"
+    Female$Sex  <- "f"
+    out         <- rbind(Male, Female)
+	out$var     <- varname
+	out$ca      <- floor(out$ca)
+	out$ta      <- floor(out$ta)
+	out$la      <- NULL
+	out
+}, Dat = Dat)
+# needed to generate results for Nov 16 Lab Talk
+save(nsResults,file="/home/tim/git/APCTapps/APCTapps/LabTalk/Data/nsResults.Rdata")
+#
 
+res <- fitns("adl3_", Dat, "m")
+head(res)
+
+# where prediction is a df, as returned by fitns()
+pred <- res
+# compression trajectory function
+CT <- function(pred,value.var = "pi",L = 85, C = 1915, keep = 10){
+	ind <- with(pred, la == L & b_yr == C)
+	pi <- pred[ind,value.var]
+	ta <- pred[ind,"ta"]
+	pi <- pi[order(ta)]
+	ta <- sort(ta)
+	if (length(pi) > keep){
+		pi <- pi[1:keep]
+		ta <- ta[1:keep]
+	}
+	list(x = ta, y = pi)
+}
+
+library(RColorBrewer)
+
+mycols <- colorRampPalette(brewer.pal(9,"Blues"),space="Lab")(10)
+
+plot(CT(res, L = 95, C = 1915), type = 'l', ylim = c(0,1), xlab = "TTD", ylab = "pi")
+lines(CT(res, L = 95, C = 1910))
+lines(CT(res, L = 95, C = 1905))
+
+plot(CT(res, L = 85, C = 1915), type = 'l', ylim = c(0,1), xlab = "TTD", ylab = "pi")
+lines(CT(res, L = 85, C = 1910))
+lines(CT(res, L = 85, C = 1905))
 ## continue on to iteration. implement bootstrapping.
 #nsResults <- lapply(varnames, function(varname, Dat){
 #	Male        <- fitns(varname, Dat, sex = "m")	
