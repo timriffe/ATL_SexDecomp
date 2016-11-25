@@ -17,6 +17,10 @@ if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm","tim-ThinkPad-L440")){
 #load("U:/Collaboration/TR AVR/Data/Data_long.Rdata")
 Dat <- local(get(load("Data/Data_long.Rdata")))
 
+head(Dat)
+
+
+
 library(splines)
 library(data.table)
 library(reshape2)
@@ -96,6 +100,22 @@ cutla <- function(newdata, year1 = 1992, year2 = 2011, maxl = 100){
 # CTL, or CAL also (currently have CAT). Remember for detrending,
 # ns() needs to happen outside the call
 
+
+# TR: MB, start here :-)
+my_bootstrap_iteration <- function(Dat,i){
+	
+	# sample here
+	
+	# use fitns()
+	out$i <- i
+	return(out)
+}
+
+# TR: I'll do this
+#mclapply(1:N, my_bootstrap_iteration, Dat = Dat, mc.cores = 4)
+#do.call(rbind, out_list)
+
+# TR: MB, modify this to not do the loess
 fitns <- function(
 		varname, 
 		Dat, 
@@ -177,6 +197,8 @@ fitns <- function(
 	# return results
     out
 }
+
+# TR: MB, Ignore from here down
 nsResults <- lapply(varnames, function(varname, Dat){
 	Male        <- fitns(varname, Dat, sex = "m")	
 	Female      <- fitns(varname, Dat, sex = "f")	
