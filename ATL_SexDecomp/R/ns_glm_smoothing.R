@@ -102,14 +102,14 @@ cutla <- function(newdata, year1 = 1992, year2 = 2011, maxl = 100){
 
 
 # TR: MB, start here :-)
-my_bootstrap_iteration <- function(Dat,i){
-	
-	# sample here
-	
-	# use fitns()
-	out$i <- i
-	return(out)
-}
+#my_bootstrap_iteration <- function(Dat,i){
+#	
+#	# sample here
+#	
+#	# use fitns()
+#	out$i <- i
+#	return(out)
+#}
 
 # TR: I'll do this
 #mclapply(1:N, my_bootstrap_iteration, Dat = Dat, mc.cores = 4)
