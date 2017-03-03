@@ -119,20 +119,20 @@ apct.boot <- function(
 			# determine if data is binary or not
 			# if binary do (quasi)binomial glm
 			fit        <- glm(data.boot[, col.index] ~ 
-							ns(b_yr, knots = seq(1902.5, 1925.5, by = 5)) + 
-							ns(ta, knots = c(.5, 1, 2, 4, 7.5, 10)) +  
-							ns(ca, knots = seq(72.5, 97.5, by = 5)), 
-					data = data.boot,
-					weights = rescaleweight,
-					family = quasibinomial)
+								ns(b_yr, knots = seq(1902.5, 1925.5, by = 5)) + 
+								ns(ta, knots = c(.5, 1, 2, 4, 7.5, 10)) +  
+								ns(ca, knots = seq(72.5, 97.5, by = 5)), 
+							  data = data.boot,
+							  weights = rescaleweight,
+							  family = quasibinomial)
 			
 		} else { # if not binary do lr glm
 			fit        <- glm(data.boot[, col.index] ~ 
-							ns(b_yr, knots = seq(1902.5, 1925.5, by = 5)) + 
-							ns(ta, knots = c(.5, 1, 2, 4, 7.5, 10)) +  
-							ns(ca, knots = seq(72.5, 97.5, by = 5)), 
-					data = data.boot,
-					weights = rescaleweight)
+								ns(b_yr, knots = seq(1902.5, 1925.5, by = 5)) + 
+								ns(ta, knots = c(.5, 1, 2, 4, 7.5, 10)) +  
+								ns(ca, knots = seq(72.5, 97.5, by = 5)), 
+							  data = data.boot,
+							  weights = rescaleweight)
 		}
 		
 		# easier to keep dimensions straight if we predict over rectangular grid, 
@@ -168,7 +168,7 @@ boot.ci <- function(bootdata,conf.level) {
 	
 }
 # mean, median, 2.5% and 97.5% quantiles
-get.goods <- function(boot.list){
+get.booty <- function(boot.list){
 	# separate parts
 	dims        <- boot.list$dims
 	boot.est    <- boot.list$boot.est
@@ -180,7 +180,7 @@ get.goods <- function(boot.list){
 }
 # turn any of the above columns into a TTD by age matrix for a selected cohort
 get.mat <- function(goods, column = "median", cohort = 1915){
-	acast(dims[dims$b_yr == cohort,], ta ~ ca, value.var = column)
+	acast(goods[goods$b_yr == cohort,], ta ~ ca, value.var = column)
 }
 
 
