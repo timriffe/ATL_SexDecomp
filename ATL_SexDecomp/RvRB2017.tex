@@ -17,6 +17,7 @@
 \usepackage{chngpage}
 %\usepackage[active,tightpage]{preview}
 \usepackage{natbib}
+%\usepackage[natbib, maxcitenames=2, mincitenames=1, style=apa]{biblatex}
 \bibpunct{(}{)}{,}{a}{}{;} 
 \usepackage{url}
 \usepackage{nth}
@@ -121,7 +122,7 @@ a function of mortality using both formulas and a schematic illustration.
 
 
 \section{Morbidity as a function of time-to-death}
- 
+ \label{sec:morb}
 Imagine a bad health condition, $G$, with prevalence that varies only as a
 function of time-to-death, $y$, and not as a function of chronological age, $a$.
 Since the TTD prevalence distribution is very closely concentrated at the end of life, there will still be an apparent age function,
@@ -223,7 +224,7 @@ presented here, often varying by both age and TTD, but our example provides a us
 
 \FloatBarrier
 \section{How changing mortality affects morbidity prevalence}
-
+\label{sec:schematic}
 The age pattern of morbidity prevalence observed in the cross-section (in older ages) depends
 on the extent to which prevalence is principally described by
 age versus TTD and on the underlying mortality
@@ -253,7 +254,7 @@ mortality levels depicted by the death density curves above. These mortality
 levels roughly correspond to USA males in 2002 $e_{60} = 20.0$ years, Canadian
 females in 2004 $e_{60} = 25.0$ years, and projected Japanese females a decade
 or so from now $e_{60} = 30.0$ years (latest observed level in 2012 was $e_{60}
-= 28.3$ years \citep{HMD2015}). In all cases increasing remaining life
+= 28.3$ years \citep{HMD2015}. In all cases increasing remaining life
 expectancy results in decreasing age-specific disability prevalence by
 chronological age. With steeply increasing disability prior to death (first
 row), the differences in disability prevalence are largest above age 80, where
@@ -265,13 +266,9 @@ These differences induced by mortality alone are not trivial. In the middle vari
 
 Of course the disability prevalence is rarely a function of time-to-death
 alone. For example, Figure~\ref{fig:IADL_ATL} shows US male
-IADL-disability prevalence broken down by age and TTD. Figure~\ref{fig:IADLsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence in IADL than age. Figures~\ref{fig:IADLttd} and~\ref{fig:IADLage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, \ref{fig:IADLttd} yields a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  Thus our convenience assumption of fixed morbidity prevalence on the
-time-to-death axis is not unrealistic, at least for some characteristics. This
-is the case for many, but not all, indicators of health and disability \citep{riffe2015ttd}. In
-reality, the prevalence of disability varies on both the age and
-time-to-death axes. The degree to which prevalence is better measured by age or
-time-to-death for different disabling conditions remains an open research
-question.
+IADL-disability prevalence after age 72 broken down by age and TTD under three views. Panel~\ref{fig:IADLsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence in IADL than age. Figures~\ref{fig:IADLttd} and~\ref{fig:IADLage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:IADLttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  Thus our convenience assumption thus far of a single fixed morbidity prevalence over
+time-to-death is not overly unrealistic, at least for characteristics with this joint prevalence pattern. This pattern holds for
+many, but not all, indicators of health and disability \citep{riffe2015ttd}. There is not a broad evidence base on such joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time-to-death for different disabling conditions remains an open research question.
 
 \begin{figure}[ht!]
 \makebox[\linewidth][c]{
@@ -317,7 +314,7 @@ question.
 
 \FloatBarrier
 \section{Estimating bounds for the impact of mortality differences on estimates of disabled life years}
-
+\label{sec:bounds}
 The Sullivan method is the most commonly used method to partition life
 expectancy into estimates of the total life years lived in a state of good
 health (HLY) or disability (DLY). Its popularity owes to its minimal data
@@ -477,14 +474,12 @@ heuristic on the bias inherent in assuming a fixed age-pattern of morbidity.
 \FloatBarrier
 \section{Discussion}
 
-Healthy life expectancy remains a popular tool for analyzing population health.
-At any given time, a snapshot of the life years lived in good or poor health is
-captured. This information is well-summarized in both the period and
-cohort perspective, regardless of whether morbidity prevalence is a function of
-chronological age or time until death. Difficulties arise in the
+Healthy life expectancy is a popular tool for analyzing population health, forming a snapshot of the hypothetical life years lived in good or poor health. This information is well-summarized in both the period and
+cohort perspectives, irrespective of whether morbidity prevalence is a function of
+chronological age or time until death. However, difficulties arise in the
 interpretation of period differences in this quantity. The chronological age
 pattern of disability can increase or decrease solely as a function of mortality
-change even when the underlying morbidity function is held constant. Thus, for
+change, even when the underlying morbidity function is held constant. Thus, for
 instance, observed widening ratios in the age profiles of disability prevalence
 between subgroups \citep{Crimmins2001} cannot be attributed to changes in the
 disabling process without taking into account changing mortality profiles. This
@@ -496,7 +491,7 @@ Health economists refer to a similar `red herring' argument, namely that medical
 care cost projections based on a chronological age rather than time-to-death
 pattern of expenditure are artificially inflated \citep{Zweifel1999,Geue2014}.
 
-Instead, we argue that the better way to measure changes in health or disability
+We argue that the better way to measure changes in health or disability
 is from a cohort perspective \citep{Manton2000,Manton2008,Christensen2013}.
 \citet{Manton2000}, for instance, found large differences between period and
 cohort estimates of active life expectancy (ALE). ALE at ages 65 and 85 was
@@ -505,50 +500,51 @@ period estimates, and the expected years of life disabled were smaller in the
 cohort perspective.
 Additionally, they uncovered larger differences between the cohort and period
 perspectives for men than women, which they attribute to differences in
-disability transition rates between the sexes. We hypothesize that some of these
+disability transition rates between the sexes. The cohort-period direction of difference in ALE is consistent with a fixed TTD pattern combined with improving mortality, as of our toy example in Section~\ref{sec:morb}. We hypothesize that some of these
 larger differences might also be attributable to larger mortality reduction
 among men. Further, while cohort HLE estimates are unproblematic as an index,
-decompositions of HLE differencs between cohorts into morbidity and
-mortality components are usually biased. This is because the age pattern of
+decompositions of HLE differencs between cohorts (with different mortality) into age-patterned morbidity and
+mortality components would still be biased. This is because the age pattern of
 morbidity is itself decomposable into morbidity and
-mortality components, as we demonstrate.  
+mortality components.  
 
-Several studies have looked at the macro relationship between overall mortality
+As our example illustrates, differences
+in underlying mortality can lead to differences in the age profile of
+disability. That mortality levels and disability prevalence
+are related is perhaps not surprising. Several studies have looked at the macro relationship between overall mortality
 levels and sex differences in HLE. At higher levels of life expectancy, female
 advantage in healthy life expectancy diminishes, or even reverses into male
-advantage \citep{vanOyen2013}. Meanwhile, the larger the proportional female
+advantage \citep{vanOyen2013}. As well, the larger the proportional female
 advantage in longevity, the larger the female excess in the proportion of life
-in poor health \citep{Luy2014}. That mortality levels and disability prevalence
-are related is perhaps not surprising. As our example illustrates, differences
-in underlying mortality can lead to differences in the age profile of
-disability.
+in poor health \citep{Luy2014}. 
 Additionally, although the association between the severity of chronic conditions and poor health was found
 to be similar for men and women, morbidity prevalence rates are generally higher
-among women, particularly for arthritis and chronic pain \citep{Case2005}. It
+among women \citep{Case2005}. It
 would be worthwhile to investigate whether there might not only be differences
 in the composition of chronic conditions between the sexes, but whether the
-underlying morbidity process itself might differ between the sexes in its
-chronological versus time-to-death axis \citep{riffe2015ttd}.
+underlying morbidity pattern itself might differ between the sexes in its joint
+age and time-to-death pattern \citep{riffe2015ttd}.
 
-In reality, not all end-of-life health conditions are exclusive functions of
-time-to-death, but morbidity often varies as a function of
-both aspects of time, and expressing morbidity prevalence
+Empirically, not all end-of-life health conditions are exclusive functions of
+time to death, but morbidity often varies as a function of
+both time measures, and expressing morbidity prevalence
 as a function of both age and time-to-death, $g(a,y)$, can increase precision
 \citep{wolf2015disability,riffe2015ttd}.
 There is great variety in the temporal variation of the prevalence of late-life
 health conditions. There is also great variety in individual trajectories with
-the approach to death \citep{lunney2003patterns}. That morbidity prevalence may for certain health conditions be a function of
+the approach to death \citep{lunney2003patterns}. 
+
+That morbidity prevalence may for certain health conditions be patterned by
 time to death does not imply that morbidity incidence is necessarily a function
-of time to death. First, an age-patterned sequence of health states wherein
-mortality risk increases with passing states could produce a time-to-death
-prevalence pattern, \textcolor{red}{e.g. an accumulation of DNA damage over time
-resulting in increased ristks of cancer and thereby death}. Second, it is also
+of time to death. First, a sequence of health states wherein
+mortality risk increases in each successive state could produce a time-to-death
+prevalence pattern.\footnote{Such a minimal state model with no age patterns for state transitions or mortality risk within states can produce both an overall age pattern of mortality and a time-to-death pattern of morbidity prevalence.} Second, it is also
 plausible that some morbidity conditions are linked to a more general process of dying, thereby
 linking morbidity to a process that ends with death and consequently producing a
 time-to-death prevalence pattern. For example, certain conditions may manifest
 themselves that are not (primary) causes of the impending death but
 consequences of nearness to death caused by some other (primary) factor.
-Either of these explanations does not conflict with the reality that causes must
+Neither of these explanations conflicts with the reality that causes must
 precede effects, and that therefore death cannot cause the morbidity that precedes it \citep{lynch2015commentary}.
 
 Increasingly, data on mortality incidence and recovery are available from
@@ -564,20 +560,20 @@ regimes.
 To model prevalence as a function of
 time-to-death requires no surreal understanding of how things work, but is
 rather a modelling choice \citep{wolf2015disability}. When modeling for
-descriptive or exploratory purposes (as we have done to produce e.g. Figure 3),
-\textcolor{red}{and possibly for projective purposes}, one can safely use
-time-to-death as a predictive variable.
-However, using time-to-death in models intended for causal interpretation is more hazardous; it is argued that time-to-death may function as a proxy for unobserved variables such as biomarkers for impending mortality \citep{wolf2015disability}. However, others argue that including this variable as a proxy in models will introduce omitted variable bias \citep{lynch2015commentary}. Regardless, even in the descriptive case, the reader may understand the time-to-death morbidity prevalence pattern $g(y)$ as generally hypothetical, since the current evidence base is limited in scope. Much more empirical work is needed in order to determine whether modeling morbidity
-prevalence as a function of time-to-death is more widely applicable to
+descriptive or exploratory purposes (as we have done to produce e.g. Figure~\ref{fig:Fig_schematic3},
+and possibly for projections, one can safely use
+TTD as a predictive variable.
+However, using time-to-death in models intended for causal interpretation is more perilous; Some argue that TTD may function as a proxy for unobserved variables such as biomarkers for impending mortality \citep{wolf2015disability}. Others argue that including this variable as a proxy in models will introduce omitted variable bias \citep{lynch2015commentary}. Regardless, even in the descriptive case, the reader may understand a simple TTD morbidity prevalence pattern as generally hypothetical, since the current evidence base is limited in scope. Much more empirical work is needed in order to determine whether modeling morbidity
+prevalence as a function of time to death is more widely applicable to
 other health conditions, younger ages, more recent birth
 cohorts, and other populations in different stages of epidemiological
-transition. Further, the more nuanced function $g(a,y)$ changes over time and it
-is not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations and over time, since many health conditions appear to show strong time-to-death components. Trends in mortality may offset or amplify changes in morbidity.
-Therefore, in order to separate effects, more careful measurements are required
-than is typically the case. 
+transition. Further, even joint age-TTD prevalence patterns, such as that of Figure~\ref{fig:IADLsurf} may change over time, and are not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations or over time, since many health conditions appear to show strong time-to-death components. To further test the bias we hypothesize and to design more robust synthetic measures of life lived in good or poor health, more effort should be given to data collection, mortality followup, and measurement practices.
+
+\section{Conclusions}
+In Section~\ref{sec:morb} we show how simplistic time-to-death and age-patterns of morbidity interact with lifetable survivorship to yield opposite conclusions on morbidity compression under improving mortality. An fixed increasing age pattern of morbidity predicts a greater burden of morbidity under improved survival, but a fixed time-to-death pattern of morbidity predicts no change the average time spent in poor health, and therefore morbidity compression. In Section~\ref{sec:schematic} we show
+Comparisons of period healthy life expectancy calculated from marginal age patterns of morbidity prevalence cannot be directly partitioned into morbidity and mortality effects if the joint age by time-to-death morbidity prevalence pattern varies at all by time-to-death. and on the precision with which a time-to-death pattern summarizes variation in the joint pattern. In Section~\ref{sec:schematic} we demonstrate the issue of for an index of instrumental activities of daily life. We demonstrate in Section~\ref{sec:bounds} that the degree of bias in partitioning effects depends on the shape and level of time-to-death variation. 
 
 \section{Appendix}
-
 
 \begin{figure}
 \begin{adjustwidth}{-1.5cm}{}
@@ -593,7 +589,7 @@ than is typically the case.
 
 
 \newpage%% this forces a new page, so that things end up a bit more where you think they should
-\bibliographystyle{chicago}
+\bibliographystyle{plainnat}
 \bibliography{RvRB2016refs}
 
 \end{document}
