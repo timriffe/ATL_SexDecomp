@@ -85,19 +85,8 @@
 \maketitle
 
 \begin{abstract}
-In calculating period healthy life expectancy, the use of age-specific morbidity
-prevalence patterns assumes that age captures the important
-time-variation in the given health condition, i.e.
-that the disabling process is related to how long an individual has lived.
-However, many common disabling processes are better measured by a time-to-death
-pattern. At advanced ages the conflation of an increasing chronological-age
-mortality pattern and a time-to-death morbidity pattern produces an apparent morbidity pattern that also increases with advancing age. Differences in period healthy life expectancy over time or between populations
-cannot easily be partitioned into morbidity and mortality components because
-the period morbidity pattern may depend on an unknown future time-to-death
-process not captured by period mortality. We illustrate these
-concepts formally and empirically, using morbidity data from the U.S. Health and Retirement Study. While holding
-the time-to-death morbidity pattern fixed, we show that mortality reduction
-alone reduces the total life years with disability. We estimate the magnitude of this bias for different disabling processes. This has implications for any between- or within-population comparisons of period healthy life expectancy conditioned on different age patterns of mortality.
+In calculating period healthy life expectancy, the use of age-specific morbidity prevalence patterns assumes that age captures the important time-variation in the given health condition, i.e. that the disabling process is related to how long an individual has lived. However, many morbidity patterns are better classified by time-to-death. At advanced ages the conflation of an increasing chronological-age mortality pattern and a time-to-death morbidity pattern produces an apparent morbidity pattern that increases with advancing age. Differences in period healthy life expectancy over time or between populations cannot easily be partitioned into morbidity and mortality components because
+the period morbidity pattern may depend on an unknown future time-to-death process not captured by period mortality. We illustrate these concepts formally and empirically, using morbidity data from the U.S. Health and Retirement Study. While holding the time-to-death morbidity pattern fixed, we show that mortality reduction alone reduces the total life years with disability. We estimate the magnitude of this bias for different realistic morbidity patterns. This has implications for any between- or within-population comparisons of period healthy life expectancy conditioned on different age patterns of mortality.
 \end{abstract}
 
 \section{Introduction}
@@ -133,10 +122,9 @@ a function of mortality using both formulas and a schematic illustration.
 
 \section{Morbidity as a function of time-to-death}
  
-Imagine a bad health condition, $G$, with prevalence that varies as a
+Imagine a bad health condition, $G$, with prevalence that varies only as a
 function of time-to-death, $y$, and not as a function of chronological age, $a$.
-Since the TTD prevalence distribution in older ages is something
-close to exponential, there will still be an apparent age function,
+Since the TTD prevalence distribution is very closely concentrated at the end of life, there will still be an apparent age function,
 $g^\star(a)$.
 In this case $g^\star(a)$ is a heterogeneous aggregate based on both mortality
 and the underlying TTD process:
@@ -231,7 +219,7 @@ is erased when the same condition is measured over age. The same
 Sullivan method can also only conclude that the morbidity of the TTD
 process is more compressed in (b) than in (a), even though its essential
 character is unchanged. Prevalence functions are in fact more nuanced than those
-presented here, but our example provides a useful heuristic to understand a previously-undescribed source of bias in common applications of the Sullivan method.
+presented here, often varying by both age and TTD, but our example provides a useful heuristic to understand a previously-undescribed source of bias in common applications of the Sullivan method.
 
 \FloatBarrier
 \section{How changing mortality affects morbidity prevalence}
@@ -275,10 +263,9 @@ curves appear at younger ages.
 
 These differences induced by mortality alone are not trivial. In the middle variant, which closely resembles the TTD prevalence of disability in bathing, a 10-year increase in $e_{60}$ results in a 50 percent drop in disability prevalence at age 80 from around 20 to 10 percent. Meanwhile, the age at which a quarter of the population were considered disabled in this scenario differed by about 5 years with a 5-year improvement in $e_{60}$ from 20 to 25.
 
-Of course the disability prevalence is rarely a function of thanatological age
+Of course the disability prevalence is rarely a function of time-to-death
 alone. For example, Figure~\ref{fig:IADL_ATL} shows US male
-IADL-disability prevalence broken down by age and TTD.
-The horizontally running gradients indicate that time-to-death is a more important time axis to predict deterioration in IADL than
+IADL-disability prevalence broken down by age and TTD. Figure~\ref{fig:IADLsurf} shows these data as a surface, whose more horizontally running gradients indicate that time-to-death is a more important time axis to predict deterioration in IADL than
 time since birth. Thus our assumption of fixed morbidity prevalence on the
 time-to-death axis is not unrealistic, at least for some characteristics. This
 is the case for many, but not all, indicators of health and disability \citep{riffe2015ttd}. In
@@ -287,15 +274,46 @@ time-to-death axes. The degree to which prevalence is better measured by age or
 time-to-death for different disabling conditions remains an open research
 question.
 
-\begin{figure}
-\begin{adjustwidth}{-1.5cm}{}
-	\centering
-	\includegraphics[scale=.8]{Figures/IADL1_Males.pdf}
-	\caption{Proportion of males from the 1915-1919 cohort with at least one (of
-	five) instrumental activity disabilities, by time-to-death and age.}
-	\label{fig:IADL_ATL}
-\end{adjustwidth}
+\begin{figure}[ht!]
+\makebox[\linewidth][c]{
+    \centering
+    \begin{subfigure}{.84\textwidth}
+        \includegraphics[scale=.6]{Figures/IADL1_Males_Surf_a.pdf}
+        \caption{Age by TTD}
+        \label{fig:IADLsurf}
+    \end{subfigure}
+    ~
+    \begin{subfigure}{.401\textwidth}
+        \includegraphics[scale=.6]{Figures/IADL1_Males_TTD_b.pdf}
+        \caption{TTD within Age}
+        \label{fig:IADLttd}
+    \end{subfigure}
+    }
+    
+    \makebox[\linewidth][c]{
+    \begin{subfigure}{.84\textwidth}
+        \includegraphics[scale=.6]{Figures/IADL1_Males_Age_c.pdf}
+        \caption{Age within TTD}
+        \label{fig:IADLage}
+    \end{subfigure}
+        ~
+    \begin{subfigure}{.401\textwidth}
+        \includegraphics[scale=.6]{Figures/blankholder.pdf}
+    \end{subfigure}
+    }
+    \caption{Prevalence of males from the 1915-1919 cohort with at least one (of
+	five) instrumental activity disabilities, by time-to-death and age. The same data are shown by age over the time-to-death margin in (b) and by time-to-death over the age margin in (c). Comparing (b) and (c) we conclude that a single time-to-death pattern would better approximate the surface (a) than would a single age pattern.}\label{fig:IADL_ATL}
 \end{figure}
+
+% \begin{figure}
+% \begin{adjustwidth}{-1.5cm}{}
+% 	\centering
+% 	\includegraphics[scale=.8]{Figures/IADL1_Males.pdf}
+% 	\caption{Proportion of males from the 1915-1919 cohort with at least one (of
+% 	five) instrumental activity disabilities, by time-to-death and age. A lifeline in this representation moves in a rightward descending diagonal.}
+% 	\label{fig:IADL_ATL}
+% \end{adjustwidth}
+% \end{figure}
 
 
 \FloatBarrier
