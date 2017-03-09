@@ -111,20 +111,13 @@ Problems arise in the period perspective. Differences in period HLE over
 time or between two populations cannot easily be partitioned into morbidity and
 mortality components, because the period morbidity component will depend on some unknown future TTD process. For the same reason, comparisons of disability prevalence rates by age are not recommended between populations with different underlying age schedules of mortality.
 
-In this paper we illustrate these concepts formally and empirically, using
-morbidity data from the U.S. Health and Retirement Study \citep{HRS}. While
-assuming a fixed TTD morbidity function, we show that mortality
-reduction alone can reduce the total life years with disability (DLY). We
-estimate the magnitude of potential biases for different disabling processes,
-given different levels of mortality extracted from the Human Mortality Database
-\citep{HMD2015}. We first explain how the age pattern of morbidity may partly be
-a function of mortality using both formulas and a schematic illustration.
+In this paper we illustrate these concepts formally and empirically, using morbidity data from the U.S. Health and Retirement Study \citep{RAND, HRS}. Assuming a fixed TTD morbidity function, we show that mortality reduction alone can lead to a lower fraction of years lived in poor health, and consequently morbidity compression. We estimate the magnitude of potential biases for different disabling processes, given different levels of mortality extracted from the Human Mortality Database \citep{HMD2015}. We first explain how the age pattern of morbidity may partly be a function of mortality using both formulas and a schematic illustration.
 
 
-\section{Morbidity as a function of time-to-death}
+\section{Morbidity as a function of time to death}
  \label{sec:morb}
 Imagine a bad health condition, $G$, with prevalence that varies only as a
-function of time-to-death, $y$, and not as a function of chronological age, $a$.
+function of time to death, $y$, and not as a function of chronological age, $a$.
 Since the TTD prevalence distribution is very closely concentrated at the end of life, there will still be an apparent age function,
 $g^\star(a)$.
 In this case $g^\star(a)$ is a heterogeneous aggregate based on both mortality
@@ -180,19 +173,21 @@ with onset at age 50 reaching a maximum prevalence of 50\% at hypothetical age
 111.5. Both prevalence functions are identical for populations (a) and (b). 
 
 \begin{figure}
+\makebox[\linewidth][c]{
 \centering
-\begin{subfigure}{.5\textwidth}
+\begin{subfigure}{.6\textwidth}
   \centering
   \includegraphics[width=.98\linewidth]{Figures/Japan1970}
   \caption{Higher mortality setting}
   \label{fig:toypop1}
 \end{subfigure}%
-\begin{subfigure}{.5\textwidth}
+\begin{subfigure}{.6\textwidth}
   \centering
   \includegraphics[width=.98\linewidth]{Figures/Japan2010}
   \caption{Lower mortality setting}
   \label{fig:toypop2}
 \end{subfigure}
+}
 \caption{Schematic survival curves from higher (\ref{fig:toypop1}) and lower
 (\ref{fig:toypop2}) mortality populations. Each population is
 subjected to the same chronological age (blue) and time-to-death (yellow)
@@ -222,9 +217,67 @@ process is more compressed in (b) than in (a), even though its essential
 character is unchanged. Prevalence functions are in fact more nuanced than those
 presented here, often varying by both age and TTD, but our example provides a useful heuristic to understand a previously-undescribed source of bias in common applications of the Sullivan method.
 
+\section{Data and methods}
+\label{sec:datamethods}
+Estimating morbidity prevalence by time-to-death is straightforward for health surveys with mortality follow-up modules. We use the RAND version P of the U.S. Health and Retirement Study (HRS), which is sponsored by the National Institute on Aging (grant number NIA U01AG009740) and is conducted by the University of Michigan. The harmonized RAND dataset includes a total of 12 survey waves from 1992 through 2014 and an extensive set of measures for various aspects of morbidity. Time-to-death is recorded directly for deceased respondents as the difference between the date of death and interview date, and time-to-death trajectories of health measures are therefore directly available as such in the data.
+
+
+\begin{itemize}
+\item{This is what we need}
+\item{data}
+\item{setup, variables}
+\item{glm bootstrap smoothing}
+\item{surfaces and simplification to ttd patterns}
+\end{itemize}
+To demonstrate how a time-to-death morbidity prevalence pattern influences bother the age pattern of morbidity to estimate healthy life expectancy we 
+
+
+
+
+
+\section{Results}
+\subsection{How reasonable is the assumption of a time-to-death prevalence pattern?}
+\label{sec:ttdok}
+The joint pattern of morbidity prevalence by age and time to death ...is rarely a function of time-to-death
+alone. For example, Figure~\ref{fig:IADL_ATL} shows US male
+IADL-disability prevalence after age 72 broken down by age and TTD under three views. Panel~\ref{fig:IADLsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence in IADL than age. Figures~\ref{fig:IADLttd} and~\ref{fig:IADLage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:IADLttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  Thus our convenience assumption thus far of a single fixed morbidity prevalence over
+time-to-death is not overly unrealistic, at least for characteristics with this joint prevalence pattern. This pattern holds for
+many, but not all, indicators of health and disability \citep{riffe2015ttd}. There is not a broad evidence base on such joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time-to-death for different disabling conditions remains an open research question.
+
+\begin{figure}[ht!]
+\makebox[\linewidth][c]{
+    \centering
+    \begin{subfigure}{.84\textwidth}
+        \includegraphics[scale=.6]{Figures/IADL1_Males_Surf_a.pdf}
+        \caption{Age by TTD}
+        \label{fig:IADLsurf}
+    \end{subfigure}
+    ~
+    \begin{subfigure}{.401\textwidth}
+        \includegraphics[scale=.6]{Figures/IADL1_Males_TTD_b.pdf}
+        \caption{TTD within Age}
+        \label{fig:IADLttd}
+    \end{subfigure}
+    }
+    
+    \makebox[\linewidth][c]{
+    \begin{subfigure}{.84\textwidth}
+        \includegraphics[scale=.6]{Figures/IADL1_Males_Age_c.pdf}
+        \caption{Age within TTD}
+        \label{fig:IADLage}
+    \end{subfigure}
+        ~
+    \begin{subfigure}{.401\textwidth}
+        \includegraphics[scale=.6]{Figures/blankholder.pdf}
+    \end{subfigure}
+    }
+    \caption{Prevalence of males from the 1915-1919 cohort with at least one (of
+	five) instrumental activity disabilities, by time-to-death and age. The same data are shown by age over the time-to-death margin in (b) and by time-to-death over the age margin in (c). Comparing (b) and (c) we conclude that a single time-to-death pattern would better approximate the surface (a) than would a single age pattern.}\label{fig:IADL_ATL}
+\end{figure}
+
 \FloatBarrier
 %\section{How changing mortality affects morbidity prevalence}
-\section{A time-to-death morbidity pattern interacted with mortality}
+\subsection{A time-to-death morbidity pattern interacted with mortality}
 \label{sec:schematic}
 The age pattern of morbidity prevalence observed in the cross-section (in older ages) depends
 on the extent to which prevalence is principally described by
@@ -265,45 +318,7 @@ curves appear at younger ages.
 
 These differences induced by mortality alone are not trivial. In the middle variant, which closely resembles the TTD prevalence of disability in bathing, a 10-year increase in $e_{60}$ results in a 50 percent drop in disability prevalence at age 80 from around 20 to 10 percent. Meanwhile, the age at which a quarter of the population were considered disabled in this scenario differed by about 5 years with a 5-year improvement in $e_{60}$ from 20 to 25.
 
-\FloatBarrier
-\section{How reasonable is the assumption of a time-to-death prevalence pattern?}
-\label{sec:ttdok}
-The joint pattern of morbidity prevalence by age and time to death ...is rarely a function of time-to-death
-alone. For example, Figure~\ref{fig:IADL_ATL} shows US male
-IADL-disability prevalence after age 72 broken down by age and TTD under three views. Panel~\ref{fig:IADLsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence in IADL than age. Figures~\ref{fig:IADLttd} and~\ref{fig:IADLage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:IADLttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  Thus our convenience assumption thus far of a single fixed morbidity prevalence over
-time-to-death is not overly unrealistic, at least for characteristics with this joint prevalence pattern. This pattern holds for
-many, but not all, indicators of health and disability \citep{riffe2015ttd}. There is not a broad evidence base on such joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time-to-death for different disabling conditions remains an open research question.
 
-\begin{figure}[ht!]
-\makebox[\linewidth][c]{
-    \centering
-    \begin{subfigure}{.84\textwidth}
-        \includegraphics[scale=.6]{Figures/IADL1_Males_Surf_a.pdf}
-        \caption{Age by TTD}
-        \label{fig:IADLsurf}
-    \end{subfigure}
-    ~
-    \begin{subfigure}{.401\textwidth}
-        \includegraphics[scale=.6]{Figures/IADL1_Males_TTD_b.pdf}
-        \caption{TTD within Age}
-        \label{fig:IADLttd}
-    \end{subfigure}
-    }
-    
-    \makebox[\linewidth][c]{
-    \begin{subfigure}{.84\textwidth}
-        \includegraphics[scale=.6]{Figures/IADL1_Males_Age_c.pdf}
-        \caption{Age within TTD}
-        \label{fig:IADLage}
-    \end{subfigure}
-        ~
-    \begin{subfigure}{.401\textwidth}
-        \includegraphics[scale=.6]{Figures/blankholder.pdf}
-    \end{subfigure}
-    }
-    \caption{Prevalence of males from the 1915-1919 cohort with at least one (of
-	five) instrumental activity disabilities, by time-to-death and age. The same data are shown by age over the time-to-death margin in (b) and by time-to-death over the age margin in (c). Comparing (b) and (c) we conclude that a single time-to-death pattern would better approximate the surface (a) than would a single age pattern.}\label{fig:IADL_ATL}
-\end{figure}
 
 % \begin{figure}
 % \begin{adjustwidth}{-1.5cm}{}
@@ -317,7 +332,7 @@ many, but not all, indicators of health and disability \citep{riffe2015ttd}. The
 
 
 \FloatBarrier
-\section{Estimating bounds for the impact of mortality differences on estimates of disabled life years}
+\subsection{Estimating bounds for the impact of mortality differences on estimates of disabled life years}
 \label{sec:bounds}
 The Sullivan method is the most commonly used method to partition life
 expectancy into estimates of the total life years lived in a state of good
@@ -401,7 +416,7 @@ each disability type is shown for females in Figure~\ref{fig:DisbyTTD}.
 \begin{adjustwidth}{-1.5cm}{}
 	\centering
 	\includegraphics[scale=.6]{Figures/DisbyTTD.pdf}
-	\caption{The disability prevalence by time to death for various disability types, based on American HRS data (females).}
+	\caption{The disability prevalence by time to death for various disability types, based on U.S. HRS data (females).}
 	\label{fig:DisbyTTD}
 \end{adjustwidth}
 \end{figure}
