@@ -1,7 +1,7 @@
  
 # Author: tim
 ###############################################################################
-setwd("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp")
+setwd("/home/tim/git/HLETTD")
 library(HMDHFDplus)
 library(reshape2)
 source("R/Functions.R")
@@ -413,7 +413,7 @@ lines(chge60.2, chgprop.2)
 #}
 #
 ## 1915
-#Results <- local(get(load("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/Data/ResultsIADL_ADL.Rdata")))
+#Results <- local(get(load("/home/tim/git/HLETTD/Data/ResultsIADL_ADL.Rdata")))
 #M1915 <- closeoutmat(Results[["m"]][["1915"]][["adl5_"]])
 #F1915 <- closeoutmat(Results[["f"]][["1915"]][["adl5_"]])
 #

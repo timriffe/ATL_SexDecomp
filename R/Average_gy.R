@@ -58,6 +58,6 @@ PrevTTD <- do.call(rbind,lapply(Dat, function(X){
 
 rownames(PrevTTD) <- NULL
 
-save(PrevTTD, file = "/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/Data/gyALL.Rdata")
+save(PrevTTD, file = "/home/tim/git/HLETTD/Data/gyALL.Rdata")
 
 

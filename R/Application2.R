@@ -3,7 +3,7 @@
 # for TR computers...otherwise you need to set wd yourself
 if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm","tim-ThinkPad-L440")){
 	# if I'm on the laptop
-	setwd("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp")
+	setwd("/home/tim/git/HLETTD")
 } 
 getwd()
 # install.packages("lubridate")
@@ -344,9 +344,9 @@ DatForAlyson[["ADL1"]] <- list(Males = ADL1m, Females = ADL1f)
 DatForAlyson[["ADL2"]] <- list(Males = ADL2m, Females = ADL2f)
 DatForAlyson[["ADL3"]] <- list(Males = ADL3m, Females = ADL3f)
 
-save(DatForAlyson, file = "/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/Data/SmArrays.Rdata")
+save(DatForAlyson, file = "/home/tim/git/HLETTD/Data/SmArrays.Rdata")
 
-Dat <- local(get(load("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/Data/SmArrays.Rdata")))
+Dat <- local(get(load("/home/tim/git/HLETTD/Data/SmArrays.Rdata")))
 
 library(RColorBrewer)
 Surf<- Dat$IADL1$Males$Surf[,,"1915"]
@@ -356,7 +356,7 @@ getwd()
 ttd <- 12
 age <- 30
 
-pdf("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/PAApresentation/Figures/IADLttdlines.pdf",width=ttd/3+1.2,height=5)
+pdf("/home/tim/git/HLETTD/PAApresentation/Figures/IADLttdlines.pdf",width=ttd/3+1.2,height=5)
 par(xpd=TRUE,xaxs='i',yaxs='i',mai=c(.8,.8,.3,.3))
 matplot(0:12,Surf, type= 'l', lty = 1, col = Ramp(ncol(Surf)+5)[-c(1:5)], lwd=2, axes=FALSE,xlab="",ylab="")
 segments(0,0,12,0)
@@ -370,7 +370,7 @@ text(-1.2,.45,"Prevalence",srt=90,cex=1.5,pos=2)
 dev.off()
 
 #----------------------------------
-pdf("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/PAApresentation/Figures/IADLagelines.pdf",width=age/3+1.2,height=5)
+pdf("/home/tim/git/HLETTD/PAApresentation/Figures/IADLagelines.pdf",width=age/3+1.2,height=5)
 ages <- as.integer(colnames(Surf))
 par(xpd=TRUE,xaxs='i',yaxs='i',mai=c(.8,.8,.3,.3))
 matplot(as.integer(colnames(Surf)),t(Surf), type= 'l', lty = 1, 

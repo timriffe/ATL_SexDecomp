@@ -1,7 +1,7 @@
 
 # Author: tim
 ###############################################################################
-setwd("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp")
+setwd("/home/tim/git/HLETTD")
 library(HMDHFDplus)
 LT <- readHMDweb("USA","mltper_1x1",username=us,password=pw)
 mx <- LT$mx[LT$Year == 2010]

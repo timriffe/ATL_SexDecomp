@@ -5,10 +5,10 @@
 # for Tim, this will choke
 if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm","tim-ThinkPad-L440")){
 	# if I'm on the laptop
-	setwd("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp")
+	setwd("/home/tim/git/HLETTD")
 } else {
 	# in that case I'm on Berkeley system, and other people in the dept can run this too
-	setwd(paste0("/data/commons/",system("whoami",intern=TRUE),"/git/ATL_SexDecomp/ATL_SexDecomp"))
+	setwd(paste0("/data/commons/",system("whoami",intern=TRUE),"/git/HLETTD"))
 }
 getwd()
 # install.packages("lubridate")

@@ -1,18 +1,18 @@
 
 # Author: tim
 ###############################################################################
-setwd("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp")
+setwd("/home/tim/git/HLETTD")
 
 # make new ATL surface plot.
 
-Dat <- local(get(load("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/Data/SmArrays.Rdata")))
+Dat <- local(get(load("/home/tim/git/HLETTD/Data/SmArrays.Rdata")))
 names(Dat)
 library(RColorBrewer)
 ramp <-
 names()
 X <- Dat[["SRHpoor"]]$Females$Surf[,,3]
 
-source("/home/tim/git/ATL_SexDecomp/ATL_SexDecomp/R/SurfMap.R")
+source("/home/tim/git/HLETTD/R/SurfMap.R")
 ticks <- seq(0,.8,by=.1)
 graphics.off()
 dev.new(width=7,height=4.2)
