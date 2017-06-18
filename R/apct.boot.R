@@ -198,6 +198,30 @@ get.array <- function(goods, column = "median"){
 }
 
 
+apct.boot.wrapper <- function(
+		Dat,
+		varname = "adl3",
+		sex = "f",
+		t.age = 0:12,     
+		c.age = 70:100,
+		b_yr_range = min(data$b_yr):max(data$b_yr),
+		nboot = 250){
+	
+	step1 <- apct.boot(data = Dat[sex == sex,],
+			varname = varname,
+			t.age = t.age,     
+			c.age = c.age,
+			b_yr_range = min(data$b_yr):max(data$b_yr),
+			nboot = nboot,
+			YearsFromEdge = 0,          
+			MagFactor = 1)
+	# creates an array of the median estimate.
+	# we throw away all the rest. Could adapt
+	# this to create an array for a set of quantiles..
+	Surf <- get.array(get.booty(step1))		
+	
+	list(Surf = Surf, sex = sex, varname = varname)
+}
 
 
 

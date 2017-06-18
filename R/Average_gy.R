@@ -1,5 +1,4 @@
-# TODO: Add comment
-# 
+
 # Author: tim
 ###############################################################################
 
@@ -18,12 +17,15 @@
 # developed. Presumably the results will change, but probably not qualitatively.
 # I think that the range of g(y) patterns in here is likely indicative of the range
 # we would see in rigorously treated data.
+
+# TR: June 18, all of these artifacts now fixed!
+
 Dat <- local(get(load("/home/tim/git/ThanoEmpirical/ThanoEmpirical/Data/LoessListCohrts5.Rdata")))
 
 # get gy, need data object with columns for 
 # Variable, Cohort, TTD, Prevalance
 
-X <- Dat[[1]]
+
 # Females
 # thanatological
 PrevTTD <- do.call(rbind,lapply(Dat, function(X){
