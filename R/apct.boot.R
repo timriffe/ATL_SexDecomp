@@ -30,16 +30,26 @@ apct.boot <- function(
 		b_yr_range = min(data$b_yr):max(data$b_yr),
 		YearsFromEdge = 0,          # for optional edge diagnostics
 		MagFactor = 1) {
+	
+	# test:
+	if (!"la_int" %in% colnames(data)){
+		data$la_int <- floor(data$ta + data$ca)
+	}
+	
+	# the most recent wave year
+	year2 <- max(as.integer(format(as.Date(data$intv_dt, format="%d/%m/%Y"),"%Y")))
+	
+	
     # data is the HRS object, selected for dead people
 	# and whatever other data prep was required, e.g. to
 	# make vars binary if wished
 	# varname is 
-
+    
 	# this line super important 
 	data            <- data[order(data$id), ]
 	
 	# determine potential edge cases
-	data$edgies   <- data$la_int > 2011 - data$b_yr - YearsFromEdge
+	data$edgies   <- data$la_int > year2 - data$b_yr - YearsFromEdge
 	if (YearsFromEdge == 0){
 		data$edgies <- FALSE
 	}
@@ -93,7 +103,7 @@ apct.boot <- function(
 			                  b_yr = b_yr_range)
 	
 	# remove extrapolation points for glm prediction
-	out        <- cutla(newdata, year1 = 1992, year2 = 2011)
+	out        <- cutla(newdata, year1 = 1992, year2 = year2)
 	
 	# number of cells in the jacked up Lexis surface that we actually need estimates for
 	ncell      <- nrow(out)
@@ -182,8 +192,10 @@ get.booty <- function(boot.list){
 get.mat <- function(goods, column = "median", cohort = 1915){
 	acast(goods[goods$b_yr == cohort,], ta ~ ca, value.var = column)
 }
-
-
+# order of call = apct.boot, get.booty, get.array??
+get.array <- function(goods, column = "median"){
+	acast(goods, ta ~ ca ~ b_yr, value.var = column)
+}
 
 
 

@@ -403,29 +403,29 @@ colnames(dims) <- c("ta", "ca", "b_yr", "la", "Mean", "Median", "Mean3", "Median
 # test:
 
 
-devtools::load_all("/home/tim/git/TR1/TR1/HMDHFDplus")
-flt <- readHMDweb("USA","fltper_1x1",username = us, password = pw)
-mxf <- acast(flt, Age~Year, value.var = "mx")
-LexisUtils::LexisMap(mxf)
-abline(v=1995)
-plot(apply(mxf,2,which.min) - 1)
-
-plot(0:110, mxf[,"1995"], log = 'y',type = 'l')
-lines(0:110, mxf[,"1996"], col = "red")
-matplot(0:110,mxf[,as.character(1992:1997)], type = 'l', 
-		log = 'y', col = RColorBrewer::brewer.pal(8,"Blues")[-c(1,2)], lty=1)
-Diffs <- t(diff(t(mxf[,as.character(1992:1997)])))
-matplot(0:110,Diffs, type = 'l', 
-		
-		col = RColorBrewer::brewer.pal(8,"Blues")[-c(1,2,3)], lty=1, ylim = c(-.001,.001))
-abline(h=0,col="red")
-lines(0:110, Diffs[,"1995"], col = "magenta")
-abline(v=10)
-
-
-
-matplot(0:110,Diffs/mxf[,as.character(1992:1996)], type = 'l', 
-		col = RColorBrewer::brewer.pal(8,"Blues")[-c(1,2,3)], lty=1)
-abline(h=0,col="red")
-lines(0:110, Diffs[,"1995"]/mxf[,as.character(1995)], col = "magenta")
-abline(v=10)
+#devtools::load_all("/home/tim/git/TR1/TR1/HMDHFDplus")
+#flt <- readHMDweb("USA","fltper_1x1",username = us, password = pw)
+#mxf <- acast(flt, Age~Year, value.var = "mx")
+#LexisUtils::LexisMap(mxf)
+#abline(v=1995)
+#plot(apply(mxf,2,which.min) - 1)
+#
+#plot(0:110, mxf[,"1995"], log = 'y',type = 'l')
+#lines(0:110, mxf[,"1996"], col = "red")
+#matplot(0:110,mxf[,as.character(1992:1997)], type = 'l', 
+#		log = 'y', col = RColorBrewer::brewer.pal(8,"Blues")[-c(1,2)], lty=1)
+#Diffs <- t(diff(t(mxf[,as.character(1992:1997)])))
+#matplot(0:110,Diffs, type = 'l', 
+#		
+#		col = RColorBrewer::brewer.pal(8,"Blues")[-c(1,2,3)], lty=1, ylim = c(-.001,.001))
+#abline(h=0,col="red")
+#lines(0:110, Diffs[,"1995"], col = "magenta")
+#abline(v=10)
+#
+#
+#
+#matplot(0:110,Diffs/mxf[,as.character(1992:1996)], type = 'l', 
+#		col = RColorBrewer::brewer.pal(8,"Blues")[-c(1,2,3)], lty=1)
+#abline(h=0,col="red")
+#lines(0:110, Diffs[,"1995"]/mxf[,as.character(1995)], col = "magenta")
+#abline(v=10)

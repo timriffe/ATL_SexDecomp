@@ -63,10 +63,18 @@ imputeWeights <- function(wt,intv_dt){
 }
 
 
-Dat           <- local(get(load("Data/thanos_long_v3_1.RData")))
+#Dato           <- local(get(load("Data/thanos_long_v3_1.RData")))
+Dat           <- local(get(load("Data/RAND_p_long.Rdata")))
+
+Dat$dead      <- ifelse(is.na(Dat$d_dt), 0, 1) 
+#length(unique(Dat$id[Dat$dead == 1 & Dat$b_yr >= 1915 & Dat$b_yr < 1920]))
+# nrow(Dat) / length(unique(Dat$id[Dat$dead == 1]))
+# nrow(Dato) / length(unique(Dato$id[Dato$dead == 1]))
+
 # dead only = full coordinates:
 Dat           <- Dat[Dat$dead == 1, ]
-
+#Dato           <- Dato[Dato$dead == 1, ]
+#Dato           <- Dato[!is.na(Dato$intv_dt), ]
 # remove missed interviews
 Dat           <- Dat[!is.na(Dat$intv_dt), ]
 # make sex column easier to use:
@@ -89,8 +97,12 @@ Dat$p_wt      <- Dat$p_wt + Dat$nh_wt
 # For some reason HRS gives them zero weight, 
 # but they are clearly in-universe...
 Dat           <- Dat[, p_wt2 := imputeWeights(p_wt, intv_dt), by = list(id) ]
+
+(had           <- nrow(Dat))
 Dat           <- Dat[!is.na(Dat$p_wt2),]
 
+# how many left?
+(lost_no_weights <- had - nrow(Dat))
 
 # decimal values for chrono-thano age
 Dat$age       <- getChronoAge(Dat$intv_dt, Dat$b_dt)
@@ -110,16 +122,17 @@ Coh5keep <- c(1900, 1905, 1910, 1915, 1920, 1925, 1930)
 Coh5     <- c(1905, 1910, 1915, 1920, 1925) 
 Dat      <- Dat[Dat$coh5 %in% Coh5keep, ]
 
-unique(Dat$adl3_)
-unique(Dat$adl5_)
-Dat$adl1            <- as.integer(Dat$adl5_ >= 1)
-Dat$adl2            <- as.integer(Dat$adl5_ >= 2)
-Dat$adl3            <- as.integer(Dat$adl5_ >= 3)
+unique(Dat$adl3)
+unique(Dat$adl5)
+# note: removed underscores for vP (vM,N had underscores in varnames)
+Dat$adl1            <- as.integer(Dat$adl5 >= 1 & !is.na(Dat$adl5))
+Dat$adl2            <- as.integer(Dat$adl5 >= 2 & !is.na(Dat$adl5))
+Dat$adl3            <- as.integer(Dat$adl5 >= 3 & !is.na(Dat$adl5))
 
 colnames(Dat)
-Dat$iadl1            <- as.integer(Dat$iadl5_ >= 1)
-Dat$iadl2            <- as.integer(Dat$iadl5_ >= 2)
-Dat$iadl3            <- as.integer(Dat$iadl5_ >= 3)
+Dat$iadl1            <- as.integer(Dat$iadl5 >= 1 & !is.na(Dat$iadl5))
+Dat$iadl2            <- as.integer(Dat$iadl5 >= 2 & !is.na(Dat$iadl5))
+Dat$iadl3            <- as.integer(Dat$iadl5 >= 3 & !is.na(Dat$iadl5))
 
 
 Dat$srhpoor         <- ifelse(Dat$srh == "5. poor",1,ifelse(Dat$srh == "NA",NA,0))
@@ -150,6 +163,82 @@ Dat$DateDec <- lubridate::decimal_date(Dat$intv_dt)
 
 # we want to be clearly in Gompertzlandia
 Dat <- Dat[Dat$age > 65, ]
+(cases_used <- nrow(Dat))
+(lost_too_young <-   had - nrow(Dat) - lost_no_weights)
+
+# this required by apct.boot()
+Dat$la_int <- floor(Dat$ta + Dat$ca)
+
+# the key function for the glm spline method w bootstrap
+source("R/apct.boot.R")
+
+# since the outpur weren't identical to the loess output,
+# we do a legacy thing to put them back in that shape
+Dat <- data.frame(Dat)
+apct.boot.wrapper <- function(
+		Dat,
+		varname = "adl3",
+		sex = "f",
+		t.age = 0:12,     
+		c.age = 70:100,
+		b_yr_range = min(data$b_yr):max(data$b_yr),
+		nboot = 250){
+	
+	step1 <- apct.boot(data = Dat[sex == sex,],
+			varname = varname,
+			t.age = t.age,     
+			c.age = c.age,
+			b_yr_range = min(data$b_yr):max(data$b_yr),
+			nboot = nboot,
+			YearsFromEdge = 0,          
+			MagFactor = 1)
+	# creates an array of the median estimate.
+	# we throw away all the rest. Could adapt
+	# this to create an array for a set of quantiles..
+	Surf <- get.array(get.booty(step1))		
+	
+	list(Surf = Surf, sex = sex, varname = varname)
+}
+test <- apct.boot.wrapper(Dat,"adl3",nboot=999)
+
+#for (i in 1:dim(test$Surf)[3]){
+#X <- test$Surf[,,i]
+#image(as.integer(colnames(X)),as.integer(rownames(X)),t(X), asp =1, zlim=c(0,.5))
+#Sys.sleep(.2)
+#}
+Female   <- apct.boot.wrapper(Dat, varname = "srhpoor", sex = "f", nboot = 999)
+Male     <- apct.boot.wrapper(Dat, varname = "srhpoor", sex = "m", nboot = 999)
+ADL1f    <- apct.boot.wrapper(Dat, varname = "adl1", sex = "f", nboot = 999)
+ADL1m    <- apct.boot.wrapper(Dat, varname = "adl1", sex = "m", nboot = 999)
+ADL2f    <- apct.boot.wrapper(Dat, varname = "adl2", sex = "f", nboot = 999)
+ADL2m    <- apct.boot.wrapper(Dat, varname = "adl2", sex = "m", nboot = 999)
+ADL3f    <- apct.boot.wrapper(Dat, varname = "adl3", sex = "f", nboot = 999)
+ADL3m    <- apct.boot.wrapper(Dat, varname = "adl3", sex = "m", nboot = 999)
+IADL1f   <- apct.boot.wrapper(Dat, varname = "iadl1", sex = "f", nboot = 999)
+IADL1m   <- apct.boot.wrapper(Dat, varname = "iadl1", sex = "m", nboot = 999)
+IADL2f   <- apct.boot.wrapper(Dat, varname = "iadl2", sex = "f", nboot = 999)
+IADL2m   <- apct.boot.wrapper(Dat, varname = "iadl2", sex = "m", nboot = 999)
+IADL3f   <- apct.boot.wrapper(Dat, varname = "iadl3", sex = "f", nboot = 999)
+IADL3m   <- apct.boot.wrapper(Dat, varname = "iadl3", sex = "m", nboot = 999)
+
+# compile into a single object
+DatForAlyson <- list()
+
+DatForAlyson[["SRHpoor"]] <- list(Males = Male, Females = Female)
+DatForAlyson[["IADL1"]] <- list(Males = IADL1m, Females = IADL1f)
+DatForAlyson[["IADL2"]] <- list(Males = IADL2m, Females = IADL2f)
+DatForAlyson[["IADL3"]] <- list(Males = IADL3m, Females = IADL3f)
+DatForAlyson[["ADL1"]] <- list(Males = ADL1m, Females = ADL1f)
+DatForAlyson[["ADL2"]] <- list(Males = ADL2m, Females = ADL2f)
+DatForAlyson[["ADL3"]] <- list(Males = ADL3m, Females = ADL3f)
+
+save(DatForAlyson, file = "/home/tim/git/HLETTD/Data/SmArrays.Rdata")
+
+
+# ---------------------------
+# old code (loess fits, used on vM)
+do.old <- FALSE
+if (do.old){
 # now we do a simplistic smooth of the cloud of points in the space.
 FitLoess <- function(varname, 
 		Dat, 
@@ -320,20 +409,23 @@ IADL3m <- FitLoess(varname = "iadl3",
 		c.age = 70:100,  # standard matrix size, though we may NA certain unobserved cells
 		span =  .5, 
 		.Coh5 = Coh5)
-graphics.off()
-plot(rowMeans(ADL1f$Surf, na.rm=TRUE), ylim=c(0,.8), xlim=c(0,15),col="red",type='l')
-lines(rowMeans(ADL1m$Surf, na.rm=TRUE),col="blue")
-lines(rowMeans(ADL2m$Surf, na.rm=TRUE),col="blue",lty=2)
-lines(rowMeans(ADL2f$Surf, na.rm=TRUE),col="red",lty=2)
-lines(rowMeans(ADL3m$Surf, na.rm=TRUE),col="blue",lty=4)
-lines(rowMeans(ADL3f$Surf, na.rm=TRUE),col="red",lty=4)
 
-plot(rowMeans(IADL1f$Surf, na.rm=TRUE), ylim=c(0,.8), xlim=c(0,15),col="red",type='l')
-lines(rowMeans(IADL1m$Surf, na.rm=TRUE),col="blue")
-lines(rowMeans(IADL2m$Surf, na.rm=TRUE),col="blue",lty=2)
-lines(rowMeans(IADL2f$Surf, na.rm=TRUE),col="red",lty=2)
-lines(rowMeans(IADL3m$Surf, na.rm=TRUE),col="blue",lty=4)
-lines(rowMeans(IADL3f$Surf, na.rm=TRUE),col="red",lty=4)
+
+
+#graphics.off()
+#plot(rowMeans(ADL1f$Surf, na.rm=TRUE), ylim=c(0,.8), xlim=c(0,15),col="red",type='l')
+#lines(rowMeans(ADL1m$Surf, na.rm=TRUE),col="blue")
+#lines(rowMeans(ADL2m$Surf, na.rm=TRUE),col="blue",lty=2)
+#lines(rowMeans(ADL2f$Surf, na.rm=TRUE),col="red",lty=2)
+#lines(rowMeans(ADL3m$Surf, na.rm=TRUE),col="blue",lty=4)
+#lines(rowMeans(ADL3f$Surf, na.rm=TRUE),col="red",lty=4)
+#
+#plot(rowMeans(IADL1f$Surf, na.rm=TRUE), ylim=c(0,.8), xlim=c(0,15),col="red",type='l')
+#lines(rowMeans(IADL1m$Surf, na.rm=TRUE),col="blue")
+#lines(rowMeans(IADL2m$Surf, na.rm=TRUE),col="blue",lty=2)
+#lines(rowMeans(IADL2f$Surf, na.rm=TRUE),col="red",lty=2)
+#lines(rowMeans(IADL3m$Surf, na.rm=TRUE),col="blue",lty=4)
+#lines(rowMeans(IADL3f$Surf, na.rm=TRUE),col="red",lty=4)
 
 DatForAlyson <- list()
 DatForAlyson[["SRHpoor"]] <- list(Males = Male, Females = Female)
@@ -345,44 +437,47 @@ DatForAlyson[["ADL2"]] <- list(Males = ADL2m, Females = ADL2f)
 DatForAlyson[["ADL3"]] <- list(Males = ADL3m, Females = ADL3f)
 
 save(DatForAlyson, file = "/home/tim/git/HLETTD/Data/SmArrays.Rdata")
+}
 
-Dat <- local(get(load("/home/tim/git/HLETTD/Data/SmArrays.Rdata")))
-
-library(RColorBrewer)
-Surf<- Dat$IADL1$Males$Surf[,,"1915"]
-Ramp <- colorRampPalette(brewer.pal(9,"Reds"),space="Lab")
-getwd()
-
-ttd <- 12
-age <- 30
-
-pdf("/home/tim/git/HLETTD/PAApresentation/Figures/IADLttdlines.pdf",width=ttd/3+1.2,height=5)
-par(xpd=TRUE,xaxs='i',yaxs='i',mai=c(.8,.8,.3,.3))
-matplot(0:12,Surf, type= 'l', lty = 1, col = Ramp(ncol(Surf)+5)[-c(1:5)], lwd=2, axes=FALSE,xlab="",ylab="")
-segments(0,0,12,0)
-segments(c(0,5,10),0,c(0,5,10),-.01)
-text(c(0,5,10),-.01,c(0,5,10),pos=1)
-segments(0,0,0,.8)
-segments(0,seq(0,.8,by=.2),-.15,seq(0,.8,by=.2))
-text(0,seq(0,.8,by=.2),seq(0,.8,by=.2),pos=2)
-text(6,-.08,"time-to-death",cex=1.5)
-text(-1.2,.45,"Prevalence",srt=90,cex=1.5,pos=2)
-dev.off()
-
-#----------------------------------
-pdf("/home/tim/git/HLETTD/PAApresentation/Figures/IADLagelines.pdf",width=age/3+1.2,height=5)
-ages <- as.integer(colnames(Surf))
-par(xpd=TRUE,xaxs='i',yaxs='i',mai=c(.8,.8,.3,.3))
-matplot(as.integer(colnames(Surf)),t(Surf), type= 'l', lty = 1, 
-		col = rev(Ramp(nrow(Surf)+5)[-c(1:5)]), lwd=2, axes=FALSE,xlab="",ylab="")
-segments(min(ages),0,max(ages),0)
-segments(ages[ages%%5==0],0,ages[ages%%5==0],-.01)
-text(ages[ages%%5==0],-.01,ages[ages%%5==0],pos=1)
-segments(min(ages),0,min(ages),.8)
-segments(min(ages),seq(0,.8,by=.2),min(ages)-.2,seq(0,.8,by=.2))
-text(min(ages)-.2,seq(0,.8,by=.2),seq(0,.8,by=.2),pos=2)
-text(85,-.08,"Age",cex=1.5)
-text(68,.4,"Prevalence",srt=90,cex=1.5)
-dev.off()
-
-
+# deprecated once-off code, not used now
+#
+#Dat <- local(get(load("/home/tim/git/HLETTD/Data/SmArrays.Rdata")))
+#
+#library(RColorBrewer)
+#Surf<- Dat$IADL1$Males$Surf[,,"1915"]
+#Ramp <- colorRampPalette(brewer.pal(9,"Reds"),space="Lab")
+#getwd()
+#
+#ttd <- 12
+#age <- 30
+#
+#pdf("/home/tim/git/HLETTD/PAApresentation/Figures/IADLttdlines.pdf",width=ttd/3+1.2,height=5)
+#par(xpd=TRUE,xaxs='i',yaxs='i',mai=c(.8,.8,.3,.3))
+#matplot(0:12,Surf, type= 'l', lty = 1, col = Ramp(ncol(Surf)+5)[-c(1:5)], lwd=2, axes=FALSE,xlab="",ylab="")
+#segments(0,0,12,0)
+#segments(c(0,5,10),0,c(0,5,10),-.01)
+#text(c(0,5,10),-.01,c(0,5,10),pos=1)
+#segments(0,0,0,.8)
+#segments(0,seq(0,.8,by=.2),-.15,seq(0,.8,by=.2))
+#text(0,seq(0,.8,by=.2),seq(0,.8,by=.2),pos=2)
+#text(6,-.08,"time-to-death",cex=1.5)
+#text(-1.2,.45,"Prevalence",srt=90,cex=1.5,pos=2)
+#dev.off()
+#
+##----------------------------------
+#pdf("/home/tim/git/HLETTD/PAApresentation/Figures/IADLagelines.pdf",width=age/3+1.2,height=5)
+#ages <- as.integer(colnames(Surf))
+#par(xpd=TRUE,xaxs='i',yaxs='i',mai=c(.8,.8,.3,.3))
+#matplot(as.integer(colnames(Surf)),t(Surf), type= 'l', lty = 1, 
+#		col = rev(Ramp(nrow(Surf)+5)[-c(1:5)]), lwd=2, axes=FALSE,xlab="",ylab="")
+#segments(min(ages),0,max(ages),0)
+#segments(ages[ages%%5==0],0,ages[ages%%5==0],-.01)
+#text(ages[ages%%5==0],-.01,ages[ages%%5==0],pos=1)
+#segments(min(ages),0,min(ages),.8)
+#segments(min(ages),seq(0,.8,by=.2),min(ages)-.2,seq(0,.8,by=.2))
+#text(min(ages)-.2,seq(0,.8,by=.2),seq(0,.8,by=.2),pos=2)
+#text(85,-.08,"Age",cex=1.5)
+#text(68,.4,"Prevalence",srt=90,cex=1.5)
+#dev.off()
+#
+#
