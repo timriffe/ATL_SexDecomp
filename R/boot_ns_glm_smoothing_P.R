@@ -17,8 +17,8 @@
 
 # ------------------------
 # 1) set parameters
-nboot        <- 250    # ? how many should we do?
-do.this      <- FALSE    # change this to TRUE
+nboot        <- 2    # ? how many should we do?
+do.this      <- TRUE    # change this to TRUE
 make.figs    <- TRUE     # shall we make the summary historgrams?
 
 # 2) set working directory: you'll need to modify the working dir. Possibly by generalizing the below
@@ -46,7 +46,7 @@ if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm","tim-ThinkPad-L440")){
 # load in data, either change this path (commenting this one out so I keep it)
 # or else make sure Data_long.Rdata is in a folder called Data inside the working directory...
 #Dat        <- local(get(load("Data/Data_long.Rdata")))
-Dat        <- local(get(load("Data/RAND_p_long.Rdata")))
+Dat        <- local(get(load("Data/Data_longP.Rdata")))
 # the rest should work fine without further ado. Two figures will also be created 
 # in the working directory. These can be examined or thrown out.
 
@@ -98,25 +98,20 @@ Dat        <- Dat[Dat$ta >= 0,]
 # even tho most neg are very close to zero
 
 # TR: I think this list is already solidified, but just in case.
-varnames <- local(get(load("Data/varnames.Rdata"))) 
+varnames <- local(get(load("Data/varnamesP.Rdata"))) 
 
 # pare down to columns available in current iteration
 varnames <- varnames[varnames %in% colnames(Dat)]
 
-
-# HMMMMM, need to check that variables are coded as required.
-# probably final ThanoEmpirical codings are OK. 0,1, etc.
-
-
-
-
-# need to look into terminal underscores...
-# just load in varnames, resaved as varnamesP.Rdata
-
+# -----------------------
+# this is the slow part!
+# -----------------------
 # TR: this is toggled at the head of the script.
 # just to make sure resources not too tied up
+
 if (do.this){
 	boot.results.list <- mclapply(varnames, function(varname, Dat, nboot){
+				cat(varname,"\n")
 				fem 	<- apct.boot.wrapper(
 							Dat[Dat$sex == "f", ], 
 							varname = varname, 
@@ -130,14 +125,22 @@ if (do.this){
 				
 				fem$Sex <- "f"
                 mal$Sex <- "m"
-                out 	<- list()
+                out 	<- list(Female=fem, Male = mal)
 				out$var <- varname
 				out
 			}, Dat = Dat,  
 			   nboot = nboot,    # nboot is set at the head of the script.
-			   mc.cores = 2)   # ncores is set just above here
+			   mc.cores = 3)   # ncores is set just above here
 }
 
+# Maarten: change path if necessary
+save(boot.results.list, file = "Data/resultsP.Rdata")
+
+
+
+
+do.old <- FALSE
+if (do.old){
 ResultsLong         <- do.call(rbind, boot.results.list)
 
 ResultsLong$Cohort  <- ResultsLong$b_yr - ResultsLong$b_yr %% 5
@@ -247,3 +250,4 @@ save(Results_r, file = "CorrelationResultsBoot.Rdata")
 
 getwd()
 
+}
