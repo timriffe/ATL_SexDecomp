@@ -20,12 +20,47 @@
 
 # TR: June 18, all of these artifacts now fixed!
 
-Dat <- local(get(load("/home/tim/git/ThanoEmpirical/ThanoEmpirical/Data/LoessListCohrts5.Rdata")))
-
+#Dat <- local(get(load("/home/tim/git/ThanoEmpirical/ThanoEmpirical/Data/LoessListCohrts5.Rdata")))
+Dat <- local(get(load("/home/tim/Dropbox/RiifevanRaalteBijlsma/Data/resultsP bootsize999.rdata")))
+names(Dat[[1]])
+dimnames(Dat[[1]]$Female$Surf)
 # get gy, need data object with columns for 
 # Variable, Cohort, TTD, Prevalance
+setwd("/home/tim/git/HLETTD")
+hm <- local(get(load("Data/gyALL.Rdata")))
+head(hm)
+X <- Dat[[1]][["Female"]]$Surf
+library(reshape2)
+length(unique(hm$Morbidity))
+PrevTTD <- do.call(rbind,lapply(Dat, function(X){
+					
+					require(reshape2)
+					prevf <- melt(
+							apply(X$Female$Surf,3,rowMeans,na.rm=TRUE), 
+							varnames = c("TTD","Cohort"), value.name = "Prev")
+					prevf$Morbidity <- X$var
+					prevf$Sex <- "f"
+					
+					prevm <- melt(
+							apply(X$Male$Surf,3,rowMeans,na.rm=TRUE), 
+							varnames = c("TTD","Cohort"), value.name = "Prev")
+					prevm$Morbidity <- X$var
+					prevm$Sex <- "m"
+
+					prev <- rbind(prevf,prevm)
+					
+					prev[,c("Morbidity","Cohort","Sex","TTD","Prev")]
+				}))
+
+PrevTTD[PrevTTD$Prev < 0 & !is.na(PrevTTD$Prev),]
+length(unique(PrevTTD$Morbidity))
+rownames(PrevTTD) <- NULL
+head(PrevTTD)
+save(PrevTTD, file = "/home/tim/git/HLETTD/Data/gyALL_P.Rdata")
 
 
+do.old <- FALSE
+if(do.old){
 # Females
 # thanatological
 PrevTTD <- do.call(rbind,lapply(Dat, function(X){
@@ -61,5 +96,5 @@ PrevTTD <- do.call(rbind,lapply(Dat, function(X){
 rownames(PrevTTD) <- NULL
 
 save(PrevTTD, file = "/home/tim/git/HLETTD/Data/gyALL.Rdata")
-
+}
 
