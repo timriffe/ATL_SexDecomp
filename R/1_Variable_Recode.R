@@ -215,6 +215,8 @@ Dat$la_int 	<- floor(Dat$ta + Dat$ca)
 # --------------------------------------------------#
 # locate yes/no, correct/incorrect columns          #
 # --------------------------------------------------#
+varnames <- local(get(load("Data/varnamesP.Rdata")))
+
 YNcols <- apply(Dat, 2, function(x){
         xx <- unique(x)
         length(xx) <= 4 & any(grepl("yes",xx))
@@ -233,6 +235,7 @@ Dat         <- data.frame(Dat)
 Dat[YNcols] <- lapply(Dat[YNcols], convertYN)
 Dat[CIcols] <- lapply(Dat[CIcols], convertCI)
 #head(Dat)
+
 
 
 
@@ -279,6 +282,31 @@ varnames_check[ "iadl3_"]  <- "iadl3"
 varnames_check[ "iadl5_"]  <- "iadl5"
 varnames_check <- varnames_check[varnames_check %in% colnames(Dat)]
 save(varnames_check, file = "Data/varnamesP.Rdata")
+
+#pdf("Figures/histograms.pdf")
+#lapply(varnames_check,function(vname,Dat){
+#			x <- Dat[[vname]]
+#			if (length(unique(x))>3){
+#				hist(x,breaks=unique(as.integer(pretty(x,n=25))),main=vname)	
+#			}
+#			},Dat=Dat)
+#dev.off()
+# found this out: should be integer...
+Dat$hosp_nights <- floor(Dat$hosp_nights)
+binaries <- unlist(lapply(Dat[varnames_check],function(x){
+			all(x[!is.na(x)] %in% c(0,1))
+		}))
+int <- unlist(lapply(Dat[varnames_check],function(x){
+					x <- x[!is.na(x)]
+					all(x == as.integer(x))
+				}))
+#range(Dat$hosp_nights-floor(Dat$hosp_nights),na.rm=TRUE)
+#write.csv(data.frame(Morbidity=varnames_check,
+#				binary=binaries,
+#				count = int & !binaries, 
+#				other = !int & !binaries),
+#		file = "Data/variabletypesP_untransformed.csv",row.names=FALSE)
+#save(Dat,file="Data/Praw.Rdata")
 
 # recode self reported health to binary:
 # excellent to good = 0, fair, poor = 1.
