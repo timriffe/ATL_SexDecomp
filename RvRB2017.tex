@@ -221,13 +221,20 @@ presented here, often varying by both age and TTD, but our example provides a us
 \label{sec:datamethods}
 Estimating morbidity prevalence by time-to-death is straightforward for health surveys with mortality follow-up modules. We use the RAND version P of the U.S. Health and Retirement Study (HRS),\footnote{The HRS is sponsored by the National Institute on Aging (grant number NIA U01AG009740) and is conducted by the University of Michigan} which consists of 12 survey waves from 1992 through 2014 and an extensive set of measures for various aspects of morbidity. Time-to-death is calculated directly for deceased respondents as the difference between the date of death and interview date. Within-individual time-to-death trajectories of health measures are therefore directly available as such in the data. For a given binary health measure on an age by TTD grid, the 1-year age by 1-year TTD specific prevalence ($g_{a,y}$) is defined as the average value of that respective health measure in that age by TTD interval.
 
-To ease interpretation, we produced age by TTD prevalence surfaces in which random variation is filtered out by applying logistic regression models with a given binary health measure as the outcome and natural splines for birth cohort, TTD and age as covariates. We used the predictions from these regression models to produce a prevalence surface for each variable. To account for the longitudinal nature of the HRS, potentially resulting in correlated error terms, we reproduced the HRS sampling structure in a bootstrap procedure \citep{efron1994introduction}. Annotated \texttt{R}-code for the procedure and the generation of all empirical results for this analysis is available in an online repository. In a sensitivity analysis, we investigated the influence on our results of the underlying assumption that morbidity prevalence is a smooth function over birth cohort, TTD and age; both natural splines and LOESS curves over the other time measures [Some Riffe paper] produced highly similar results. We produced these surfaces for each health measure and by sex separately.
+To ease interpretation, we produced age by TTD prevalence surfaces in which
+random variation is filtered out by applying logistic regression models with a
+given binary health measure as the outcome and natural splines for birth cohort,
+TTD, and age as covariates. We used the predictions from these regression models
+to produce a prevalence surface for each variable. To account for the
+longitudinal nature of the HRS, potentially resulting in correlated error terms,
+we reproduced the HRS sampling structure in a bootstrap procedure
+\citep{efron1994introduction}. Annotated \texttt{R}-code for the procedure and the generation of all empirical results for this analysis is available in an online repository. The bootstrap procedure is described in a technical appendix. In a sensitivity analysis, we investigated the influence on our results of the underlying assumption that morbidity prevalence is a smooth function over birth cohort, TTD, and age; both natural splines and LOESS curves over the other time measures \citep{riffe2015ttd} produced highly similar results. We produced these surfaces for each health measure and by sex separately.
 % 
 % \begin{equation}
 % \end{equation}
 
 
-To demonstrate how a time-to-death morbidity prevalence pattern influences bother the age pattern of morbidity to estimate healthy life expectancy we 
+%To demonstrate how a time-to-death morbidity prevalence pattern influences bother the age pattern of morbidity to estimate healthy life expectancy we 
 
 
 
@@ -236,11 +243,8 @@ To demonstrate how a time-to-death morbidity prevalence pattern influences bothe
 \section{Results}
 \subsection{How reasonable is the assumption of a time-to-death prevalence pattern?}
 \label{sec:ttdok}
-A joint pattern of morbidity prevalence by age and time to death could in principle obtain any shape. Empirically, such joint patterns appear to fall into a small set of basic types, and typically these patterns slope monotonically in a single direction over these two dimensions.
-
-...is rarely a function of time-to-death
-alone. For example, Figure~\ref{fig:IADL_ATL} shows US male
-IADL-disability prevalence after age 72 broken down by age and TTD under three views. Panel~\ref{fig:IADLsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence in IADL than age. Figures~\ref{fig:IADLttd} and~\ref{fig:IADLage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:IADLttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  Thus our convenience assumption thus far of a single fixed morbidity prevalence over
+A joint pattern of morbidity prevalence by age and time to death could in
+principle obtain any shape. Empirically, such joint patterns appear to fall into a small set of basic types, and typically these patterns slope monotonically in a single direction over these two dimensions. For example, Figure~\ref{fig:IADL_ATL} shows US male IADL-disability prevalence after age 72 broken down by age and TTD under three views. Panel~\ref{fig:IADLsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence in IADL than age. Figures~\ref{fig:IADLttd} and~\ref{fig:IADLage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:IADLttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  Thus our convenience assumption thus far of a single fixed morbidity prevalence over
 time-to-death is not overly unrealistic, at least for characteristics with this joint prevalence pattern. This pattern holds for
 many, but not all, indicators of health and disability \citep{riffe2015ttd}. There is not a broad evidence base on such joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time-to-death for different disabling conditions remains an open research question.
 
@@ -593,8 +597,17 @@ We describe a likely source of bias in comparisons of healthy life expectancy or
 
 In Section~\ref{sec:morb} we show how simplistic time-to-death and age-patterns of morbidity interact with lifetable survivorship to yield opposite conclusions on morbidity compression under improved mortality. A fixed increasing age pattern of morbidity predicts a greater burden of morbidity under improved survival, but a fixed time-to-death pattern of morbidity predicts no change in the average time spent in poor health, and therefore morbidity compression. In Section~\ref{sec:schematic} we describe in greater detail how a range of schematic time-to-death morbidity patterns interact with different stationary mortality levels to produce age patterns of morbidity. In Section~\ref{sec:ttdok} we provide an example of a variable whose joint prevalence pattern over age and time-to-death is better summarized by a single time-to-death pattern than by an age pattern. We demonstrate in Section~\ref{sec:bounds} that the degree of bias in partitioning effects depends on the shape and level of time-to-death variation. 
 
-\section{Appendix}
 
+
+\newpage%% this forces a new page, so that things end up a bit more where you think they should
+\bibliographystyle{plainnat}
+\bibliography{RvRB2017refs}
+
+\begin{appendices}
+
+\section{Decomposition after standardization}
+In this appendix we standardize the decomposition exercise of section~\ref{sec:bounds} for the maximum
+disability prevalence to give a clearer comparison between disability types.
 \begin{figure}
 \begin{adjustwidth}{-1.5cm}{}
 	\centering
@@ -607,8 +620,30 @@ In Section~\ref{sec:morb} we show how simplistic time-to-death and age-patterns 
 \end{adjustwidth}
 \end{figure}
 
-\newpage%% this forces a new page, so that things end up a bit more where you think they should
-\bibliographystyle{plainnat}
-\bibliography{RvRB2017refs}
+
+\section{Description of bootstrapping technique}
+The Health and Retirement Survey (HRS) data is a longitudinal dataset, and hence observations are not independent but correlated within individuals. To account for the influence of the correlated error structure on the estimation of Time to Death (TTD) surfaces, we applied a bootstrap (Efron & Tibshirani, 1994) procedure in which we approximated the sampling structure of the HRS. In our application, bootstrap sizes of 999 provided the best approximation of the distribution of our estimator; if our method is adapted to other datasets, we recommend the use of bootstrap diagnostics applied to various locations on the TTD surface (with special attention to the ``edges'’'' of the TTD surface) to determine bootstrap size.
+
+\subsection{Bootstrap steps}
+An \texttt{R}-code application of our method is available as Supplemental Material. The method, and therefore the code, works through the following 9 steps:
+\begin{enumerate}
+\item{Choose an outcome variable (i.e. BMI, hospital stay duration, etc.).}
+\item{Create an empty dataset with time dimensions of interest (in our application: birth year, time to death, and chronological age, but this could be more dimensions if desired), which we call the Lexis space}
+\item{Resample individuals with replacement.}
+\item{Create natural cubic splines for the dimensions of the Lexis space.}
+\item{Fit regression model of a type appropriate to the outcome variable to the resampled data with the natural cubic splines (step 4) as covariates.}
+\item{Use the regression fit to predict the Lexis space and save these predictions.}
+\item{Repeat steps 3 to 6 until desired bootstrap size is achieved.}
+\item{Take the median or mean over the bootstrap iterations for each Lexis cell to create a Lexis space with median or mean estimates.\begin{itemize}\item{Optional: take $\alpha/2$ and  $1-\alpha/2$ quantiles over the bootstrap iterations for each Lexis cell in order to create Lexis spaces containing the lower and upper $1-\alpha$ confidence bounds of the estimates.}\end{itemize}}
+\item{Take a cross-section of the Lexis space with median or mean predictions in order to plot the Lexis surface.}
+\end{enumerate}
+
+The rest of this appendix sheds more light on these steps. See also the supplementary R-code for the implementation of the method.
+\subsection{Resampling with replacement and probability weights}
+The HRS samples individuals each year. Sampled individuals stay in the sample until either death or drop-out. To account for the changing population structure of the United States, probability weights for an individual can differ between observations (i.e. they change over time).
+
+In order to account for the longitudinal nature of the data, we resample individuals following the sampling structure of the HRS. A (re)sampled individual contributes all of his or her observations to that respective (re)sample. This type of resampling is also known as blockwise bootstrapping in a time series context \citep{Bbuhlmann1995blockwise}. The probability for an individual to be sampled is equal to the HRS probability weight of the first observation of that individual (RAND variable \texttt{wtresp}). We resample individuals with replacement. The number of individuals resampled is equal to the number of individuals in the original sample.
+
+\end{appendices}
 
 \end{document}
