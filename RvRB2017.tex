@@ -639,11 +639,77 @@ An \texttt{R}-code application of our method is available as Supplemental Materi
 \end{enumerate}
 
 The rest of this appendix sheds more light on these steps. See also the supplementary R-code for the implementation of the method.
+
 \subsection{Resampling with replacement and probability weights}
 The HRS samples individuals each year. Sampled individuals stay in the sample until either death or drop-out. To account for the changing population structure of the United States, probability weights for an individual can differ between observations (i.e. they change over time).
 
-In order to account for the longitudinal nature of the data, we resample individuals following the sampling structure of the HRS. A (re)sampled individual contributes all of his or her observations to that respective (re)sample. This type of resampling is also known as blockwise bootstrapping in a time series context \citep{Bbuhlmann1995blockwise}. The probability for an individual to be sampled is equal to the HRS probability weight of the first observation of that individual (RAND variable \texttt{wtresp}). We resample individuals with replacement. The number of individuals resampled is equal to the number of individuals in the original sample.
+In order to account for the longitudinal nature of the data, we resample individuals following the sampling structure of the HRS. A (re)sampled individual contributes all of his or her observations to that respective (re)sample. This type of resampling is also known as blockwise bootstrapping in a time series context \citep{buhlmann1995blockwise}. The probability for an individual to be sampled is equal to the HRS probability weight of the first observation of that individual (RAND variable \texttt{wtresp}). We resample individuals with replacement. The number of individuals resampled is equal to the number of individuals in the original sample.
 
+The information contained in the probability weights of subsequent observations of individuals is also used: We create new weights termed rescale weights, which are each individual’s probability weights divided by that individual’s respective sampling probability (and hence, the rescale weight on the first observation for each individual is always 1). These rescaled weights are used in the regression procedure (see section~\ref{app:splinesreg}), where the sampling probability represents the representativeness of the individual in their respective demographic category, the rescale weights capture to what extent this weight changes as a consequence of changes in population structure, and therefore captures to what extent an individual’s representativeness changes. In our application of the method, the vast majority of resampling weights did not exceed the 0.90 to 1.10 range, i.e. the sampling probability was never inflated or deflated by more than 10 percent.
+
+\subsection{Regression natural cubic splines}
+\label{app:splinesreg}
+
+To produce smooth age by TTD surfaces we applied regression models to the outcome of interest (BMI, hospital stays, etc.). Covariates in these regression models were natural cubic splines of the dimensions age, birth year, and time to death. The cubic spline is defined as follows:
+
+\begin{equation}
+S(x) = \begin{cases}
+    S_0(x) = a_0x^3+b_0x^2+c_0x+d_0 &\quad t_0 \le x \le t_1 \\
+    \quad\quad\quad\quad\quad\quad \vdots \\
+    S_{k-1}(x) = a_{k-1}x^3 +b_{k-1}x^2+c_{k-1}x+d_{k-1} &\quad t_{k-1} \le x \le t_k        \quad ,   
+\end{cases}
+\end{equation}
+where $x$ represents points on the dimension (in our application, a time dimension) of interest, and $t_0$ and $t_k$  denote the two extremes (endpoints) of that part of the dimension of interest for which we wish to create this spline. Furthermore, the constraints
+\begin{align}
+S_{k-1}(x_i) =& S_k(x_i)\\
+S'_{k-1}(x_i) =& S'_k(x_i)\\
+S''_{k-1}(x_i) =& S''_k(x_i)
+\end{align}
+with $i=1,2,\ldots k-1$ must be satisfied. This ensures that the segments of the spline meet at the boundaries (first constraint) in a smooth manner (second and third constraint). The additional constraint
+\begin{equation}
+S''_{k-1}(x_i) = S''_k(x_i)
+\end{equation}
+makes it into a natural cubic spline, i.e the second derivative of each polinomial is set to 0 at the endpoints of our part of the time dimension of interest.
+
+The part of the dimension of interest that can be found between $t_0$ and $t_k$ is subdivided into $k-1$ segments, the connection of these segments are known as knots. In our application, knots for birth year were placed at the year 1902.5 to 1925.5 at 5-year intervals. Knots for time to death were placed at 0.5, 1, 2, 4, 7.5 and 10 years to death. Knots for chronological age were placed at 72.5 to 97.5 years of age at 5 year intervals. We denote the natural cubic spline for age as $A(x)$, for birth cohort as $C(x)$ and for time to death as T$(x)$.
+
+For continuous outcomes, we used these splines in linear regression models, i.e.
+\begin{equation}
+\mathbb{E}[Y| x_a,x_c,x_t]=A(x_a)+C(x_c)+T(x_t) \quad,
+\end{equation}
+where $Y$ is the outcome variable of interest, and $x_a,x_c,x_t$ represent (observed) points on the age, birth year and time to death axes, respectively. For binary outcomes, we used logistic regression, i.e.
+\begin{equation}
+logit\{\mathbb{E}[Y| x_a,x_c,x_t]\}=A(x_a)+C(x_c)+T(x_t) \quad .
+\end{equation}
+
+Ordinal outcomes were dichotomized during data handling and therefore also modeled using logistic regression.
+
+For count outcomes we used zero-inflated Poisson regression, which is a mixture model, combining logistic and Poisson regression. This type of model separates modeling the probability that an observation is an ``excess'’'' 0 (or not) from the ``count'' component (which is modeled if the observation is not an excess 0). The count component was therefore modeled as:
+\begin{equation}
+ln\{\mathbb{E}[Y| x_a,x_c,x_t]\}=A(x_a)+C(x_c)+T(x_t) \quad .
+\end{equation}
+
+The 0 or not component was modeled with logistic regression as denoted above. We used this type of model because most of our observations contained a very large number of zeros relative to observed counts and therefore appeared to come from a mixture distribution. Ordinary Poisson models can be compared with zero-inflated Poisson models using the Vuong test, but this was omitted in our application%\textcolor{red}{Any particular reason why? i.e. this was omitted to reduce complexity in our R-code or this was omitted this to treat all outcomes in an identical manner}
+. Most count variables in our dataset were bounded, e.g. the number of nights that can be spent in the hospital is bounded by 365 (maximum number of days in a year). In those instances, we included those bounds in our Poisson model through an offset term:
+
+\begin{align}
+ln\{\mathbb{E}\left[\frac{Y}{max~bound} |  x_a,x_c,x_t\right]\}&=A(x_a)+C(x_c)+T(x_t) \\
+\intertext{$\implies $}\notag 
+ln\{\mathbb{E}[ Y|  x_a,x_c,x_t] \} &= A(x_a)+C(x_c)+T(x_t)+ln(max~ bound) \notag \quad.
+\end{align}
+
+Since the functions $A(x)$, $C(x)$ and $T(x)$ are cubic natural splines, they represent a vector of coefficients corresponding to $S(x)$ as defined earlier. Specification of our models in this manner with natural splines was inspired by work of \citet{carstensen2007age}.
+
+Because the three time dimensions included in our models are not linearly dependent, additional constraints on one dimension (such as required in APC modeling, see e.g. \citet{clayton1987models}) were not required. The application of splines along different time dimensions, or such splines in addition to splines of the already time dimensions, did not improve our smoothed TTD surfaces
+%textcolor{red}{we never compared. That'd be a whole different paper actually. Bigger job than it seems.}
+. Similarly, a higher number of knots had only minor effects on the smoothed TTD surfaces. Finally, we also compared our natural cubic splines to other flexible curve fitting methods (such as LOESS and GAM), and found natural cubic splines to provide the best fit overall to the empirical data, as expressed in distance to squared and absolute residuals and propensity for systematic under- or over-estimation of the data along relevant time dimensions (including edge effects).
+
+Splines are known to function less well near the endpoints ($t_0$ and $t_k$); to determine if this was present in our data, we investigated the residuals of regression models. We found only weak evidence for the existence of edge effects, and for most outcomes edge effects were absent. For those outcomes where edge effects were potentially present, as a sensitivity analysis, in our resampling procedure we purposely oversampled observations near the edges and estimated TTD surfaces under this regime. We did not find this to substantially affect our conclusions. 
+
+\subsection{Predicting the age by TTD surface}
+To produce age by TTD surfaces, we created a dataset with birth year, time to death, and chronological age as columns. The minimum and maximum values of birth year, time to death and chronological age were equal to those found in the empirical data, and intermediate values were spaced at 1-year intervals. This dataset therefore represents an empty Lexis space. Using the fitted regression models, we then predicted outcomes for this Lexis space; i.e. we created a column with an expected value for each birth year, time to death and chronological age combination (henceforth: Lexis cell) in the Lexis space. Each iteration of the bootstrap added a new column of such predictions. To produce the final Lexis surface, we then plot the median prediction for each Lexis cell combination. Since three dimensions are more difficult to visualize due to overplotting, in our paper we chose the predictions of the 1915-1919 birth cohort and plotted along the time to death and age dimensions. 
+
+We found that, overall, predictions for each Lexis cell were normally distributed, and TTD surfaces based on Lexis cell averages were nearly identical to those for TTD surfaces based on median values. However, since some cells had more skewed predictions, namely when the outcome was binomial and predictions were close to 0 or 1 (the edge of the parameter space), we chose the median as the appropriate measure of centrality. Additionally, the median, being the 50\% quantile, is also consistent with 95\% quantile bootstrap confidence intervals. As their name implies, 95\% quantile bootstrap confidence intervals can be calculated by taking the 2.5\% and 97.5\% quantile for each Lexis cell and plotting those surfaces. The value of the median will, by definition, not exceed the 2.5\% and 97.5\% quantiles, whereas in theory the mean could exceed these confidence bounds in highly skewed distributions.
 \end{appendices}
 
 \end{document}
