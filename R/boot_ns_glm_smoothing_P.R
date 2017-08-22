@@ -96,7 +96,7 @@ Dat$la_int <- floor(Dat$ta + Dat$ca)
 # let's remove people with ta = -1
 Dat        <- Dat[Dat$ta >= 0,]
 # even tho most neg are very close to zero
-
+hist(Dat$doc_visits[Dat$doc_visits < 30])
 # TR: I think this list is already solidified, but just in case.
 varnames <- local(get(load("Data/varnamesP.Rdata"))) 
 

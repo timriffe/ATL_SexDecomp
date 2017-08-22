@@ -57,7 +57,8 @@ convertCI <-  function(x){
   invisible(as.numeric(xx))
 }
 #-----------------------------------------------------
-# convert CESD variables into binary
+# convert CESD variables into binary.
+# 1 = yes or most of the time
 convertCESD <- function(x){
   if (class(x) == "numeric"){
 		return(x)
@@ -292,7 +293,14 @@ save(varnames_check, file = "Data/varnamesP.Rdata")
 #			},Dat=Dat)
 #dev.off()
 # found this out: should be integer...
-Dat$hosp_nights <- floor(Dat$hosp_nights)
+#Dat$hosp_nights <- floor(Dat$hosp_nights)
+# TR: 22-08-2017 change to cutoff 1 or more
+#hist(Dat$hosp_nights[Dat$hosp_nights < 20])
+Dat$hosp_nights <- ifelse(Dat$hosp_nights > 0, 1, 0)
+
+#sum(na.omit(Dat$hosp_bin)) / length(na.omit(Dat$hosp_bin)) # 0.361162
+
+
 binaries <- unlist(lapply(Dat[varnames_check],function(x){
 			all(x[!is.na(x)] %in% c(0,1))
 		}))
@@ -310,15 +318,23 @@ int <- unlist(lapply(Dat[varnames_check],function(x){
 
 # recode self reported health to binary:
 # excellent to good = 0, fair, poor = 1.
+# TR: some changes here
 Dat$srh             <- as.character(Dat$srh)
-srhrec              <- c(0,0,0,1,1,NA)
-names(srhrec)       <- sort(unique(Dat$srh))
-Dat$srh 			<- srhrec[Dat$srh]
+srhrec1             <- c(0,0,0,1,1,NA)
+names(srhrec1)      <- sort(unique(Dat$srh))
+Dat$srhfairpoor  	<- srhrec1[Dat$srh]
+# poor only  = 1
+srhrec2             <- srhrec1
+srhrec2[4]          <- 0
+Dat$srhpoor  	    <- srhrec2[Dat$srh]
+
 
 Dat$srm             <- as.character(Dat$srm)
-names(srhrec)       <- sort(unique(Dat$srm))
-Dat$srm             <- srhrec[Dat$srm] 
-
+names(srhrec1)      <- sort(unique(Dat$srm))
+Dat$srmfairpoor     <- srhrec1[Dat$srm] 
+srhrec2             <- srhrec1
+srhrec2[4]          <- 0
+Dat$srmpoor  	    <- srhrec2[Dat$srm]
 # now move to binary
 
 # same, worse, better recode:  0 betterm 0 same 1 worse
@@ -327,12 +343,9 @@ pastmem             <- c(0,0,1,NA)
 names(pastmem)      <- sort(unique(Dat$pastmem))
 Dat$pastmem         <- pastmem[Dat$pastmem] 
 
-
-
 # do cesd questions (1 bad, 0 good)
 cesdquestions       <- colnames(Dat)[grepl("cesd", colnames(Dat))]
 cesdquestions       <- cesdquestions[cesdquestions != "cesd"]
-
 Dat[cesdquestions]  <- lapply(Dat[cesdquestions],convertCESD)
 
 # cesd_enjoy is flipped yet again, because 1 is 'yes I enjoyed life',
@@ -359,7 +372,7 @@ Dat$tr40w[is.na(Dat$tr40w)] <- 0
 sum(BothInd) == 0 # (otherwise we'd need to divide these by two after adding)
 Dat$twr                     <- Dat$tr20w + Dat$tr40w
 Dat$twr[NAind]              <- NA
-
+#hist(Dat$twr)
 
 # vocab: 1 worst 0 best
 Dat$vocab <- 1 - Dat$vocab / 10
@@ -380,6 +393,7 @@ Dat$dwr                     <- Dat$dr20w + Dat$dr10w
 Dat$dwr[NAind]              <- NA
 
 # immediate word recall
+hist(Dat$ir10w[Dat$wave>8] )
 Dat$ir20w                   <- 1 - Dat$ir20w / 20
 Dat$ir10w                   <- 1 - Dat$ir10w / 10
 
@@ -466,24 +480,32 @@ Dat$adl3 <- ifelse(is.na(Dat$adl3), NA, ifelse(Dat$adl3 > 0, 1, 0) )
 # adl5 (any)
 #Dat     <- rescale("adl5_", Dat, FALSE)
 hist(Dat$adl5) # > 0
-Dat$adl5 <- ifelse(is.na(Dat$adl5), NA, ifelse(Dat$adl5 > 0, 1, 0) )
+# TR: changed 22 Aug, 2017: 3 cut points
+Dat$adl5_1 <- ifelse(is.na(Dat$adl5), NA, ifelse(Dat$adl5 > 0, 1, 0) )
+Dat$adl5_2 <- ifelse(is.na(Dat$adl5), NA, ifelse(Dat$adl5 > 1, 1, 0) )
+Dat$adl5_3 <- ifelse(is.na(Dat$adl5), NA, ifelse(Dat$adl5 > 2, 1, 0) )
 
 # -------------------
 # iadl3 (any)
 # Dat     <- rescale("iadl3_", Dat, FALSE)
 hist(Dat$iadl3) # > 0
 Dat$iadl3 <- ifelse(is.na(Dat$iadl3), NA, ifelse(Dat$iadl3 > 0, 1, 0) )
+
 # -------------------
 # iadl5 (any)
 #Dat     <- rescale("iadl5_", Dat, FALSE)
 hist(Dat$iadl5) # > 0
-Dat$iadl5 <- ifelse(is.na(Dat$iadl5), NA, ifelse(Dat$iadl5 > 0, 1, 0) )
-
+Dat$iadl5_1 <- ifelse(is.na(Dat$iadl5), NA, ifelse(Dat$iadl5 > 0, 1, 0) )
+Dat$iadl5_2 <- ifelse(is.na(Dat$iadl5), NA, ifelse(Dat$iadl5 > 1, 1, 0) )
+Dat$iadl5_3 <- ifelse(is.na(Dat$iadl5), NA, ifelse(Dat$iadl5 > 2, 1, 0) )
 # -------------------
 # cesd
 #Dat     <- rescale("cesd", Dat, FALSE)
-hist(Dat$cesd) # > 2
-Dat$cesd <- ifelse(is.na(Dat$cesd), NA, ifelse(Dat$cesd > 2, 1, 0) )
+# TR: changed from 2 to 1, 22 Aug, 2017
+table(Dat$cesd) # > 1
+Dat$cesd <- ifelse(is.na(Dat$cesd), NA, ifelse(Dat$cesd > 1, 1, 0) )
+
+# TR: left off here 22-08-2017
 
 # -------------------
 # TODO: does high = bad for these variables?
@@ -535,6 +557,11 @@ Dat$tafloor3 <- Dat$tafloor - Dat$tafloor %% 3
 #----------------------------------------------
 # save out, so this doesn't need to be re-run every time
 save(Dat,file = "Data/Data_longP.Rdata")
+
+
+
+
+
 # next step would be CreateMatrices.R, usually
 
 #lapply(Dat[varnames_check],unique)
