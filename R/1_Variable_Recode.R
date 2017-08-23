@@ -292,13 +292,7 @@ save(varnames_check, file = "Data/varnamesP.Rdata")
 #			}
 #			},Dat=Dat)
 #dev.off()
-# found this out: should be integer...
-#Dat$hosp_nights <- floor(Dat$hosp_nights)
-# TR: 22-08-2017 change to cutoff 1 or more
-#hist(Dat$hosp_nights[Dat$hosp_nights < 20])
-Dat$hosp_nights <- ifelse(Dat$hosp_nights > 0, 1, 0)
 
-#sum(na.omit(Dat$hosp_bin)) / length(na.omit(Dat$hosp_bin)) # 0.361162
 
 
 binaries <- unlist(lapply(Dat[varnames_check],function(x){
@@ -505,17 +499,63 @@ Dat$iadl5_3 <- ifelse(is.na(Dat$iadl5), NA, ifelse(Dat$iadl5 > 2, 1, 0) )
 table(Dat$cesd) # > 1
 Dat$cesd <- ifelse(is.na(Dat$cesd), NA, ifelse(Dat$cesd > 1, 1, 0) )
 
-# TR: left off here 22-08-2017
+# TR: new Aug 23, 2017. var recaps
+# --- 3 dummies for bmi
+Dat$underweight   <- ifelse(is.na(Dat$bmi), NA, ifelse(Dat$bmi < 18.5, 1, 0) )
+Dat$obese         <- ifelse(is.na(Dat$bmi), NA, ifelse(Dat$bmi > 30, 1, 0) )
+Dat$normalweight  <- as.integer(!Dat$underweight & !Dat$obese)
 
-# -------------------
-# TODO: does high = bad for these variables?
-# it doesn't matter if all we want to do is measure
-# which direction things correlate in, but it's nice
-# to know for visual interpretation of surfaces. 
-# "bmi"        "back"       "dent"       "alc_ev"   
-# "pastmem"    "dwr"        "twr"        "iwr" 
-# -------------------
+# --- nursing home yes or no?
+Dat$nh_nights     <- ifelse(Dat$nh_nights > 0, 1, 0)
+Dat$nh_stays      <- ifelse(Dat$nh_stays > 0, 1, 0)
+# found this out: should be integer...
+#Dat$hosp_nights <- floor(Dat$hosp_nights)
+# TR: 22-08-2017 change to cutoff 1 or more
+#hist(Dat$hosp_nights[Dat$hosp_nights < 20])
+Dat$hosp_nights   <- ifelse(Dat$hosp_nights > 0, 1, 0)
+Dat$hosp_stays    <- ifelse(Dat$hosp_stays > 0, 1, 0)
 
+# --- alc_drinks > 0
+Dat$alc_drinks    <- ifelse(Dat$alc_drinks > 0, 1, 0)
+
+# reference period for doc_visits switched from 12 to 24 months starting
+# w wave 3. Set to same period:
+Dat$doc_visits[Dat$wave > 2] <- Dat$doc_visits[Dat$wave > 2] / 2
+Dat$doc_visits    <- floor(Dat$doc_visits)
+# visual examination of distribution to find subjective cutpoint of 8 visits / year
+Dat$doc_visits    <- ifelse(Dat$doc_visits > 8, 1, 0)
+
+varnames_fit <- varnames
+varnames_fit <- varnames_fit[!varnames_fit %in% c("srh","srm","tr20w","tr40w","adl5","iadl5","bmi")]
+varnames_fit <- c(varnames_fit, 
+		          "srhfairpoor",
+				  "srhpoor",
+				  "srmfairpoor",
+				  "srmpoor",
+				  "twr",
+				  "adl5_1", "adl5_2", "adl5_3",
+				  "iadl5_1", "iadl5_2", "iadl5_3",
+				  "underweight",
+				  "obese",
+				  "normalweight")
+		  
+# let's just make sure this will work:
+stopifnot(all(varnames_fit %in% colnames(Dat)))	  
+# make sure all will work as prevalence:
+stopifnot(all(
+     sapply(varnames_fit, function(vn, Dat){
+			max(Dat[[vn]], na.rm = TRUE)
+		}, Dat = Dat) == 1)
+)
+# all in [0,1]
+stopifnot(all(
+				sapply(varnames_fit, function(vn, Dat){
+							diff(range(na.omit(Dat[[vn]])))
+						}, Dat = Dat) == 1)
+)
+# these are the ones that should be fit as of now.
+names(varnames_fit) <- NULL
+save(varnames_fit, file = "Data/varnames_fit.Rdata")
 
 # -------------------
 # check cases by wave ( tapering in recent waves because selected down to deaths..)
@@ -533,11 +573,11 @@ Dat$cesd <- ifelse(is.na(Dat$cesd), NA, ifelse(Dat$cesd > 1, 1, 0) )
 # for binning purposes, akin to 'completed age'
 Dat$tafloor <- floor(Dat$ta)
 Dat$cafloor <- floor(Dat$ca)
-hist(Dat$ta)
+
 # I guess actual interview date could be some weeks prior to registered
 # interview date? There are two negative thano ages at wave 4 otherwise, but
 # still rather close. Likely died shortly after interview.
-(Dat[Dat$tafloor < 0, ])
+#(Dat[Dat$tafloor < 0, ])
 # there is one individual with an erroneous death date (or id!), throwing out.
 Dat                          <- Dat[Dat$ta > -1, ]
 Dat$tafloor[Dat$tafloor < 0] <- 0
@@ -558,7 +598,7 @@ Dat$tafloor3 <- Dat$tafloor - Dat$tafloor %% 3
 # save out, so this doesn't need to be re-run every time
 save(Dat,file = "Data/Data_longP.Rdata")
 
-
+graphics.off()
 
 
 
