@@ -557,6 +557,13 @@ stopifnot(all(
 names(varnames_fit) <- NULL
 save(varnames_fit, file = "Data/varnames_fit.Rdata")
 
+
+# use quasibinom to fit due to these three variables.
+#varnames_fit[which(sapply(varnames_fit, function(vn, Dat){
+#							length(unique(na.omit(Dat[[vn]])))
+#						}, Dat = Dat) > 2)]
+#"vocab" "tm"    "twr"
+
 # -------------------
 # check cases by wave ( tapering in recent waves because selected down to deaths..)
 #checkwaves <- function(var,Dat){
