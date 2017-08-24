@@ -71,7 +71,7 @@ library(lattice)
 # avoid having to source and set another path.
 
 # ------------------------
-source("R/apct.boot.R")
+source("R/2a_apct.boot.R")
 
 # no ages under 65
 #oops age is in months!
@@ -119,7 +119,7 @@ if (do.this){
 				out
 			}, Dat = Dat,  
 			   nboot = nboot,    # nboot is set at the head of the script.
-			   mc.cores = 32)   # ncores is set just above here
+			   mc.cores = Cores)   # ncores is set just above here
 }
 
 # Maarten: change path if necessary

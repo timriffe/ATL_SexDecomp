@@ -7,207 +7,233 @@ if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm","tim-ThinkPad-L440")){
 } 
 getwd()
 # install.packages("lubridate")
-library(lubridate)
+
+Results               <- local(get(load("Data/resultsP.Rdata")))
+varnames              <- sapply(Results, "[[", "var")
+names(Results)        <- varnames
+
+library(reshape2)
+ResultsLong           <- melt(Results)
+colnames(ResultsLong) <- c("TTD","Age","Cohort","Morb","Delete","Sex","Variable")
+ResultsLong$Delete    <- NULL
+ResultsLong$Morb      <- as.numeric(ResultsLong$Morb)
+ResultsLong           <- ResultsLong[!is.na(ResultsLong$Morb), ]
+
 library(data.table)
+ResultsLong <- data.table(ResultsLong)
+TTDprev     <- ResultsLong[, list(TTDprev = mean(Morb)),
+		                     by = list(TTD, Sex, Variable)]
+
+# varnames	some new variables are here.
+Fig4vars <- c("iadl5_1","iadl5_2","iadl5_3",
+		      "adl5_1","adl5_2","adl5_3",
+			  "name_mo","nh","srhpoor")
+
+	  
+	  
+	  
+# compile into a single object
+#DatForAlyson <- list()
+#
+#
+#DatForAlyson[["SRHpoor"]] <- list(Males = Male, Females = Female)
+#DatForAlyson[["IADL1"]] <- list(Males = IADL1m, Females = IADL1f)
+#DatForAlyson[["IADL2"]] <- list(Males = IADL2m, Females = IADL2f)
+#DatForAlyson[["IADL3"]] <- list(Males = IADL3m, Females = IADL3f)
+#DatForAlyson[["ADL1"]] <- list(Males = ADL1m, Females = ADL1f)
+#DatForAlyson[["ADL2"]] <- list(Males = ADL2m, Females = ADL2f)
+#DatForAlyson[["ADL3"]] <- list(Males = ADL3m, Females = ADL3f)
+#
+#save(DatForAlyson, file = "/home/tim/git/HLETTD/Data/SmArrays.Rdata")
+#
+
 
 
 # cleaning/processing functions
 # need to make some codes usable...
-
-
-# this code imported from ThanoEmpirical, but it is in need of some serious overhaul
-convertDates <- function(Dat){
-	# can't be done with apply because we can't have Date class matrices...
-	DateInd       <- grep(pattern="_dt",colnames(Dat))
-	for (i in DateInd){
-		Dat[,i]    <- as.Date(Dat[,i],origin="1960-1-1")
-	}
-	invisible(Dat)
-}
-
-getChronoAge <- function(Date, BirthDate){
-	out <- rep(NA, length(Date))
-	Ind <- !is.na(Date) & !is.na(BirthDate)
-	out[Ind] <- decimal_date(Date[Ind]) - decimal_date(BirthDate[Ind])
-	out
-}
-getThanoAge <- function(Date, DeathDate){
-	out <- rep(NA, length(Date))
-	Ind <- !is.na(Date) & !is.na(DeathDate)
-	out[Ind] <- decimal_date(DeathDate[Ind]) - decimal_date(Date[Ind])
-	out
-}
-
-# TR: This is sketchy. To be replaced one day
-imputeWeights <- function(wt,intv_dt){
-	if (all(wt == 0)){
-		wt2 <- NA * wt
-		return(wt2)
-	}
-	if (sum(wt>0) == 1){
-		wt2 <- approx(x = intv_dt[wt>0],
-				y = wt[wt>0],
-				xout = intv_dt,
-				rule = 1:2,
-				method = "constant",
-				f = .5)$y
-	}
-	if (sum(wt>0)>=2){
-		wt2 <- approx(x = intv_dt[wt>0],
-				y = wt[wt>0],
-				xout = intv_dt,
-				rule = 1:2,
-				method = "linear")$y 
-	}
-	return(wt2)
-}
-
-
-#Dato           <- local(get(load("Data/thanos_long_v3_1.RData")))
-Dat           <- local(get(load("Data/RAND_p_long.Rdata")))
-
-Dat$dead      <- ifelse(is.na(Dat$d_dt), 0, 1) 
-#length(unique(Dat$id[Dat$dead == 1 & Dat$b_yr >= 1915 & Dat$b_yr < 1920]))
-# nrow(Dat) / length(unique(Dat$id[Dat$dead == 1]))
-# nrow(Dato) / length(unique(Dato$id[Dato$dead == 1]))
-
-# dead only = full coordinates:
-Dat           <- Dat[Dat$dead == 1, ]
-#Dato           <- Dato[Dato$dead == 1, ]
-#Dato           <- Dato[!is.na(Dato$intv_dt), ]
-# remove missed interviews
-Dat           <- Dat[!is.na(Dat$intv_dt), ]
-# make sex column easier to use:
-Dat$sex       <- ifelse(Dat$sex == "1.male","m","f")
-
-# make date R-friendly
-Dat           <- convertDates(Dat)
-
-# data.table for easier processing of some stuff
-Dat           <- data.table(Dat)
-
-# for some years there are separate weights for those in care homes vs
-# society at large. In this case, they add, because the default weights
-# are set to zero
-Dat$nh_wt[is.na(Dat$nh_wt)] <- 0
-Dat$p_wt      <- Dat$p_wt + Dat$nh_wt
-
-# but for other years the care home pop gets zero weights
-# but we don't want to lose them, ergo: sketchy imputation 
-# For some reason HRS gives them zero weight, 
-# but they are clearly in-universe...
-Dat           <- Dat[, p_wt2 := imputeWeights(p_wt, intv_dt), by = list(id) ]
-
-(had           <- nrow(Dat))
-Dat           <- Dat[!is.na(Dat$p_wt2),]
-
-# how many left?
-(lost_no_weights <- had - nrow(Dat))
-
-# decimal values for chrono-thano age
-Dat$age       <- getChronoAge(Dat$intv_dt, Dat$b_dt)
-Dat$ttd       <- getThanoAge(Dat$intv_dt, Dat$d_dt)
-
-# single age classes (not used)
-Dat$ca        <- floor(Dat$age)
-Dat$ta        <- floor(Dat$ttd)
-
-# make 5 year cohorts
-Dat$coh5      <- Dat$b_yr - Dat$b_yr %% 5
-
-# Coh5keep inlcudes neighboring outside cohorts for help fitting
-Coh5keep <- c(1900, 1905, 1910, 1915, 1920, 1925, 1930)
-
-# these are the cohorts we predict for
-Coh5     <- c(1905, 1910, 1915, 1920, 1925) 
-Dat      <- Dat[Dat$coh5 %in% Coh5keep, ]
-
-unique(Dat$adl3)
-unique(Dat$adl5)
-# note: removed underscores for vP (vM,N had underscores in varnames)
-Dat$adl1            <- as.integer(Dat$adl5 >= 1 & !is.na(Dat$adl5))
-Dat$adl2            <- as.integer(Dat$adl5 >= 2 & !is.na(Dat$adl5))
-Dat$adl3            <- as.integer(Dat$adl5 >= 3 & !is.na(Dat$adl5))
-
-colnames(Dat)
-Dat$iadl1            <- as.integer(Dat$iadl5 >= 1 & !is.na(Dat$iadl5))
-Dat$iadl2            <- as.integer(Dat$iadl5 >= 2 & !is.na(Dat$iadl5))
-Dat$iadl3            <- as.integer(Dat$iadl5 >= 3 & !is.na(Dat$iadl5))
-
-
-Dat$srhpoor         <- ifelse(Dat$srh == "5. poor",1,ifelse(Dat$srh == "NA",NA,0))
-
-
-#Dat[, srhpoor := imputeSkippedQuestions(srhpoor,intv_dt), by = list(id) ]
-
-
-#rescale <- function(var,Dat,compelment = FALSE){
-#	Dat[[var]] <- Dat[[var]] / max(Dat[[var]], na.rm = TRUE)
-#	if (compelment){
-#		Dat[[var]] <- 1 - Dat[[var]]
-#	}
-#	Dat
-#}
-#Dat     <- rescale("adl3_", Dat, FALSE)
-#Dat     <- rescale("iadl3_", Dat, FALSE)
-#Dat     <- rescale("adl5_", Dat, FALSE)
-#Dat     <- rescale("iadl5_", Dat, FALSE)
 #
-#setnames(Dat,"adl5_","adl5")
-#setnames(Dat,"iadl5_","iadl5")
-#setnames(Dat,"adl3_","adl3")
-#setnames(Dat,"iadl3_","iadl3")
-## let's just smooth these in AP.
-
-Dat$DateDec <- lubridate::decimal_date(Dat$intv_dt)
-
-# we want to be clearly in Gompertzlandia
-Dat <- Dat[Dat$age > 65, ]
-(cases_used <- nrow(Dat))
-(lost_too_young <-   had - nrow(Dat) - lost_no_weights)
-
-# this required by apct.boot()
-Dat$la_int <- floor(Dat$ta + Dat$ca)
-
-# the key function for the glm spline method w bootstrap
-source("R/apct.boot.R")
-
-# since the outpur weren't identical to the loess output,
-# we do a legacy thing to put them back in that shape
-Dat <- data.frame(Dat)
-
-#for (i in 1:dim(test$Surf)[3]){
-#X <- test$Surf[,,i]
-#image(as.integer(colnames(X)),as.integer(rownames(X)),t(X), asp =1, zlim=c(0,.5))
-#Sys.sleep(.2)
+#
+## this code imported from ThanoEmpirical, but it is in need of some serious overhaul
+#convertDates <- function(Dat){
+#	# can't be done with apply because we can't have Date class matrices...
+#	DateInd       <- grep(pattern="_dt",colnames(Dat))
+#	for (i in DateInd){
+#		Dat[,i]    <- as.Date(Dat[,i],origin="1960-1-1")
+#	}
+#	invisible(Dat)
 #}
-Female   <- apct.boot.wrapper(Dat, varname = "srhpoor", sex = "f", nboot = 999)
-Male     <- apct.boot.wrapper(Dat, varname = "srhpoor", sex = "m", nboot = 999)
-ADL1f    <- apct.boot.wrapper(Dat, varname = "adl1", sex = "f", nboot = 999)
-ADL1m    <- apct.boot.wrapper(Dat, varname = "adl1", sex = "m", nboot = 999)
-ADL2f    <- apct.boot.wrapper(Dat, varname = "adl2", sex = "f", nboot = 999)
-ADL2m    <- apct.boot.wrapper(Dat, varname = "adl2", sex = "m", nboot = 999)
-ADL3f    <- apct.boot.wrapper(Dat, varname = "adl3", sex = "f", nboot = 999)
-ADL3m    <- apct.boot.wrapper(Dat, varname = "adl3", sex = "m", nboot = 999)
-IADL1f   <- apct.boot.wrapper(Dat, varname = "iadl1", sex = "f", nboot = 999)
-IADL1m   <- apct.boot.wrapper(Dat, varname = "iadl1", sex = "m", nboot = 999)
-IADL2f   <- apct.boot.wrapper(Dat, varname = "iadl2", sex = "f", nboot = 999)
-IADL2m   <- apct.boot.wrapper(Dat, varname = "iadl2", sex = "m", nboot = 999)
-IADL3f   <- apct.boot.wrapper(Dat, varname = "iadl3", sex = "f", nboot = 999)
-IADL3m   <- apct.boot.wrapper(Dat, varname = "iadl3", sex = "m", nboot = 999)
+#
+#getChronoAge <- function(Date, BirthDate){
+#	out <- rep(NA, length(Date))
+#	Ind <- !is.na(Date) & !is.na(BirthDate)
+#	out[Ind] <- decimal_date(Date[Ind]) - decimal_date(BirthDate[Ind])
+#	out
+#}
+#getThanoAge <- function(Date, DeathDate){
+#	out <- rep(NA, length(Date))
+#	Ind <- !is.na(Date) & !is.na(DeathDate)
+#	out[Ind] <- decimal_date(DeathDate[Ind]) - decimal_date(Date[Ind])
+#	out
+#}
+#
+## TR: This is sketchy. To be replaced one day
+#imputeWeights <- function(wt,intv_dt){
+#	if (all(wt == 0)){
+#		wt2 <- NA * wt
+#		return(wt2)
+#	}
+#	if (sum(wt>0) == 1){
+#		wt2 <- approx(x = intv_dt[wt>0],
+#				y = wt[wt>0],
+#				xout = intv_dt,
+#				rule = 1:2,
+#				method = "constant",
+#				f = .5)$y
+#	}
+#	if (sum(wt>0)>=2){
+#		wt2 <- approx(x = intv_dt[wt>0],
+#				y = wt[wt>0],
+#				xout = intv_dt,
+#				rule = 1:2,
+#				method = "linear")$y 
+#	}
+#	return(wt2)
+#}
+#
+#
+##Dato           <- local(get(load("Data/thanos_long_v3_1.RData")))
+#Dat           <- local(get(load("Data/RAND_p_long.Rdata")))
+#
+#Dat$dead      <- ifelse(is.na(Dat$d_dt), 0, 1) 
+##length(unique(Dat$id[Dat$dead == 1 & Dat$b_yr >= 1915 & Dat$b_yr < 1920]))
+## nrow(Dat) / length(unique(Dat$id[Dat$dead == 1]))
+## nrow(Dato) / length(unique(Dato$id[Dato$dead == 1]))
+#
+## dead only = full coordinates:
+#Dat           <- Dat[Dat$dead == 1, ]
+##Dato           <- Dato[Dato$dead == 1, ]
+##Dato           <- Dato[!is.na(Dato$intv_dt), ]
+## remove missed interviews
+#Dat           <- Dat[!is.na(Dat$intv_dt), ]
+## make sex column easier to use:
+#Dat$sex       <- ifelse(Dat$sex == "1.male","m","f")
+#
+## make date R-friendly
+#Dat           <- convertDates(Dat)
+#
+## data.table for easier processing of some stuff
+#Dat           <- data.table(Dat)
+#
+## for some years there are separate weights for those in care homes vs
+## society at large. In this case, they add, because the default weights
+## are set to zero
+#Dat$nh_wt[is.na(Dat$nh_wt)] <- 0
+#Dat$p_wt      <- Dat$p_wt + Dat$nh_wt
+#
+## but for other years the care home pop gets zero weights
+## but we don't want to lose them, ergo: sketchy imputation 
+## For some reason HRS gives them zero weight, 
+## but they are clearly in-universe...
+#Dat           <- Dat[, p_wt2 := imputeWeights(p_wt, intv_dt), by = list(id) ]
+#
+#(had           <- nrow(Dat))
+#Dat           <- Dat[!is.na(Dat$p_wt2),]
+#
+## how many left?
+#(lost_no_weights <- had - nrow(Dat))
+#
+## decimal values for chrono-thano age
+#Dat$age       <- getChronoAge(Dat$intv_dt, Dat$b_dt)
+#Dat$ttd       <- getThanoAge(Dat$intv_dt, Dat$d_dt)
+#
+## single age classes (not used)
+#Dat$ca        <- floor(Dat$age)
+#Dat$ta        <- floor(Dat$ttd)
+#
+## make 5 year cohorts
+#Dat$coh5      <- Dat$b_yr - Dat$b_yr %% 5
+#
+## Coh5keep inlcudes neighboring outside cohorts for help fitting
+#Coh5keep <- c(1900, 1905, 1910, 1915, 1920, 1925, 1930)
+#
+## these are the cohorts we predict for
+#Coh5     <- c(1905, 1910, 1915, 1920, 1925) 
+#Dat      <- Dat[Dat$coh5 %in% Coh5keep, ]
+#
+#unique(Dat$adl3)
+#unique(Dat$adl5)
+## note: removed underscores for vP (vM,N had underscores in varnames)
+#Dat$adl1            <- as.integer(Dat$adl5 >= 1 & !is.na(Dat$adl5))
+#Dat$adl2            <- as.integer(Dat$adl5 >= 2 & !is.na(Dat$adl5))
+#Dat$adl3            <- as.integer(Dat$adl5 >= 3 & !is.na(Dat$adl5))
+#
+#colnames(Dat)
+#Dat$iadl1            <- as.integer(Dat$iadl5 >= 1 & !is.na(Dat$iadl5))
+#Dat$iadl2            <- as.integer(Dat$iadl5 >= 2 & !is.na(Dat$iadl5))
+#Dat$iadl3            <- as.integer(Dat$iadl5 >= 3 & !is.na(Dat$iadl5))
+#
+#
+#Dat$srhpoor         <- ifelse(Dat$srh == "5. poor",1,ifelse(Dat$srh == "NA",NA,0))
+#
+#
+##Dat[, srhpoor := imputeSkippedQuestions(srhpoor,intv_dt), by = list(id) ]
+#
+#
+##rescale <- function(var,Dat,compelment = FALSE){
+##	Dat[[var]] <- Dat[[var]] / max(Dat[[var]], na.rm = TRUE)
+##	if (compelment){
+##		Dat[[var]] <- 1 - Dat[[var]]
+##	}
+##	Dat
+##}
+##Dat     <- rescale("adl3_", Dat, FALSE)
+##Dat     <- rescale("iadl3_", Dat, FALSE)
+##Dat     <- rescale("adl5_", Dat, FALSE)
+##Dat     <- rescale("iadl5_", Dat, FALSE)
+##
+##setnames(Dat,"adl5_","adl5")
+##setnames(Dat,"iadl5_","iadl5")
+##setnames(Dat,"adl3_","adl3")
+##setnames(Dat,"iadl3_","iadl3")
+### let's just smooth these in AP.
+#
+#Dat$DateDec <- lubridate::decimal_date(Dat$intv_dt)
+#
+## we want to be clearly in Gompertzlandia
+#Dat <- Dat[Dat$age > 65, ]
+#(cases_used <- nrow(Dat))
+#(lost_too_young <-   had - nrow(Dat) - lost_no_weights)
+#
+## this required by apct.boot()
+#Dat$la_int <- floor(Dat$ta + Dat$ca)
+#
+## the key function for the glm spline method w bootstrap
+#source("R/apct.boot.R")
+#
+## since the outpur weren't identical to the loess output,
+## we do a legacy thing to put them back in that shape
+#Dat <- data.frame(Dat)
+#
+##for (i in 1:dim(test$Surf)[3]){
+##X <- test$Surf[,,i]
+##image(as.integer(colnames(X)),as.integer(rownames(X)),t(X), asp =1, zlim=c(0,.5))
+##Sys.sleep(.2)
+##}
+#Female   <- apct.boot.wrapper(Dat, varname = "srhpoor", sex = "f", nboot = 999)
+#Male     <- apct.boot.wrapper(Dat, varname = "srhpoor", sex = "m", nboot = 999)
+#ADL1f    <- apct.boot.wrapper(Dat, varname = "adl1", sex = "f", nboot = 999)
+#ADL1m    <- apct.boot.wrapper(Dat, varname = "adl1", sex = "m", nboot = 999)
+#ADL2f    <- apct.boot.wrapper(Dat, varname = "adl2", sex = "f", nboot = 999)
+#ADL2m    <- apct.boot.wrapper(Dat, varname = "adl2", sex = "m", nboot = 999)
+#ADL3f    <- apct.boot.wrapper(Dat, varname = "adl3", sex = "f", nboot = 999)
+#ADL3m    <- apct.boot.wrapper(Dat, varname = "adl3", sex = "m", nboot = 999)
+#IADL1f   <- apct.boot.wrapper(Dat, varname = "iadl1", sex = "f", nboot = 999)
+#IADL1m   <- apct.boot.wrapper(Dat, varname = "iadl1", sex = "m", nboot = 999)
+#IADL2f   <- apct.boot.wrapper(Dat, varname = "iadl2", sex = "f", nboot = 999)
+#IADL2m   <- apct.boot.wrapper(Dat, varname = "iadl2", sex = "m", nboot = 999)
+#IADL3f   <- apct.boot.wrapper(Dat, varname = "iadl3", sex = "f", nboot = 999)
+#IADL3m   <- apct.boot.wrapper(Dat, varname = "iadl3", sex = "m", nboot = 999)
 
-# compile into a single object
-DatForAlyson <- list()
-
-DatForAlyson[["SRHpoor"]] <- list(Males = Male, Females = Female)
-DatForAlyson[["IADL1"]] <- list(Males = IADL1m, Females = IADL1f)
-DatForAlyson[["IADL2"]] <- list(Males = IADL2m, Females = IADL2f)
-DatForAlyson[["IADL3"]] <- list(Males = IADL3m, Females = IADL3f)
-DatForAlyson[["ADL1"]] <- list(Males = ADL1m, Females = ADL1f)
-DatForAlyson[["ADL2"]] <- list(Males = ADL2m, Females = ADL2f)
-DatForAlyson[["ADL3"]] <- list(Males = ADL3m, Females = ADL3f)
-
-save(DatForAlyson, file = "/home/tim/git/HLETTD/Data/SmArrays.Rdata")
 
 
 # ---------------------------
