@@ -10,40 +10,68 @@ SurfMap <- function (Surf,
 		xlab = "Years lived, a", 
 		ylab = "Years left, y",
 		contour=TRUE,
-		ticks = NULL,
+		ticks,
 		legnd = TRUE,
 		outline = TRUE,
-		mai = c(.5,.5,.5,1.5),
-		bg=FALSE) 
+		mai = c(.5, .5, .5, 1.5),
+		bg = FALSE,
+		xlim = range(chrono) + c(0,1),
+		ylim = range(thano) + c(0,1)) 
 {
-	if (is.null(ticks)){
-		ticks <- pretty(Surf,n=napprox)
+	if (missing(ticks)){
+		ticks <- pretty(Surf, n = napprox)
 	}
-	zlim  <- range(ticks)
-	n     <- length(ticks)-1
-	col   <- rev(colramp(n))
+	zlim         <- range(ticks)
+	n            <- length(ticks) - 1
+	col          <- rev(colramp(n))
 	
-	SurfCol <- as.character(cut(Surf,breaks=ticks,labels=col))
+	SurfCol      <- as.character(cut(Surf, breaks = ticks, labels = col))
 	dim(SurfCol) <- dim(Surf)
 	
-	x <- col(Surf) - 1 + min(chrono)
-	y <- row(Surf) - 1 + min(thano)
-#	x <- chrono
-#	y <- thano
-	par(xaxs="i",yaxs="i",xpd=TRUE,mai=mai)
-	plot(NULL, type = "n", xlim = c(70,101),ylim=c(0,16),xlab="",ylab="",axes=FALSE,asp=1)
+	x            <- col(Surf) - 1 + min(chrono)
+	y            <- row(Surf) - 1 + min(thano)
+
+	par(xaxs = "i", yaxs = "i", xpd = TRUE, mai = mai)
+	plot(NULL, type = "n", xlim = xlim, ylim = ylim, xlab = "", ylab = "", axes=FALSE,asp=1)
 	
+	xlines <- chrono[chrono %% 5 == 0]
+	ylines <- thano[thano %% 5 == 0]
 	if (bg){
 		# draw background in light gray
-		rect(70,0,101,15,border=NA,col=gray(.9))
-		segments(70,seq(0,15,by=5),101,seq(0,15,by=5),col="white")
-		segments(seq(70,100,by=5),0,seq(70,100,by=5),15,col="white")
-		segments(c(0,0,0,5,10,15,20,25,30)+70,c(5,10,15,15,15,15,15,15,15),
-				c(5,10,15,20,25,30,31,31,31)+70,c(0,0,0,0,0,0,4,9,14),col="white")
+		
+		left   <- min(chrono)
+		right  <- max(chrono) + 1
+		bottom <- min(thano)
+		top    <- max(thano) + 1
+		rect(left, bottom, right, top, border = NA, col = gray(.9))
+		
+		
+		segments(left, ylines, right, ylines, col = "white")
+		segments(xlines, bottom, xlines, top, col = "white")
+		
+		# diagonals are always a pain in the ass to figure out.
+		# do it in steps:
+		
+		x2      <- seq(min(xlines), max(xlines) + 5 * length(ylines), 5) + bottom
+        x1      <- x2 - (top - bottom)
+		
+		y2      <- rep(bottom, length(x2))
+		y1      <- rep(top, length(x1))
+		
+		# trim 1
+		diff1               <- x1[x1 < left] - left
+		y1[1:length(diff1)] <- y1[1:length(diff1)] + diff1
+		x1[x1 < left]       <- left
+		
+		# trim 2
+		diff2                                           <- x2[x2 > right] - right
+		y2[(length(y2) - length(diff2) + 1):length(y2)] <- diff2
+		x2[x2 > right]                                  <- right
+		segments(x1, y1, x2, y2, col = "white")
 	}
 	
 	# draw cells
-	rect(x,y,x+1,y+1,border=NA,col = SurfCol)
+	rect(x, y, x + 1, y + 1, border = NA, col = SurfCol)
 	
 	
 	# outline area
@@ -61,10 +89,10 @@ SurfMap <- function (Surf,
 	}
 	
 	# axes
-	segments(70,seq(0,15,by=5),69.6,seq(0,15,by=5))
-	segments(seq(70,100,by=5),0,seq(70,100,by=5),-.4)
-	text(69.6,seq(0,15,by=5),seq(0,15,by=5),pos=2,cex=.8)
-	text(seq(70,100,by=5),-.4,seq(70,100,by=5),pos=1,cex=.8)
+	segments(left, ylines, left - .4, ylines)
+	segments(xlines, bottom, xlines, bottom - .4)
+	text(left - .4, ylines, ylines, pos = 2, cex = .8)
+	text(xlines, bottom - .4, xlines, pos = 1, cex = .8)
 	
 	if (legnd){
 		# legend
@@ -94,3 +122,4 @@ compareSexes <- function(varname,cohort="1915",SurfaceList){
 	SurfMap(Fem,contour = FALSE,ticks=ticks)
 	text(80,19,paste("Females",varname,cohort,"Cohort" ))
 }
+

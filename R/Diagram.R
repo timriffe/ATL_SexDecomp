@@ -231,7 +231,6 @@ text(130,-.12,"total DLY")
 dev.off()
 
 ######################################################################################3
-
 # this was from an earlier draft, no longer needed.
 # we assumed no one would bother to work out the
 # example so it was pointless..
