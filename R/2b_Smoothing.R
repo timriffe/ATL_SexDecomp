@@ -42,6 +42,7 @@ Cores <- 32 # (you can also set this manually, override the above)
 # or else make sure Data_long.Rdata is in a folder called Data inside the working directory...
 #Dat        <- local(get(load("Data/Data_long.Rdata")))
 Dat        <- local(get(load("Data/Data_longP.Rdata")))
+
 # the rest should work fine without further ado. Two figures will also be created 
 # in the working directory. These can be examined or thrown out.
 
@@ -125,118 +126,5 @@ if (do.this){
 # Maarten: change path if necessary
 save(boot.results.list, file = "Data/resultsP.rdata")
 
-# stop here! rest of this is old.
 
 
-do.old <- FALSE
-if (do.old){
-ResultsLong         <- do.call(rbind, boot.results.list)
-
-ResultsLong$Cohort  <- ResultsLong$b_yr - ResultsLong$b_yr %% 5
-
-# take simple means within ca, ta, Cohort, var, Sex
-ResultsLong   		<- data.table(ResultsLong)
-
-# choosing median here, could just as well be mean.
-ResultsLong5  		<- ResultsLong[, list(pi = mean(median, na.rm=TRUE)), by = list(var, Sex, Cohort, ca, ta )]
-ResultsLong5  		<- as.data.frame(ResultsLong5)
-ResultsLong5L 		<- split(ResultsLong5,with(ResultsLong5, list(var, Sex, Cohort)))
-
-# do a quick comparison with ThanoEmpirical results:
-
-# function used, given a thano x chrono surface:
-get_r <- function(A){
-	c(T  = abs(cor(A$pi, A$ta, use = "complete.obs")), 
-			A  = abs(cor(A$pi, A$ca, use = "complete.obs")),
-			L  = abs(cor(A$pi, A$ta + A$ca, use = "complete.obs")),
-			M  = abs(cor(A$pi, A$ca - A$ta, use = "complete.obs"))
-	)
-}
-
-# --------------------------------------------
-# This gets the correlations for each dim, cohort, sex, and span.
-Results_r <- do.call(rbind,
-		lapply(ResultsLong5L, function(X){
-					out     <- X[1:4, ]
-					out$Dim <- c("T","A","L","M")
-					out$r   <- get_r(X)
-					out$pi  <- NULL
-					out$ca  <- NULL
-					out$ta  <- NULL
-					out
-				})
-)
-
-comparison.tim <- FALSE
-if (comparison.tim){
-# compare these with the original results
-Results_loess_r   	<- local(get(load("Data/Correlations.Rdata")))
-
-# match ordering
-Results_r       	<- Results_r[with(Results_r,order(var, Sex, Cohort, Dim)), ]
-Results_loess_r   	<- Results_loess_r[with(Results_loess_r,order(var, sex, Cohort, Dim)), ]
-Results_r$var   	<- gsub("_", "",Results_r$var)
-
-Results_loess_r.5 	<- Results_loess_r[Results_loess_r$span == "0.5", ]
-Results_loess_r.7 	<- Results_loess_r[Results_loess_r$span == "0.7", ]
-Results_loess_r.9 	<- Results_loess_r[Results_loess_r$span == "0.9", ]
-}
-# match cohorts
-Results_r       	<- Results_r[Results_r$Cohort %in% unique(Results_loess_r.5$Cohort), ]
-
-# TR: hmmm. positive correlation, but that cloud is fatter than
-# I'd like!
-#plot(Results_r$r, Results_loess_r.5$r)
-#plot(Results_r$r[Results_r$Cohort == 1915], Results_loess_r.5$r[Results_loess_r.5$Cohort == 1915])
-
-# so let's start be redoing Figure 5a, 5b too see if they change much
-
-Hist7      <- Results_r[Results_r$Cohort == 1915, ]
-Hist7$rbin <- round(Hist7$r * 100) %/% 10 * 10
-Hist7$rbin <- as.factor(Hist7$rbin)
-Hist7$R    <- Hist7$r * 100
-Hist7$Dim  <- as.factor(Hist7$Dim )
-
-if (make.figs){
-# Figures that ought to be mostly comparable with
-# Figure 5 in ThanoEmpirical paper. Hopefully
-# these histograms have a similar shape!!
-
-pdf("Figure5a_v3.pdf", width = 3, height = 7)
-histogram(~R | Dim, 
-		data = Hist7[Hist7$Sex == "f", ], 
-		col = gray(.4), 
-		par.settings = list(strip.background = list(col = gray(.9))), 
-		layout = c(1,4), 
-		type = "count",
-		breaks = seq(0,100, by = 10),
-		index.cond = list(c(3, 4, 1, 2)), 
-		xlab = list(label = "correlation coef * 100"),
-		ylab = list(label = "variable count"),
-		ylim = c(0, 47))
-dev.off()
-
-pdf("Figure5b_v3.pdf", width = 3, height = 7)
-histogram(~R | Dim, 
-		data = Hist7[Hist7$Sex == "m", ], 
-		col = gray(.4), 
-		par.settings = list(strip.background = list(col = gray(.9))), 
-		layout = c(1, 4), 
-		type = "count",
-		breaks = seq(0, 100, by = 10),
-		index.cond = list(c(3, 4, 1, 2)), 
-		xlab = list(label = "correlation coef * 100"),
-		ylab = list(label = "variable count"),
-		ylim = c(0, 47))
-dev.off()
-
-} # end fig chunk
-
-
-# TR will want a copy of this output.
-save(ResultsLong, file = "ResultsLongBoot.Rdata")
-save(Results_r, file = "CorrelationResultsBoot.Rdata")
-
-getwd()
-
-}

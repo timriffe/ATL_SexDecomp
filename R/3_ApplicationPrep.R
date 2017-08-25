@@ -14,15 +14,17 @@ names(Results)        <- varnames
 
 library(reshape2)
 ResultsLong           <- melt(Results)
-colnames(ResultsLong) <- c("TTD","Age","Cohort","Morb","Delete","Sex","Variable")
+colnames(ResultsLong) <- c("ta","ca","Cohort","pi","Delete","Sex","Variable")
 ResultsLong$Delete    <- NULL
 ResultsLong$Morb      <- as.numeric(ResultsLong$Morb)
 ResultsLong           <- ResultsLong[!is.na(ResultsLong$Morb), ]
 
+save(ResultsLong, file = "Data/ResultsPLong.Rdata")
+
 library(data.table)
 ResultsLong <- data.table(ResultsLong)
-TTDprev     <- ResultsLong[, list(TTDprev = mean(Morb)),
-		                     by = list(TTD, Sex, Variable)]
+TTDprev     <- ResultsLong[, list(pi = mean(pi)),
+		                     by = list(ta, Sex, Variable)]
 
 # varnames	some new variables are here.
 Fig4vars <- c("iadl5_1","iadl5_2","iadl5_3",
