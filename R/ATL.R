@@ -40,10 +40,12 @@ graphics.off()
 XS <- X
 XS <- XS[rowSums(!is.na(XS)) > 0, colSums(!is.na(XS)) > 0]
 pdf("Figures/srhpoor_f_Surf_a.pdf",width=7,height=5)
+par(mai=c(.6, .6, .1, .1), xaxs = "i", yaxs = "i", xpd = TRUE)
+plot(NULL, type = "n",xlim = c(70,91),ylim=c(0,13),axes=FALSE, xlab = "", ylab = "")
 SurfMap(XS, ticks = ticks, bg=TRUE,ylab="",xlab="",
-		mai=c(.6,.6,.1,.1),legnd = FALSE)
-text(82,-2,"Age", cex = 1.2)
-text(69, 13.2, "TTD", cex = 1.2)
+		mai=c(.6,.6,.1,.1),legnd = FALSE,add=TRUE)
+text(80,-1.5,"Age", cex = 1.2)
+text(68.5, 7, "TTD", cex = 1.2,srt=90)
 dev.off()
 
 
@@ -69,7 +71,7 @@ matplot(ages,
 		type='l',
 		lty = 1,
 		col = rev(agecols(ncol(XS))),
-		lwd = seq(1.5, 2.5, length = ncol(X2)))
+		lwd = seq(1.5, 2.5, length = ncol(XS)))
 # manual axes to match
 segments(ages[1], 0, ages[1], ymax)
 segments(ages[1], 0, max(ages) + 1, 0)
@@ -80,45 +82,49 @@ text(ages[ages %% 5 == 0],-.02,ages[ages %% 5 == 0],pos=1,cex=.8)
 
 # label y locations
 yvals <- ncol(XS) - col(XS) + 1 == row(XS)
-TTDs  <- c(12:0)
+TTDs  <- c(12:1,"TTD = 0")
 keep  <- c(TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE)
-text((83:96)[keep]-5,X2[yvals][keep]-.01,TTDs[keep],pos=4,cex=.8)
-text(85,-.12,"Age",xpd=TRUE)
-text(67.5,.4,"Prevalence",srt=90)
+text((83:96)[keep]-5,XS[yvals][keep]-.01,TTDs[keep],pos=c(4,4,4,4,1),cex=.8)
+
+text(80,-.058,"Age", cex = 1.2)
+text(68.25, .25, "Prevalence", cex = 1.2,srt=90)
 dev.off()
 # trick to get x dims to match.
 
 
 # make the age over TTD lines
 ttdcols <- colorRampPalette(brewer.pal(9,"Greens")[-c(1:3)])
-#dev.new(width=((7 - .7) / diff(c(70,101))) * 13 + .7,height=4)
-pdf("Figures/srhpoor_f_TTD_b.pdf",width=((7 - .7) / diff(c(70,101))) * 13 + .7,height=5)
+#dev.new(width=((7 - .7) / diff(c(70,max(ages)+1))) * 13 + .7,height=5)
+XSS <- XS[, as.integer(colnames(XS))%%5 == 0]
+pdf("Figures/srhpoor_f_TTD_b.pdf",
+		width=((7 - .7) / diff(c(70,max(ages)+1))) * 13 + .7,
+		height=5)
 par(mai=c(.6,.6,.1,.1),xaxs="i",yaxs="i",xpd=TRUE)
-plot(NULL, type = "n", xlim = c(0,13),ylim=c(0,.5),xlab="",ylab="",axes=FALSE)
-matplot(as.integer(rownames(X2)),X2, 		
+plot(NULL, type = "n", xlim = c(0,13),ylim=c(0,.55),xlab="",ylab="",axes=FALSE)
+matplot(as.integer(rownames(XS)),XS, 		
 		type = 'l',
 		lty = 1,
 		add=TRUE,
-		col = gray(.6),
+		col = gray(.8),
 		lwd = seq(1))
-ages <- as.integer(colnames(X2))
+ages <- as.integer(colnames(XS))
 keep <- ages %% 5 == 0
-matplot(as.integer(rownames(X2)),X2[,keep], 		
+matplot(as.integer(rownames(XS)),XS[,keep], 		
 		type = 'l',
 		lty = 1,
 		add=TRUE,
 		col = ttdcols(sum(keep)),
 		lwd = seq(3,2,length=sum(keep)))
-segments(0,0,0,.8);segments(0,0,13,0)
+segments(0,0,0,.45);segments(0,0,13,0)
 segments(0,seq(0,.8,by=.2),-.4,seq(0,.8,by=.2))
-segments(seq(0,13,by=5),0,seq(0,13,by=5),-.03)
+segments(seq(0,13,by=5),0,seq(0,13,by=5),-.015)
 text(-.4,seq(0,.8,by=.2),seq(0,.8,by=.2),pos=2,cex=.8)
-text(seq(0,13,by=5),-.04,seq(0,13,by=5),pos=1,cex=.8)
+text(seq(0,13,by=5),-.015,seq(0,13,by=5),pos=1,cex=.8)
 
-yvals <- X2[,keep][c(13,26,37,45)]
+yvals <- XS[,keep][c(13,26,37,45)]
 xvals <- c(12,12,10,5)
-text(xvals,yvals,c(75,80,85,"Age = 90"),pos=4,cex=.8)
-text(6, -.12, "TTD")
+text(xvals,yvals,c(75,80,85,"Age = 90"),pos=c(4,1,1,1),cex=.8)
+text(6, -.045, "TTD")
 text(-2.6,.4,"Prevalence",srt=90)
 dev.off()
 
