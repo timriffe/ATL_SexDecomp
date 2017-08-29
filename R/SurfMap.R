@@ -16,7 +16,8 @@ SurfMap <- function (Surf,
 		mai = c(.5, .5, .5, 1.5),
 		bg = FALSE,
 		xlim = range(chrono) + c(0,1),
-		ylim = range(thano) + c(0,1)) 
+		ylim = range(thano) + c(0,1),
+		add = FALSE) 
 {
 	if (missing(ticks)){
 		ticks <- pretty(Surf, n = napprox)
@@ -31,9 +32,11 @@ SurfMap <- function (Surf,
 	x            <- col(Surf) - 1 + min(chrono)
 	y            <- row(Surf) - 1 + min(thano)
 
-	par(xaxs = "i", yaxs = "i", xpd = TRUE, mai = mai)
-	plot(NULL, type = "n", xlim = xlim, ylim = ylim, xlab = "", ylab = "", axes=FALSE,asp=1)
-	
+	if (!add){
+		par(xaxs = "i", yaxs = "i", xpd = TRUE, mai = mai)
+		plot(NULL, type = "n", xlim = xlim, ylim = ylim, xlab = "", ylab = "", axes=FALSE,asp=1)
+	}
+
 	xlines <- chrono[chrono %% 5 == 0]
 	ylines <- thano[thano %% 5 == 0]
 	if (bg){
