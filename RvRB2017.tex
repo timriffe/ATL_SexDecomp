@@ -119,6 +119,49 @@ In this paper we illustrate these concepts formally and empirically, using morbi
 
 \section{Morbidity as a function of time to death}
  \label{sec:morb}
+% redraft this section, w formal part as a new subsection
+ 
+ A joint pattern of morbidity prevalence by age and time to death could in
+principle obtain any shape. Empirically, such joint patterns appear to fall into a small set of basic types, and typically these patterns slope monotonically in a single direction over these two dimensions. For example, Figure~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence of poor SRH than age. Figures~\ref{fig:srhpoorttd} and~\ref{fig:srhpoorage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  
+
+Thus our convenience assumption thus far of a single fixed morbidity prevalence over
+time-to-death is not overly unrealistic, at least for characteristics with this joint prevalence pattern. 
+
+This pattern holds for
+many, but not all, indicators of health and disability \citep{riffe2015ttd}. There is not a broad evidence base on such joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time-to-death for different disabling conditions remains an open research question.
+
+\begin{figure}[ht!]
+\makebox[\linewidth][c]{
+    \centering
+    \begin{subfigure}{.84\textwidth}
+        \includegraphics[scale=.6]{Figures/srhpoor_f_Surf_a.pdf}
+        \caption{Age by TTD}
+        \label{fig:srhpoorsurf}
+    \end{subfigure}
+    ~
+    \begin{subfigure}{.401\textwidth}
+        \includegraphics[scale=.6]{Figures/srhpoor_f_TTD_b.pdf}
+        \caption{TTD within Age}
+        \label{fig:srhpoorttd}
+    \end{subfigure}
+    }
+    
+    \makebox[\linewidth][c]{
+    \begin{subfigure}{.84\textwidth}
+        \includegraphics[scale=.6]{Figures/srhpoor_f_Age_c.pdf}
+        \caption{Age within TTD}
+        \label{fig:srhpoorage}
+    \end{subfigure}
+        ~
+    \begin{subfigure}{.401\textwidth}
+        \includegraphics[scale=.6]{Figures/blankholder.pdf}
+    \end{subfigure}
+    }
+    \caption{Prevalence of females from the 1920-1924 cohort with self-reported poor health, by time-to-death and age. The same data are shown by age over the time-to-death margin in (b) and by time-to-death over the age margin in (c). Comparing (b) and (c) we conclude that a single time-to-death pattern would better approximate the surface (a) than would a single age pattern.}\label{fig:srhpoortal}
+\end{figure}
+ 
+ \FloatBarrier
+ 
 Imagine a bad health condition, $G$, with prevalence that varies only as a
 function of time to death, $y$, and not as a function of chronological age, $a$.
 Since the TTD prevalence distribution is very closely concentrated at the end of life, there will still be an apparent age function,
@@ -246,40 +289,7 @@ we reproduced the HRS sampling structure in a bootstrap procedure
 \section{Results}
 \subsection{How reasonable is the assumption of a time-to-death prevalence pattern?}
 \label{sec:ttdok}
-A joint pattern of morbidity prevalence by age and time to death could in
-principle obtain any shape. Empirically, such joint patterns appear to fall into a small set of basic types, and typically these patterns slope monotonically in a single direction over these two dimensions. For example, Figure~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence of poor SRH than age. Figures~\ref{fig:srhpoortal} and~\ref{fig:IADLage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  Thus our convenience assumption thus far of a single fixed morbidity prevalence over
-time-to-death is not overly unrealistic, at least for characteristics with this joint prevalence pattern. This pattern holds for
-many, but not all, indicators of health and disability \citep{riffe2015ttd}. There is not a broad evidence base on such joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time-to-death for different disabling conditions remains an open research question.
 
-\begin{figure}[ht!]
-\makebox[\linewidth][c]{
-    \centering
-    \begin{subfigure}{.84\textwidth}
-        \includegraphics[scale=.6]{Figures/srhpoor_f_Surf_a.pdf}
-        \caption{Age by TTD}
-        \label{fig:srhpoorsurf}
-    \end{subfigure}
-    ~
-    \begin{subfigure}{.401\textwidth}
-        \includegraphics[scale=.6]{Figures/srhpoor_f_TTD_b.pdf}
-        \caption{TTD within Age}
-        \label{fig:srhpoorttd}
-    \end{subfigure}
-    }
-    
-    \makebox[\linewidth][c]{
-    \begin{subfigure}{.84\textwidth}
-        \includegraphics[scale=.6]{Figures/srhpoor_f_Age_c.pdf}
-        \caption{Age within TTD}
-        \label{fig:srhpoorage}
-    \end{subfigure}
-        ~
-    \begin{subfigure}{.401\textwidth}
-        \includegraphics[scale=.6]{Figures/blankholder.pdf}
-    \end{subfigure}
-    }
-    \caption{Prevalence of females from the 1920-1924 cohort with self-reported poor health, by time-to-death and age. The same data are shown by age over the time-to-death margin in (b) and by time-to-death over the age margin in (c). Comparing (b) and (c) we conclude that a single time-to-death pattern would better approximate the surface (a) than would a single age pattern.}\label{fig:srhpoortal}
-\end{figure}
 
 \FloatBarrier
 %\section{How changing mortality affects morbidity prevalence}
