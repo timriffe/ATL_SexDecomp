@@ -41,15 +41,12 @@ XS <- X
 XS <- XS[rowSums(!is.na(XS)) > 0, colSums(!is.na(XS)) > 0]
 pdf("Figures/srhpoor_f_Surf_a.pdf",width=7,height=5)
 par(mai=c(.6, .6, .1, .1), xaxs = "i", yaxs = "i", xpd = TRUE)
-plot(NULL, type = "n",xlim = c(70,91),ylim=c(0,13),axes=FALSE, xlab = "", ylab = "")
+plot(NULL, type = "n",xlim = c(70,91),ylim=c(0,13),axes=FALSE, xlab = "", ylab = "",asp=1)
 SurfMap(XS, ticks = ticks, bg=TRUE,ylab="",xlab="",
 		mai=c(.6,.6,.1,.1),legnd = FALSE,add=TRUE)
 text(80,-1.5,"Age", cex = 1.2)
 text(68.5, 7, "TTD", cex = 1.2,srt=90)
 dev.off()
-
-
-# TODO: work out so x ticks match below and right.
 
 # make the TTD over age lines
 agecols <- colorRampPalette(brewer.pal(9,"PuBu")[-c(1:3)])
@@ -100,7 +97,7 @@ pdf("Figures/srhpoor_f_TTD_b.pdf",
 		width=((7 - .7) / diff(c(70,max(ages)+1))) * 13 + .7,
 		height=5)
 par(mai=c(.6,.6,.1,.1),xaxs="i",yaxs="i",xpd=TRUE)
-plot(NULL, type = "n", xlim = c(0,13),ylim=c(0,.55),xlab="",ylab="",axes=FALSE)
+plot(NULL, type = "n", xlim = c(0,13),ylim= c(0, ymax),xlab="",ylab="",axes=FALSE)
 matplot(as.integer(rownames(XS)),XS, 		
 		type = 'l',
 		lty = 1,
@@ -115,17 +112,23 @@ matplot(as.integer(rownames(XS)),XS[,keep],
 		add=TRUE,
 		col = ttdcols(sum(keep)),
 		lwd = seq(3,2,length=sum(keep)))
-segments(0,0,0,.45);segments(0,0,13,0)
+segments(0,0,0,ymax);segments(0,0,13,0)
+segments(0, 0, 13, 0)
+segments(0,pretty(XS), - .4, pretty(XS))
+segments(seq(0,13,by=5), 0, seq(0,13,by=5), -.015)
+
+
+
 segments(0,seq(0,.8,by=.2),-.4,seq(0,.8,by=.2))
 segments(seq(0,13,by=5),0,seq(0,13,by=5),-.015)
-text(-.4,seq(0,.8,by=.2),seq(0,.8,by=.2),pos=2,cex=.8)
+text(-.4,seq(0,.8,by=.1),seq(0,.8,by=.1),pos=2,cex=.8)
 text(seq(0,13,by=5),-.015,seq(0,13,by=5),pos=1,cex=.8)
 
 yvals <- XS[,keep][c(13,26,37,45)]
 xvals <- c(12,12,10,5)
 text(xvals,yvals,c(75,80,85,"Age = 90"),pos=c(4,1,1,1),cex=.8)
 text(6, -.045, "TTD")
-text(-2.6,.4,"Prevalence",srt=90)
+text(-1.75,.25,"Prevalence",srt=90, cex = 1.2)
 dev.off()
 
 pdf(
@@ -140,6 +143,40 @@ plot(
 		ylim = c(0, 2), 
 		xlab = "", 
 		ylab = "")
+dev.off()
+
+# another version of TTD graph for presentation:
+pdf("Figures/srhpoor_f_TTD_b2.pdf",
+		width=((7 - .7) / diff(c(70,max(ages)+1))) * 13 + .7,
+		height=5)
+par(mai=c(.6,.6,.1,.1),xaxs="i",yaxs="i",xpd=TRUE)
+plot(NULL, type = "n", xlim = c(0,13),ylim=c(0,ymax),xlab="",ylab="",axes=FALSE)
+matplot(as.integer(rownames(XS)),XS, 		
+		type = 'l',
+		lty = 1,
+		add=TRUE,
+		col = gray(.8),
+		lwd = seq(1))
+ages <- as.integer(colnames(XS))
+keep <- ages %% 5 == 0
+#matplot(as.integer(rownames(XS)),XS[,keep], 		
+#		type = 'l',
+#		lty = 1,
+#		add=TRUE,
+#		col = ttdcols(sum(keep)),
+#		lwd = seq(3,2,length=sum(keep)))
+segments(0,0,0,ymax);segments(0,0,13,0)
+segments(0, 0, 13, 0)
+segments(0,pretty(XS), - .4, pretty(XS))
+segments(seq(0,13,by=5), 0, seq(0,13,by=5), -.015)
+text(-.4,seq(0,.8,by=.1),seq(0,.8,by=.1),pos=2,cex=.8)
+text(seq(0,13,by=5),-.015,seq(0,13,by=5),pos=1,cex=.8)
+
+text(6, -.045, "TTD")
+text(-1.75,.25,"Prevalence",srt=90, cex = 1.2)
+
+lines(0:12,rowMeans(XS[,colSums(!is.na(XS))>7],na.rm=TRUE),lwd=3,col="red")
+text(8,.25,"Average TTD prevalence")
 dev.off()
 #c(7,((7 - .7) / diff(c(70,101))) * 13 + .7) * 1.2 / 10
 

@@ -230,7 +230,17 @@ text(142,seq(0,.4,by=.1),0:4,pos=4)
 text(130,-.12,"total DLY")
 dev.off()
 
-######################################################################################3
+###################################################################################### 
+# used in IUSSP presentation:
+par(mai=c(0.1,0.1,0.1,0.1),xpd=TRUE)
+plot(NULL, type = "n", xlim = c(0, 1), ylim = c(0, 1), xlab = "", ylab = "", axes = FALSE,asp=1)
+polygon(x=c(0,0:110,110)/110, c(0,lx,0), col = gray(.3))
+segments(0,0)
+
+
+
+
+######################################################################################
 # this was from an earlier draft, no longer needed.
 # we assumed no one would bother to work out the
 # example so it was pointless..
