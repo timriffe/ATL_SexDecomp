@@ -71,7 +71,7 @@
 \begin{center}
 \includegraphics[width=\textwidth]{Figures/AgePatternsMorbidity.png}
 \end{center}
-Wingard et. al. (1989)
+Wingard et al. (1989)
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\begin{frame}{But what is $\pi_x$ exactly?}
@@ -81,11 +81,9 @@ Wingard et. al. (1989)
 \begin{itemize}[<+->]
 \item[-] Stock variable, changes slowly (Barendregt et al. 1994)
 \item[-] Prevalence can vary by age, time-to-death, lifespan, or combinations of
-these things.
+these things (Riffe et al. 2017).
 \item[-] Complicates comparisons of period HLE (or ULE) across
 populations with different mortality.
-\item[-] Since $\pi_x$ changes across mortality regimes, attributing
-between-population differences in DLY to mortality and morbidity is problematic.
 \end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -112,14 +110,20 @@ between-population differences in DLY to mortality and morbidity is problematic.
 \end{center}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[plain]
+\begin{center}
+\includegraphics[scale=2]{Figures/Klijs2011.jpg}
+\end{center}
+Klijs et al. (2011)
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}[plain]
 \begin{center}
 \includegraphics[scale=1.2]{Figures/srhpoor_f_Surf_a.pdf}
 \\
-\small Proportion of USA
-females from the 1915-1919 self-reporting poor health
+\normalsize Prevalence of USA
+females (1915-1919 cohort) self-reporting poor health (HRS)
 \end{center}
 \end{frame}
 
@@ -144,7 +148,7 @@ females from the 1915-1919 self-reporting poor health
 \only<1>{\includegraphics[scale=2]{Figures/Klijs2011.jpg}}
 \only<2>{\reflectbox{\includegraphics[scale=2]{Figures/Klijs2011.jpg}}}
 \end{center}
-Klijs et. al. (2011)
+Klijs et al. (2011)
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -159,10 +163,14 @@ Held constant, time-to-death prevalence moves \emph{with} longevity.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\begin{frame}{Proportion disabled by TTD and mortality level}
 \begin{frame}[plain]
-%\begin{center}
-\includegraphics[trim=1cm 0 0 0, clip,
-width=1.1\linewidth]{Figures/schematic_pres.pdf}
-%\end{center}
+\begin{overprint}
+\begin{center}
+\only<1>{\includegraphics[trim=1cm 0 0 0, clip,width=1.1\linewidth]{Figures/schematic_pres0.pdf}}
+\only<2>{\includegraphics[trim=1cm 0 0 0, clip,width=1.1\linewidth]{Figures/schematic_pres1.pdf}}
+\only<3>{\includegraphics[trim=1cm 0 0 0, clip,width=1.1\linewidth]{Figures/schematic_pres2.pdf}}
+\only<4>{\includegraphics[trim=1cm 0 0 0, clip,width=1.1\linewidth]{Figures/schematic_pres3.pdf}}
+\end{center}
+\end{overprint}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -173,25 +181,29 @@ width=1.1\linewidth]{Figures/schematic_pres.pdf}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\begin{frame}{Decomposing differences in DLY into mortality and morbidity}
 \begin{frame}[plain]
-\begin{itemize}[<+>]
-\item Are differences in DLY from mortality or
-morbidity?
-\item Decomposition methods isolate the effects of changes in $L_x$ and changes
-in $\pi_x$
-\item These are considered as \textit{mortality} and \textit{morbidity} effects (Nusselder and Looman 2004, Andreev et al. 2002) 
-\item Interpretation problem: mortality can change $\pi_x$ all by itself if
-disability is patterned by time-to-death
-\end{itemize}
+\Large
+\begin{center}
+\only<1>{ Are differences in HLE (ULE) due to \\mortality or
+morbidity?}
+\only<2>{Decomposition methods isolate the effects of changes in $\mu_x$ and changes
+in $\pi_x$}
+\only<3>{Considered as \textit{mortality} and \textit{morbidity} effects (Andreev et al. 2002, Nusselder and Looman 2004)}
+\only<4>{Interpretation problem: $\pi_x$ itself \\can change with longevity}
+\only<5>{How biased might such decompositions be?}
+\end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\begin{frame}{Estimating the upper magnitude of bias of morbidity differences from mortality decline}
 \begin{frame}[plain]
+\setbeamercovered{transparent}
+\Large
 \begin{itemize}[<+->]
-\item Estimated average TTD profile for different disability types, based on USA HRS data, quinquennial cohorts 1905-1930
-\item Calculated apparent period age prevalence of morbidity for HMD countries had they experienced the US TTD morbidity 
-\item Assumed all populations were stationary
-\item Decomposed differences between all population pairs in 1980, 1990, 2000 into apparent mortality and morbidity components
+\item Estimate empirical TTD profiles for different disabilities (USA HRS, 1905-1930 cohorts)
+\item Convert TTD profiles to $\pi_x$ using HMD lifetables
+\item Assume all populations stationary
+\item Decompose pairwise ULE differences between all populations (1980, 1990, 2000) into \emph{mortality} and \emph{morbidity} components
 \item Same for within-population changes over 10-year periods, 1950-2010
+\item (By design, all ULE differences due 100\% to mortality)
 \end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -211,12 +223,10 @@ disability is patterned by time-to-death
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\begin{frame}{Interpreting decomposition results}
 \begin{frame}[plain]
-\begin{itemize}[<+>]
-\item True value of the change in disability component is zero by design
-\item Deviation is result of differences in mortality
-\item If $e_{60}$ increases by 5 years, up to 1 year of decrease in DLY attributed to disability component could be from decrease in mortality (Female ADL 3 or more)
-\item Departure from upper bound depends on patterns of $\pi_x$, how well US
-pattern applies, departure from stationarity.
+\setbeamercovered{transparent}
+\Large
+\begin{itemize}[<+->]
+\item If $e_{60}$ increases by 5 years, up to 1 year of decrease in ULE attributed to disability component could be from decrease in mortality (Female ADL 3+)
 \item Different slopes partly from differences in final $\pi_x$ between
 disability types and the sexes
 \end{itemize}
@@ -230,20 +240,24 @@ disability types and the sexes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\begin{frame}{Considerations}
 \begin{frame}[plain]
-\begin{itemize}[<+>]
-\item Considering morbidity prevalence as a function of time to death does not imply that morbidity incidence is a time to death
+\setbeamercovered{transparent}
+\Large
+\begin{itemize}[<+->]
+\item TTD prevalence can result from age-patterned transitions (incidence)
 \item Modeling prevalence as TTD requires no specification of process
-\item In reality morbidity varies over both chronological age and time-to-death
+\item Morbidity varies over both age and time-to-death
 \end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\begin{frame}{Summary}
 \begin{frame}[plain]
-\begin{itemize}[<+>]
-\item HLE or DLY provide an important snapshot of expected life years lived in good or poor health
-\item Difficulty in interpreting period differences in these quantities between populations 
-\item Chronological age pattern of disability can change solely as a function of mortality change even when the underlying morbidity function is held constant
+\setbeamercovered{transparent}
+\Large
+\begin{itemize}[<+->]
+\item HLE (ULE) important health metrics
+\item Difficult to properly interpret period differences 
+\item Age patterns of disability can change due to mortality, even if TTD prevalence held constant (dynamic equilibria re Klijs et al. 2011)
 \item Could partly explain why mortality levels and disability prevalence are related (Van Oyen et al. 2013, Luy and Minagawa 2014)
 \end{itemize}
 \end{frame}
