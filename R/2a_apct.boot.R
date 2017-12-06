@@ -128,13 +128,15 @@ apct.boot <- function(
       # all data is binary or quasi binary
       # otherwise insert decision rule about variable type here
       # followed by the respective corresponding test
+	
       fit        <- glm(data.boot[, col.index] ~ 
-                          ns(b_yr, knots = seq(1902.5, 1925.5, by = 5)) + 
+                          ns(b_yr, knots = seq(1902.5, 1925.5, by = 5)) +
                           ns(ta, knots = c(.5, 1, 2, 4, 7.5, 10)) +  
                           ns(ca, knots = seq(72.5, 97.5, by = 5)), 
                         data = data.boot,
                         weights = rescaleweight,
                         family = quasibinomial)
+				
 
     # easier to keep dimensions straight if we predict over rectangular grid, 
     # then throw out values outside range
