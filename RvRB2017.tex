@@ -121,13 +121,13 @@ In this paper we illustrate these concepts formally and empirically, using morbi
 % redraft this section, w formal part as a new subsection
  
  A joint pattern of morbidity prevalence by age and time to death could in
-principle obtain any shape. Empirically, such joint patterns appear to fall into a small set of basic types, and typically these patterns slope monotonically in a single direction over these two dimensions. For example, Figure~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence of poor SRH than age. Figures~\ref{fig:srhpoorttd} and~\ref{fig:srhpoorage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  
+principle obtain any shape. However, empirically, such joint patterns appear to fall into a small set of basic types, and typically these patterns slope monotonically in a single direction over these two dimensions. For example, Figure~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence of poor SRH than age. Figures~\ref{fig:srhpoorttd} and~\ref{fig:srhpoorage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  
 
-Thus our convenience assumption thus far of a single fixed morbidity prevalence over
-time-to-death is not overly unrealistic, at least for characteristics with this joint prevalence pattern. 
-
-This pattern holds for
-many, but not all, indicators of health and disability \citep{riffe2015ttd}. There is not a broad evidence base on such joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time-to-death for different disabling conditions remains an open research question.
+Thus a convenience assumption a single fixed morbidity prevalence over
+time-to-death is not unrealistic, at least for characteristics with this joint
+prevalence pattern.  This pattern holds for many, but not all, indicators of
+health and disability \citep{riffe2015ttd}. Research by
+\citet{klijs2010disability} has similarly shown that, compared to age, TTD was a stronger predictor of both incidence and prevalence of activities of daily living disabilities. However they also found that functional limitations were better predicted by age. Overall, there is not a broad evidence base on joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time-to-death for different disabling conditions remains an open research question.
 
 \begin{figure}[ht!]
 \makebox[\linewidth][c]{
@@ -286,9 +286,7 @@ we reproduced the HRS sampling structure in a bootstrap procedure
 
 
 \section{Results}
-\subsection{How reasonable is the assumption of a time-to-death prevalence pattern?}
 \label{sec:ttdok}
-
 
 \FloatBarrier
 %\section{How changing mortality affects morbidity prevalence}
@@ -510,7 +508,7 @@ heuristic on the bias inherent in assuming a fixed age-pattern of morbidity.
 
 Healthy life expectancy is a popular tool for analyzing population health, forming a snapshot of the hypothetical life years lived in good or poor health. This information is well-summarized in both the period and
 cohort perspectives, irrespective of whether morbidity prevalence is a function of
-chronological age or time until death. However, difficulties arise in the
+chronological age or time to death. However, difficulties arise in the
 interpretation of period differences in this quantity. The chronological age
 pattern of disability can increase or decrease solely as a function of mortality
 change, even when the underlying morbidity function is held constant. Thus, for
@@ -594,7 +592,7 @@ regimes.
 To model prevalence as a function of
 time-to-death requires no surreal understanding of how things work, but is
 rather a modelling choice \citep{wolf2015disability}. When modeling for
-descriptive or exploratory purposes (as we have done to produce e.g. Figure~\ref{fig:Fig_schematic3},
+descriptive or exploratory purposes (as we have done to produce e.g. Figure~\ref{fig:Fig_schematic3}),
 and possibly for projections, one can safely use
 TTD as a predictive variable.
 However, using time-to-death in models intended for causal interpretation is more perilous; Some argue that TTD may function as a proxy for unobserved variables such as biomarkers for impending mortality \citep{wolf2015disability}. Others argue that including this variable as a proxy in models will introduce omitted variable bias \citep{lynch2015commentary}. Regardless, even in the descriptive case, the reader may understand a simple TTD morbidity prevalence pattern as generally hypothetical, since the current evidence base is limited in scope. Much more empirical work is needed in order to determine whether modeling morbidity
@@ -700,8 +698,8 @@ For count outcomes we used zero-inflated Poisson regression, which is a mixture 
 ln\{\mathbb{E}[Y| x_a,x_c,x_t]\}=A(x_a)+C(x_c)+T(x_t) \quad .
 \end{equation}
 
-The 0 or not component was modeled with logistic regression as denoted above. We used this type of model because most of our observations contained a very large number of zeros relative to observed counts and therefore appeared to come from a mixture distribution. Ordinary Poisson models can be compared with zero-inflated Poisson models using the Vuong test, but this was omitted in our application%\textcolor{red}{Any particular reason why? i.e. this was omitted to reduce complexity in our R-code or this was omitted this to treat all outcomes in an identical manner}
-. Most count variables in our dataset were bounded, e.g. the number of nights that can be spent in the hospital is bounded by 365 (maximum number of days in a year). In those instances, we included those bounds in our Poisson model through an offset term:
+The 0 or not component was modeled with logistic regression as denoted above. We used this type of model because most of our observations contained a very large number of zeros relative to observed counts and therefore appeared to come from a mixture distribution. Ordinary Poisson models can be compared with zero-inflated Poisson models using the Vuong test, but this was omitted in our application since most outcomes were very clearly zero-inflated and furthermore zero-inflated Poisson models can also adequately model non-zero inflated count outcomes (with some loss of statistical precision, but significance or confidence intervals are not the focus of our paper). 
+Most count variables in our dataset were bounded, e.g. the number of nights that can be spent in the hospital is bounded by 365 (maximum number of days in a year). In those instances, we included those bounds in our Poisson model through an offset term:
 
 \begin{align}
 ln\{\mathbb{E}\left[\frac{Y}{max~bound} |  x_a,x_c,x_t\right]\}&=A(x_a)+C(x_c)+T(x_t) \\
@@ -711,14 +709,12 @@ ln\{\mathbb{E}[ Y|  x_a,x_c,x_t] \} &= A(x_a)+C(x_c)+T(x_t)+ln(max~ bound) \nota
 
 Since the functions $A(x)$, $C(x)$ and $T(x)$ are cubic natural splines, they represent a vector of coefficients corresponding to $S(x)$ as defined earlier. Specification of our models in this manner with natural splines was inspired by work of \citet{carstensen2007age}.
 
-Because the three time dimensions included in our models are not linearly dependent, additional constraints on one dimension (such as required in APC modeling, see e.g. \citet{clayton1987models}) were not required. The application of splines along different time dimensions, or such splines in addition to splines of the already time dimensions, did not improve our smoothed TTD surfaces
-%textcolor{red}{we never compared. That'd be a whole different paper actually. Bigger job than it seems.}
-. Similarly, a higher number of knots had only minor effects on the smoothed TTD surfaces. Finally, we also compared our natural cubic splines to other flexible curve fitting methods (such as LOESS and GAM), and found natural cubic splines to provide the best fit overall to the empirical data, as expressed in distance to squared and absolute residuals and propensity for systematic under- or over-estimation of the data along relevant time dimensions (including edge effects).
+Because the three time dimensions included in our models are not linearly dependent, additional constraints on one dimension (such as required in APC modeling, see e.g. \citet{clayton1987models}) were not required. We did not exhaustively investigate the application of splines along different time dimensions, or such splines in addition to splines of the time dimensions already present. However, exploratory results indicated that this would not have substantially affected our conclusions. Similarly, a higher number of knots had only minor effects on the smoothed TTD surfaces. Finally, we also compared our natural cubic splines to other flexible curve fitting methods (such as LOESS and GAM), and found natural cubic splines to provide the best fit overall to the empirical data, as expressed in distance to squared and absolute residuals and propensity for systematic under- or over-estimation of the data along relevant time dimensions (including edge effects).
 
 Splines are known to function less well near the endpoints ($t_0$ and $t_k$); to determine if this was present in our data, we investigated the residuals of regression models. We found only weak evidence for the existence of edge effects, and for most outcomes edge effects were absent. For those outcomes where edge effects were potentially present, as a sensitivity analysis, in our resampling procedure we purposely oversampled observations near the edges and estimated TTD surfaces under this regime. We did not find this to substantially affect our conclusions. 
 
 \subsection{Predicting the age by TTD surface}
-To produce age by TTD surfaces, we created a dataset with birth year, time to death, and chronological age as columns. The minimum and maximum values of birth year, time to death and chronological age were equal to those found in the empirical data, and intermediate values were spaced at 1-year intervals. This dataset therefore represents an empty Lexis space. Using the fitted regression models, we then predicted outcomes for this Lexis space; i.e. we created a column with an expected value for each birth year, time to death and chronological age combination (henceforth: Lexis cell) in the Lexis space. Each iteration of the bootstrap added a new column of such predictions. To produce the final Lexis surface, we then plot the median prediction for each Lexis cell combination. Since three dimensions are more difficult to visualize due to overplotting, in our paper we chose the predictions of the 1915-1919 birth cohort and plotted along the time to death and age dimensions. 
+To produce age by TTD surfaces, we created a dataset with birth year, time to death, and chronological age as columns. The minimum and maximum values of birth year, time to death and chronological age were equal to those found in the empirical data, and intermediate values were spaced at 1-year intervals. This dataset therefore represents an empty Lexis space. Using the fitted regression models, we then predicted outcomes for this Lexis space; i.e. we created a column with an expected value for each birth year, time to death and chronological age combination (henceforth: Lexis cell) in the Lexis space. Each iteration of the bootstrap added a new column of such predictions. Note that if the user also wishes to produce standard errors (i.e. statistical precision is of importance), techniques such as multiple predictions for a Lexis cell (and averaging over them) within each bootstrap iteration could be applied to reduce Monte Carlo error. Once all iterations are finished, to produce the final Lexis surface we then plot the median prediction for each Lexis cell. Since three dimensions are more difficult to visualize due to overplotting, in our paper we chose the predictions of the 1915-1919 birth cohort and plotted along the time to death and age dimensions. 
 
 We found that, overall, predictions for each Lexis cell were normally distributed, and TTD surfaces based on Lexis cell averages were nearly identical to those for TTD surfaces based on median values. However, since some cells had more skewed predictions, namely when the outcome was binomial and predictions were close to 0 or 1 (the edge of the parameter space), we chose the median as the appropriate measure of centrality. Additionally, the median, being the 50\% quantile, is also consistent with 95\% quantile bootstrap confidence intervals. As their name implies, 95\% quantile bootstrap confidence intervals can be calculated by taking the 2.5\% and 97.5\% quantile for each Lexis cell and plotting those surfaces. The value of the median will, by definition, not exceed the 2.5\% and 97.5\% quantiles, whereas in theory the mean could exceed these confidence bounds in highly skewed distributions.
 \end{appendices}
