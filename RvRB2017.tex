@@ -605,7 +605,7 @@ However, using time-to-death in models intended for causal interpretation is mor
 prevalence as a function of time to death is more widely applicable to
 other health conditions, younger ages, more recent birth
 cohorts, and other populations in different stages of epidemiological
-transition. Further, even joint age-TTD prevalence patterns, such as that of Figure~\ref{fig:IADLsurf} may change over time, and are not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations or over time, since many health conditions appear to show strong time-to-death components. To further test the bias we hypothesize and to design more robust synthetic measures of life lived in good or poor health, more effort should be given to data collection, mortality followup, and measurement practices.
+transition. Further, even joint age-TTD prevalence patterns, such as that of Figure~\ref{fig:srhpoortal} may change over time, and are not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations or over time, since many health conditions appear to show strong time-to-death components. To further test the bias we hypothesize and to design more robust synthetic measures of life lived in good or poor health, more effort should be given to data collection, mortality followup, and measurement practices.
 
 \section{Conclusions}
 We describe a likely source of bias in comparisons of healthy life expectancy or life years lived in poor health. This bias derives from a failure of age structure to capture the principal pattern of time variation in morbidity. In short, age standardization does not guarantee comparability of morbidity levels. Comparisons of period healthy life expectancy calculated from marginal age patterns of morbidity prevalence cannot be directly partitioned into morbidity and mortality effects if the joint age by time-to-death morbidity prevalence pattern varies at all by time-to-death. 
@@ -637,7 +637,12 @@ disability prevalence to give a clearer comparison between disability types.
 
 
 \section{Description of bootstrapping technique}
-The Health and Retirement Survey (HRS) data is a longitudinal dataset, and hence observations are not independent but correlated within individuals. To account for the influence of the correlated error structure on the estimation of Time to Death (TTD) surfaces, we applied a bootstrap (Efron & Tibshirani, 1994) procedure in which we approximated the sampling structure of the HRS. In our application, bootstrap sizes of 999 provided the best approximation of the distribution of our estimator; if our method is adapted to other datasets, we recommend the use of bootstrap diagnostics applied to various locations on the TTD surface (with special attention to the ``edges'’'' of the TTD surface) to determine bootstrap size.
+The Health and Retirement Survey (HRS) data is a longitudinal dataset, and hence
+observations are not independent but correlated within individuals. To account
+for the influence of the correlated error structure on the estimation of age
+by time-to-death (TAL) surfaces, we applied a bootstrap
+\citep{efron1994introduction} procedure in which we approximated the sampling structure of the HRS. In our
+application, bootstrap sizes of 999 provided the best approximation of the distribution of our estimator; if our method is adapted to other datasets, we recommend the use of bootstrap diagnostics applied to various locations on the TAL surface (with special attention to the ``edges'' of the TAL surface) to determine bootstrap size.
 
 \subsection{Bootstrap steps}
 An \texttt{R}-code application of our method is available as Supplemental Material. The method, and therefore the code, works through the following 9 steps:
@@ -665,7 +670,8 @@ The information contained in the probability weights of subsequent observations 
 \subsection{Regression natural cubic splines}
 \label{app:splinesreg}
 
-To produce smooth age by TTD surfaces we applied regression models to the outcome of interest (BMI, hospital stays, etc.). Covariates in these regression models were natural cubic splines of the dimensions age, birth year, and time to death. The cubic spline is defined as follows:
+To produce smooth age by TAL surfaces we applied regression models to the
+outcome of interest (BMI, hospital stays, etc.). Covariates in these regression models were natural cubic splines of the dimensions age, birth year, and time to death. The cubic spline is defined as follows:
 
 \begin{equation}
 S(x) = \begin{cases}
@@ -699,12 +705,20 @@ logit\{\mathbb{E}[Y| x_a,x_c,x_t]\}=A(x_a)+C(x_c)+T(x_t) \quad .
 
 Ordinal outcomes were dichotomized during data handling and therefore also modeled using logistic regression.
 
-For count outcomes we used zero-inflated Poisson regression, which is a mixture model, combining logistic and Poisson regression. This type of model separates modeling the probability that an observation is an ``excess'’'' 0 (or not) from the ``count'' component (which is modeled if the observation is not an excess 0). The count component was therefore modeled as:
+For count outcomes we used zero-inflated Poisson regression, which is a mixture model, combining logistic and Poisson regression. This type of model separates modeling the probability that an observation is an ``excess'' 0 (or not) from the ``count'' component (which is modeled if the observation is not an excess 0). The count component was therefore modeled as:
 \begin{equation}
 ln\{\mathbb{E}[Y| x_a,x_c,x_t]\}=A(x_a)+C(x_c)+T(x_t) \quad .
 \end{equation}
 
-The 0 or not component was modeled with logistic regression as denoted above. We used this type of model because most of our observations contained a very large number of zeros relative to observed counts and therefore appeared to come from a mixture distribution. Ordinary Poisson models can be compared with zero-inflated Poisson models using the Vuong test, but this was omitted in our application since most outcomes were very clearly zero-inflated and furthermore zero-inflated Poisson models can also adequately model non-zero inflated count outcomes (with some loss of statistical precision, but significance or confidence intervals are not the focus of our paper). 
+The 0 or not component was modeled with logistic regression as denoted above. We
+used this type of model because most of our observations contained a very large
+number of zeros relative to observed counts and therefore appeared to come from
+a mixture distribution. Ordinary Poisson models can be compared with
+zero-inflated Poisson models using the Vuong test, but this was omitted in our
+application since most outcomes were very clearly zero-inflated and furthermore
+zero-inflated Poisson models can also adequately model non-zero inflated count
+outcomes (with some loss of statistical precision, but significance or
+confidence intervals are not the focus of this work).
 Most count variables in our dataset were bounded, e.g. the number of nights that can be spent in the hospital is bounded by 365 (maximum number of days in a year). In those instances, we included those bounds in our Poisson model through an offset term:
 
 \begin{align}
@@ -715,14 +729,19 @@ ln\{\mathbb{E}[ Y|  x_a,x_c,x_t] \} &= A(x_a)+C(x_c)+T(x_t)+ln(max~ bound) \nota
 
 Since the functions $A(x)$, $C(x)$ and $T(x)$ are cubic natural splines, they represent a vector of coefficients corresponding to $S(x)$ as defined earlier. Specification of our models in this manner with natural splines was inspired by work of \citet{carstensen2007age}.
 
-Because the three time dimensions included in our models are not linearly dependent, additional constraints on one dimension (such as required in APC modeling, see e.g. \citet{clayton1987models}) were not required. We did not exhaustively investigate the application of splines along different time dimensions, or such splines in addition to splines of the time dimensions already present. However, exploratory results indicated that this would not have substantially affected our conclusions. Similarly, a higher number of knots had only minor effects on the smoothed TTD surfaces. Finally, we also compared our natural cubic splines to other flexible curve fitting methods (such as LOESS and GAM), and found natural cubic splines to provide the best fit overall to the empirical data, as expressed in distance to squared and absolute residuals and propensity for systematic under- or over-estimation of the data along relevant time dimensions (including edge effects).
+Because the three time dimensions included in our models are not linearly
+dependent, additional constraints on one dimension (such as required in APC
+modeling, see e.g. \citet{clayton1987models}) were not required. We did not exhaustively investigate the application of splines along different time dimensions, or such splines in addition to splines of the time dimensions already present. However, exploratory results indicated that this would not have substantially affected our conclusions. Similarly, a higher number of knots had only minor effects on the smoothed TAL surfaces. Finally, we also compared our natural cubic splines to other flexible curve fitting methods (such as LOESS and GAM), and found natural cubic splines to provide the best fit overall to the empirical data, as expressed in distance to squared and absolute residuals and propensity for systematic under- or over-estimation of the data along relevant time dimensions (including edge effects).
 
-Splines are known to function less well near the endpoints ($t_0$ and $t_k$); to determine if this was present in our data, we investigated the residuals of regression models. We found only weak evidence for the existence of edge effects, and for most outcomes edge effects were absent. For those outcomes where edge effects were potentially present, as a sensitivity analysis, in our resampling procedure we purposely oversampled observations near the edges and estimated TTD surfaces under this regime. We did not find this to substantially affect our conclusions. 
+Splines are known to function less well near the endpoints ($t_0$ and $t_k$); to determine if this was present in our data, we investigated the residuals of regression models. We found only weak evidence for the existence of edge effects, and for most outcomes edge effects were absent. For those outcomes where edge effects were potentially present, as a sensitivity analysis, in our resampling procedure we purposely oversampled observations near the edges and estimated TAL surfaces under this regime. We did not find this to substantially affect our conclusions. 
 
-\subsection{Predicting the age by TTD surface}
-To produce age by TTD surfaces, we created a dataset with birth year, time to death, and chronological age as columns. The minimum and maximum values of birth year, time to death and chronological age were equal to those found in the empirical data, and intermediate values were spaced at 1-year intervals. This dataset therefore represents an empty Lexis space. Using the fitted regression models, we then predicted outcomes for this Lexis space; i.e. we created a column with an expected value for each birth year, time to death and chronological age combination (henceforth: Lexis cell) in the Lexis space. Each iteration of the bootstrap added a new column of such predictions. Note that if the user also wishes to produce standard errors (i.e. statistical precision is of importance), techniques such as multiple predictions for a Lexis cell (and averaging over them) within each bootstrap iteration could be applied to reduce Monte Carlo error. Once all iterations are finished, to produce the final Lexis surface we then plot the median prediction for each Lexis cell. Since three dimensions are more difficult to visualize due to overplotting, in our paper we chose the predictions of the 1915-1919 birth cohort and plotted along the time to death and age dimensions. 
+\subsection{Predicting the age by time-to-death surface}
+To produce age by time-to-death surfaces, we created a dataset with birth year,
+time to death, and chronological age as columns. The minimum and maximum values of birth year, time to death and chronological age were equal to those found in the empirical data, and intermediate values were spaced at 1-year intervals. This dataset therefore represents an empty Lexis space. Using the fitted regression models, we then predicted outcomes for this Lexis space; i.e. we created a column with an expected value for each birth year, time to death and chronological age combination (henceforth: Lexis cell) in the Lexis space. Each iteration of the bootstrap added a new column of such predictions. Note that if the user also wishes to produce standard errors (i.e. statistical precision is of importance), techniques such as multiple predictions for a Lexis cell (and averaging over them) within each bootstrap iteration could be applied to reduce Monte Carlo error. Once all iterations are finished, to produce the final Lexis surface we then plot the median prediction for each Lexis cell. Since three dimensions are more difficult to visualize due to overplotting, in our paper we chose the predictions of the 1915-1919 birth cohort and plotted along the time to death and age dimensions.
 
-We found that, overall, predictions for each Lexis cell were normally distributed, and TTD surfaces based on Lexis cell averages were nearly identical to those for TTD surfaces based on median values. However, since some cells had more skewed predictions, namely when the outcome was binomial and predictions were close to 0 or 1 (the edge of the parameter space), we chose the median as the appropriate measure of centrality. Additionally, the median, being the 50\% quantile, is also consistent with 95\% quantile bootstrap confidence intervals. As their name implies, 95\% quantile bootstrap confidence intervals can be calculated by taking the 2.5\% and 97.5\% quantile for each Lexis cell and plotting those surfaces. The value of the median will, by definition, not exceed the 2.5\% and 97.5\% quantiles, whereas in theory the mean could exceed these confidence bounds in highly skewed distributions.
+We found that, overall, predictions for each Lexis cell were normally
+distributed, and TAL surfaces based on Lexis cell averages were nearly identical
+to those for TAL surfaces based on median values. However, since some cells had more skewed predictions, namely when the outcome was binomial and predictions were close to 0 or 1 (the edge of the parameter space), we chose the median as the appropriate measure of centrality. Additionally, the median, being the 50\% quantile, is also consistent with 95\% quantile bootstrap confidence intervals. As their name implies, 95\% quantile bootstrap confidence intervals can be calculated by taking the 2.5\% and 97.5\% quantile for each Lexis cell and plotting those surfaces. The value of the median will, by definition, not exceed the 2.5\% and 97.5\% quantiles, whereas in theory the mean could exceed these confidence bounds in highly skewed distributions.
 \end{appendices}
 
 \end{document}
