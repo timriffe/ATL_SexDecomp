@@ -374,25 +374,34 @@ of good health (HLE) or disability (DLY) is standard practice in population
 health. The difference in either metric, either a within-population difference
 over two time periods or a between-population difference in the same time
 period, is often decomposed into mortality and morbidity components on the basis
-of differences in survivorship and morbidity age-prevalence respectively
-\citep{Nusselder2004,Andreev2002}. According to \citet{Nusselder2004}, the corresponding mortality and disability effects at each age group for a within-population decomposition are:
-
-\begin{align}
-	{_{n}{MOR}_{x}}&=\left [ \frac{_{n}\pi_{x\left ( t \right )} + _{n}\pi_{x\left
-	( t+y \right )}  }{2}\right ]\cdot \Delta _{n}L_{x} \label{eq:MORcomp}\\
-	{_{n}{DIS}_{x}}&=\left [ \frac{_{n}L_{x\left ( t \right )} + _{n}L_{x\left (
-	t+y \right )}  }{2}\right ]\cdot \Delta _{n}\pi_{x}	\tc \label{eq:DIScomp}
-\end{align}
-where $\Delta$ refers to the change in the variable from time $t$ to $t+y$,
-$_{n}\pi_x$ is prevalence in the discrete age group $[x,x+n)$, and $L_x$ is
-lifetable exposure. Discrete prevalence $_{n}\pi_x$ is essentially our
-$g^\star(a)$ from equation~\eqref{eq:gyfya}. The sum of the two components over
-all ages is equal to the total change in DLY. These formulas are essentially an
-application of standard \citet{kitagawa1955components} decomposition.
+of differences in mortality rates and morbidity age-prevalence respectively.
+\citet{Andreev2002} propose an analytic decomposition of HLE based on mortality
+incidence and morbidity prevalence, which partitions a difference in HLE into
+two additive components for mortality and morbidity.
+%According to \citet{Nusselder2004}, the
+%corresponding mortality and disability effects at each age group for a
+% within-population decomposition are:
+%\begin{align}
+%	{_{n}{MOR}_{x}}&=\left [ \frac{_{n}\pi_{x\left ( t \right )} + _{n}\pi_{x\left
+%	( t+y \right )}  }{2}\right ]\cdot \Delta _{n}L_{x} \label{eq:MORcomp}\\
+%	{_{n}{DIS}_{x}}&=\left [ \frac{_{n}L_{x\left ( t \right )} + _{n}L_{x\left (
+%	t+y \right )}  }{2}\right ]\cdot \Delta _{n}\pi_{x}	\tc \label{eq:DIScomp}
+%\end{align}
+%where $\Delta$ refers to the change in the variable from time $t$ to $t+y$,
+%$_{n}\pi_x$ is prevalence in the discrete age group $[x,x+n)$, and $L_x$ is
+%lifetable exposure. Discrete prevalence $_{n}\pi_x$ is essentially our
+%$g^\star(a)$ from equation~\eqref{eq:gyfya}. 
+%The sum of the two components over
+%all ages is equal to the total change in DLY. These formulas are an
+%application of standard \citet{kitagawa1955components} decomposition. The
+%decomposition method of \citet{Andreev2002} (not shown) yields a different and
+%more correct age pattern of mortality \citep{shkolnikov2017}, but total
+% mortality and disability components are equal between the two methods, so we can use either of them to make our
+%point.
 
 Although it is true that these two components arise from changes in survivorship
 and morbidity prevalence respectively, difficulties arise in the interpretation
-of the components as pure mortality and disability effects. If the time-to-death
+of the components as pure mortality and morbidity effects. If the time-to-death
 profile of disability prevalence does not change over different mortality
 regimes, inducing mortality decline alone will result in declines in the
 age-pattern of prevalence component, as we demonstrated. This method of
@@ -449,16 +458,13 @@ For within-country comparisons, we compare each population in
 10-year jumps, for all years starting from 1950. Altogether this leads to
 187 within-population comparisons and 1785 between-population comparisons for
 each sex. Finally we decompose the change or difference in DLY between the
-population pairs into mortality and morbidity components using the
-\citet{Nusselder2004} method described above and in
-Equations~\eqref{eq:MORcomp} and \eqref{eq:DIScomp}. The
-true value of the change in DLY and the true value of the disability component
+population pairs into mortality and morbidity components using the method of
+\citet{Andreev2002}. The true value of the change in DLY and the true value of the disability component
 are both zero by design. Thus, the estimated disability component from this
-decomposition gives a gauge of bias.
+decomposition gauges bias.
 
-We compare the association between the change in the disability component
-(Equation \ref{eq:DIScomp}) and the increase or difference in remaining life
-expectancy at age 60 for each population pair in
+We compare the association between the change in the estimated disability
+component and the increase or difference in remaining life expectancy at age 60 for each population pair in
 Figure~\ref{fig:Fig_Decomp_3x3}. By doing so we aim to provide a rough
 empirically-based estimate of the upper bound of the change in the disability
 component that is attributable to the different underlying mortality levels
