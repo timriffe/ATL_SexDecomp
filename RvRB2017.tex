@@ -1,5 +1,10 @@
+
 %\documentclass[12pt,oneside,a4paper,doublespacing]{article} % for submission
-\documentclass[11pt,oneside,a4paper]{article} % for sharing
+\documentclass[12pt,oneside,a4paper]{article} % for sharing
+% packages used for review
+\usepackage{lineno}
+\linenumbers
+\usepackage[margin=1in]{geometry}
 
 \usepackage{appendix}
 \usepackage{amsmath}
@@ -32,6 +37,8 @@
 \usepackage[normalem]{ulem}
 \usepackage{amsfonts}
 \usepackage{xfrac}
+
+
 %\renewcommand{\listtablename}{List of Appendix Tables}
 %\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 %\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
@@ -108,21 +115,19 @@ compressed into a smaller proportion of life. HLE can change because of changes 
 
 Most often, HLE is calculated on the basis of morbidity prevalence and a lifetable. In calculating HLE, the use of age-specific morbidity prevalence data implicitly
 assumes that a chronological age pattern best characterizes variation in the
-health characteristic over the lifespan.
-However, \citet{riffe2015ttd} show that the prevalence of many health characteristics in old ages is better measured by a pattern over time-to-death (TTD) or by both age and TTD. Most morbidity
+health characteristic over the lifespan. However research has shown that the prevalence of many health characteristics in old ages is better measured by a pattern over time-to-death (TTD) or by both age and TTD \citep{klijs2010disability,riffe2015ttd}. Most morbidity
 patterns increase with age in the aggregate, and can claim empirical regularity
-in this regard.
-However, we explain how the observed shape of a morbidity prevalence age-curve
-could change due to changes in mortality even with no change in underlying morbidity. At advanced ages the conflation of an increasing chronological-age
-mortality pattern and a TTD morbidity pattern produces an apparent morbidity pattern that also increases with advancing age. 
+in this regard. However, we explain how the observed shape of a morbidity prevalence age-curve
+could change due to changes in mortality even with no change in underlying morbidity. At advanced ages the conflation of an increasing chronological-age mortality pattern and a TTD morbidity pattern produces a morbidity pattern that appears to increase with advancing age. 
 
-In the
-cohort perspective the true and apparent morbidity patterns imply the same HLE.
+In the cohort perspective the TTD (here \emph{true}) and age (here \emph{apparent}) morbidity patterns imply the same HLE.
 Problems arise in the period perspective. Differences in period HLE over
 time or between two populations cannot easily be partitioned into morbidity and
-mortality components, because the period morbidity component will depend on some unknown future TTD process. For the same reason, comparisons of disability prevalence rates by age are not recommended between populations with different underlying age schedules of mortality.
+mortality components because period morbidity patterns may depend on a TTD \emph{countdown} process already in place \citep{wolf2015disability}.\footnote{TTD prevalence patterns may also arise from age-structured health and mortality transition rates, but this is something we do not treat in detail.}
+%will depend on some unknown future TTD process. 
+For the same reason, comparisons of disability prevalence by age between populations with different underlying mortality may not be cut-and-dry.
 
-In this paper we illustrate these concepts formally and empirically, using morbidity data from the U.S. Health and Retirement Study \citep{RAND, HRS}. Assuming a fixed TTD morbidity function, we show that mortality reduction alone can lead to a lower fraction of years lived in poor health, and consequently morbidity compression. We estimate the magnitude of potential biases for different disabling processes, given different levels of mortality extracted from the Human Mortality Database \citep{HMD2015}. We first explain how the age pattern of morbidity may partly be a function of mortality using both formulas and a schematic illustration.
+In this paper we illustrate these concepts formally and empirically, using morbidity data from the U.S. Health and Retirement Study \citep{RAND, HRS}. Assuming a fixed TTD morbidity function, we show that mortality reduction alone can lead to a lower fraction of years lived in poor health, and consequently morbidity compression. We estimate the magnitude of potential biases for different disabling processes, given different levels of mortality extracted from the Human Mortality Database \citep{HMD2018}. We first explain how the age pattern of morbidity prevalence may partly be a function of mortality using both formulas and a schematic illustration.
 
 
 \section{Morbidity as a function of time to death}
@@ -130,7 +135,7 @@ In this paper we illustrate these concepts formally and empirically, using morbi
 % redraft this section, w formal part as a new subsection
  
  A joint pattern of morbidity prevalence by age and time to death could in
-principle obtain any shape. However, empirically, such joint patterns appear to fall into a small set of basic types, and typically these patterns slope monotonically in a single direction over these two dimensions. For example, Figure~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence of poor SRH than age. Figures~\ref{fig:srhpoorttd} and~\ref{fig:srhpoorage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision.  
+principle obtain any shape. However, empirically, such joint patterns appear to fall into a small set of basic types, which typically slope monotonically in a single direction over these two dimensions. For example, Figure~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence of poor SRH than age. Figures~\ref{fig:srhpoorttd} and~\ref{fig:srhpoorage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision. Age lines (within TTD) in~\ref{fig:srhpoorage} are less articulated, more dispersed, and would be less efficiently described by a single age curve.  
 
 Thus a convenience assumption of a single fixed morbidity prevalence over
 time-to-death is not unrealistic, at least for characteristics with this joint
@@ -145,28 +150,28 @@ Overall, there is not a broad evidence base on joint age and TTD patterns. While
 \begin{figure}[ht!]
 \makebox[\linewidth][c]{
     \centering
-    \begin{subfigure}{.84\textwidth}
-        \includegraphics[scale=.6]{Figures/srhpoor_f_Surf_a.pdf}
+    \begin{subfigure}{.595\textwidth}
+        \includegraphics[scale=.5]{Figures/srhpoor_f_Surf_a.pdf}
         \caption{Age by TTD}
         \label{fig:srhpoorsurf}
     \end{subfigure}
     ~
-    \begin{subfigure}{.401\textwidth}
-        \includegraphics[scale=.6]{Figures/srhpoor_f_TTD_b.pdf}
+    \begin{subfigure}{.391\textwidth}
+        \includegraphics[scale=.5]{Figures/srhpoor_f_TTD_b.pdf}
         \caption{TTD within Age}
         \label{fig:srhpoorttd}
     \end{subfigure}
     }
     
     \makebox[\linewidth][c]{
-    \begin{subfigure}{.84\textwidth}
-        \includegraphics[scale=.6]{Figures/srhpoor_f_Age_c.pdf}
+    \begin{subfigure}{.595\textwidth}
+        \includegraphics[scale=.5]{Figures/srhpoor_f_Age_c.pdf}
         \caption{Age within TTD}
         \label{fig:srhpoorage}
     \end{subfigure}
         ~
-    \begin{subfigure}{.401\textwidth}
-        \includegraphics[scale=.6]{Figures/blankholder.pdf}
+    \begin{subfigure}{.391\textwidth}
+        \includegraphics[scale=.5]{Figures/blankholder.pdf}
     \end{subfigure}
     }
     \caption{Prevalence of females from the 1920-1924 cohort with self-reported poor health, by time-to-death and age. The same data are shown by age over the time-to-death margin in (b) and by time-to-death over the age margin in (c). Comparing (b) and (c) we conclude that a single time-to-death pattern would better approximate the surface (a) than would a single age pattern.}\label{fig:srhpoortal}

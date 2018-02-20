@@ -37,27 +37,49 @@ ticks <- seq(0,.45,by=.05)
 #pdf("Figures/IADL1_Males.pdf",width=7,height=4.2)
 graphics.off()
 #dev.new(width=7,height=5)
-XS <- X
-XS <- XS[rowSums(!is.na(XS)) > 0, colSums(!is.na(XS)) > 0]
-pdf("Figures/srhpoor_f_Surf_a.pdf",width=7,height=5)
-par(mai=c(.6, .6, .1, .1), xaxs = "i", yaxs = "i", xpd = TRUE)
-plot(NULL, type = "n",xlim = c(70,91),ylim=c(0,13),axes=FALSE, xlab = "", ylab = "",asp=1)
-SurfMap(XS, ticks = ticks, bg=TRUE,ylab="",xlab="",
-		mai=c(.6,.6,.1,.1),legnd = FALSE,add=TRUE)
-text(80,-1.5,"Age", cex = 1.2)
-text(68.5, 7, "TTD", cex = 1.2,srt=90)
+XS      <- X
+XS      <- XS[rowSums(!is.na(XS)) > 0, colSums(!is.na(XS)) > 0]
+ages    <- as.integer(colnames(XS))
+ttd     <- as.integer(rownames(XS))
+ttdlim  <- range(ttd) + c(0,1)
+agelim  <- range(ages) + c(0,1)
+
+agetoin <- .3
+mai     <- c(.6, .6, .1, .1)
+mh      <- sum(mai[c(1,3)])
+mw      <- sum(mai[c(2,4)])
+nages   <- diff(agelim)
+wwide   <- nages * agetoin + mw
+nthan   <- diff(ttdlim)
+height  <- nthan * agetoin + mh
+
+wnarrow <- nthan * agetoin + mw
+
+ymax    <- max(pretty(XS))
+pdf("Figures/srhpoor_f_Surf_a.pdf", width = wwide, height = height)
+par(mai = mai, xaxs = "i", yaxs = "i", xpd = TRUE)
+plot(NULL, type = "n", 
+		xlim = agelim,
+		ylim = ttdlim, 
+		axes = FALSE, 
+		xlab = "", 
+		ylab = "", 
+		asp = 1)
+SurfMap(XS, ticks = ticks, bg = TRUE, ylab = "", xlab = "",
+		legnd = FALSE, add = TRUE)
+text(80, -1.5, "Age", cex = 1.2)
+text(68.5, 7, "TTD", cex = 1.2, srt = 90)
 dev.off()
 
 # make the TTD over age lines
 agecols <- colorRampPalette(brewer.pal(9,"PuBu")[-c(1:3)])
-ages    <- as.integer(colnames(XS))
-ymax    <- max(pretty(XS))
 #dev.new(width=7,height=5)
-pdf("Figures/srhpoor_f_Age_c.pdf", width = 7, height = 5)
-par(mai=c(.6, .6, .1, .1), xaxs = "i", yaxs = "i", xpd = TRUE)
+pdf("Figures/srhpoor_f_Age_c.pdf", width = wwide, height = height)
+par(mai = mai, 
+		xaxs = "i", yaxs = "i", xpd = TRUE)
 plot(NULL, 
 		type = "n", 
-		xlim = range(ages) + c(0, 1), 
+		xlim = agelim, 
 		ylim = c(0, ymax), 
 		xlab = "", 
 		ylab = "", 
@@ -94,14 +116,17 @@ ttdcols <- colorRampPalette(brewer.pal(9,"Greens")[-c(1:3)])
 #dev.new(width=((7 - .7) / diff(c(70,max(ages)+1))) * 13 + .7,height=5)
 XSS <- XS[, as.integer(colnames(XS))%%5 == 0]
 pdf("Figures/srhpoor_f_TTD_b.pdf",
-		width=((7 - .7) / diff(c(70,max(ages)+1))) * 13 + .7,
-		height=5)
-par(mai=c(.6,.6,.1,.1),xaxs="i",yaxs="i",xpd=TRUE)
-plot(NULL, type = "n", xlim = c(0,13),ylim= c(0, ymax),xlab="",ylab="",axes=FALSE)
+		width = wnarrow,
+		height = height)
+par(mai= mai, xaxs = "i", yaxs = "i", xpd = TRUE)
+plot(NULL, type = "n", 
+		xlim = ttdlim,
+		ylim = c(0, ymax),
+		xlab = "", ylab = "", axes = FALSE)
 matplot(as.integer(rownames(XS)),XS, 		
 		type = 'l',
 		lty = 1,
-		add=TRUE,
+		add = TRUE,
 		col = gray(.8),
 		lwd = seq(1))
 ages <- as.integer(colnames(XS))
@@ -117,8 +142,6 @@ segments(0, 0, 13, 0)
 segments(0,pretty(XS), - .4, pretty(XS))
 segments(seq(0,13,by=5), 0, seq(0,13,by=5), -.015)
 
-
-
 segments(0,seq(0,.8,by=.2),-.4,seq(0,.8,by=.2))
 segments(seq(0,13,by=5),0,seq(0,13,by=5),-.015)
 text(-.4,seq(0,.8,by=.1),seq(0,.8,by=.1),pos=2,cex=.8)
@@ -133,8 +156,8 @@ dev.off()
 
 pdf(
 		"Figures/blankholder.pdf", 
-		width = ((7 - .7) / diff(c(70, 101))) * 13 + .7,
-		height = 4)
+		width = wnarrow,
+		height = height)
 plot(
 		NULL, 
 		type = "n", 
