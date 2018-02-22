@@ -1,13 +1,17 @@
 # Author: tim
+# this
 ###############################################################################
 setwd("/home/tim/git/HLETTD")
 ####################################################################################
 # Digaram 2
-library(HMDHFDplus)
+#library(HMDHFDplus)
 #LT <- readHMDweb("JPN","mltper_1x1",username=us,password=pw)
-#lx <- LT$lx[LT$Year == 2010] / 1e5
+##years <- sort(unique(LT$Year))
+#lx1 <- LT$lx[LT$Year == 1970] / 1e5
+#lx2 <- LT$lx[LT$Year == 2010] / 1e5
 
 
+# some helper functions:
 drawRect <- function(y1,y2,L,ThanoStart = 5,ThanoMax = .8,ChronoStart = 45,ChronoOmega=110,ChronoMax = .8){
 	
 	# lifespan rect
@@ -38,16 +42,6 @@ drawRect <- function(y1,y2,L,ThanoStart = 5,ThanoMax = .8,ChronoStart = 45,Chron
 	}
 	invisible(area)
 }
-
-
-
-
-
-#plot(NULL, type = "n", xlim = c(0,110), ylim = c(0,1))
-#for (i in 1:(length(a)-1)){
-#	drawRect(q[i+1],q[i],a[i])
-#}
-
 
 drawComparison <- function(lx,
 				q=seq(0,1,by=.1),
@@ -86,8 +80,39 @@ drawComparison <- function(lx,
 				}
 			
 
-LT <- readHMDweb("JPN","mltper_1x1",username=us,password=pw)
-years <- sort(unique(LT$Year))
+
+lx1 <- c(1, 0.98483, 0.98302, 0.98185, 0.98096, 0.9801, 0.97937, 0.97867, 
+		0.97814, 0.97767, 0.97726, 0.97692, 0.97655, 0.9761, 0.97567, 
+		0.97524, 0.97467, 0.97371, 0.97248, 0.9713, 0.97006, 0.9688, 
+		0.96749, 0.96616, 0.96496, 0.96376, 0.96241, 0.96109, 0.95965, 
+		0.95827, 0.95683, 0.95525, 0.95383, 0.95223, 0.95051, 0.94863, 
+		0.94655, 0.94441, 0.94197, 0.93945, 0.93668, 0.9338, 0.93066, 
+		0.92741, 0.92395, 0.92015, 0.91614, 0.91178, 0.90733, 0.90232, 
+		0.89693, 0.89099, 0.8844, 0.87749, 0.86995, 0.86174, 0.85269, 
+		0.84271, 0.83161, 0.81976, 0.80668, 0.79266, 0.77705, 0.76007, 
+		0.74206, 0.7222, 0.70047, 0.67704, 0.65222, 0.6255, 0.59771, 
+		0.56859, 0.53808, 0.50538, 0.47249, 0.43754, 0.4017, 0.36679, 
+		0.33087, 0.29636, 0.26343, 0.23077, 0.19921, 0.16998, 0.1426, 
+		0.11915, 0.09656, 0.0764, 0.05995, 0.04582, 0.03408, 0.02499, 
+		0.01779, 0.01274, 0.00877, 0.00563, 0.00363, 0.00228, 0.00139, 
+		0.00082, 0.00048, 0.00027, 0.00014, 8e-05, 4e-05, 2e-05, 1e-05, 
+		0, 0, 0, 0)
+lx2 <- c(1, 0.99749, 0.99708, 0.99687, 0.99669, 0.99653, 0.99644, 0.99633, 
+		0.99622, 0.99614, 0.99607, 0.99599, 0.9959, 0.99578, 0.99565, 
+		0.9955, 0.99533, 0.99507, 0.99479, 0.99441, 0.99398, 0.99344, 
+		0.9929, 0.99229, 0.99164, 0.991, 0.99039, 0.98975, 0.98908, 0.98841, 
+		0.98775, 0.98706, 0.98638, 0.98562, 0.98487, 0.98404, 0.98323, 
+		0.98233, 0.98136, 0.98032, 0.97918, 0.97783, 0.97654, 0.97504, 
+		0.97345, 0.97175, 0.96977, 0.96766, 0.96534, 0.96283, 0.96002, 
+		0.957, 0.95367, 0.95002, 0.94607, 0.94176, 0.93684, 0.93167, 
+		0.92592, 0.91978, 0.91313, 0.90573, 0.89759, 0.88882, 0.87971, 
+		0.87016, 0.85932, 0.84785, 0.83588, 0.82305, 0.80892, 0.79407, 
+		0.77801, 0.76081, 0.74184, 0.72165, 0.69945, 0.67529, 0.6486, 
+		0.61988, 0.58951, 0.55665, 0.52188, 0.48591, 0.44879, 0.40973, 
+		0.36958, 0.3301, 0.29118, 0.25305, 0.21681, 0.18228, 0.1503, 
+		0.12126, 0.09567, 0.07361, 0.05532, 0.04047, 0.02878, 0.01987, 
+		0.01331, 0.00863, 0.00542, 0.00329, 0.00193, 0.0011, 6e-04, 0.00032, 
+		0.00016, 8e-05, 4e-05)
 
 #library(animation)
 #getwd()
@@ -102,19 +127,20 @@ years <- sort(unique(LT$Year))
 
 ##########################
 # make prettier for the manuscript:
-LT$ex[LT$Year == 1970]
-LT$ex[LT$Year == 2010]
+#LT$ex[LT$Year == 1970]
+#LT$ex[LT$Year == 2010]
 # 1970 Figure
-q <- seq(1,0,by=-.1)
-ThanoMax   <- .8
-ThanoStart <- 6
+q           <- seq(1,0,by=-.1)
+ThanoMax    <- .8
+ThanoStart  <- 6
 ChronoOmega <- 111.5
-lx <- LT$lx[LT$Year == 1970] / 1e5
-A  <- splinefun(0:110~lx)(q)
-a <- c()
+
+
+A  <- splinefun(0:110~lx1)(q)
+a  <- c()
 for (i in 1:10){
 	xx    <- seq(A[i],A[i+1],by=.01)
-	lxx   <- splinefun(lx*0:110)(xx)
+	lxx   <- splinefun(lx1*0:110)(xx)
 	a[i]  <- sum(lxx*xx)/sum(lxx)
 }
 graphics.off()
@@ -123,7 +149,7 @@ graphics.off()
 pdf("Figures/Japan1970.pdf",width=7,height=5)
 par(mai=c(.5,.4,.1,0),xpd=TRUE)
 plot(NULL, type = "n", xlim = c(0, 140), ylim = c(0, 1), xlab = "", ylab = "", axes = FALSE,asp=100)
-lines(0:110, lx, col = gray(.2))
+lines(0:110, lx1, col = gray(.2))
 chronoA <- c()
 for (i in 1:length(a)){
 	chronoA[i] <- drawRect(q[i + 1], q[i], a[i],
@@ -165,19 +191,19 @@ text(125,-.05,"TTD",srt=90)
 text(136,-.05,"Age",srt=90)
 segments(120,seq(.1,.2,by=.1),141,seq(.1,.2,by=.1),col="white")
 text(142,seq(0,.2,by=.1),0:2,pos=4)
-text(130,-.12,"total DLY")
+text(130,-.12,"DLE")
 dev.off()
 
 # 2010 Figure
 ThanoMax   <- .8
 ThanoStart <- 6
 ChronoOmega <- 111.5
-lx <- LT$lx[LT$Year == 2010] / 1e5
-A  <- splinefun(0:110~lx)(q)
+#lx <- LT$lx[LT$Year == 2010] / 1e5
+A  <- splinefun(0:110~lx2)(q)
 a <- c()
 for (i in 1:10){
 	xx    <- seq(A[i],A[i+1],by=.01)
-	lxx   <- splinefun(lx*0:110)(xx)
+	lxx   <- splinefun(lx2*0:110)(xx)
 	a[i]  <- sum(lxx*xx)/sum(lxx)
 }
 graphics.off()
@@ -185,7 +211,7 @@ graphics.off()
 pdf("Figures/Japan2010.pdf",width=7,height=5)
 par(mai=c(.5,.4,.1,0),xpd=TRUE)
 plot(NULL, type = "n", xlim = c(0, 140), ylim = c(0, 1), xlab = "", ylab = "", axes = FALSE,asp=100)
-lines(0:110, lx, col = gray(.2))
+lines(0:110, lx2, col = gray(.2))
 chronoA <- c()
 for (i in 1:length(a)){
 	chronoA[i] <- drawRect(q[i + 1], q[i], a[i],
@@ -227,16 +253,16 @@ text(125,-.05,"TTD",srt=90)
 text(136,-.05,"Age",srt=90)
 segments(120,seq(.1,.4,by=.1),141,seq(.1,.4,by=.1),col="white")
 text(142,seq(0,.4,by=.1),0:4,pos=4)
-text(130,-.12,"total DLY")
+text(130,-.12,"DLE")
 dev.off()
 
 ###################################################################################### 
 # used in IUSSP presentation:
-par(mai=c(0.1,0.1,0.1,0.1),xpd=TRUE)
-plot(NULL, type = "n", xlim = c(0, 1), ylim = c(0, 1), xlab = "", ylab = "", axes = FALSE,asp=1)
-polygon(x=c(0,0:110,110)/110, c(0,lx,0), col = gray(.3))
-segments(0,0)
-
+#par(mai=c(0.1,0.1,0.1,0.1),xpd=TRUE)
+#plot(NULL, type = "n", xlim = c(0, 1), ylim = c(0, 1), xlab = "", ylab = "", axes = FALSE,asp=1)
+#polygon(x=c(0,0:110,110)/110, c(0,lx,0), col = gray(.3))
+#segments(0,0)
+#
 
 
 

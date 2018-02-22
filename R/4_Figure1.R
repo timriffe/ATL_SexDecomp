@@ -1,5 +1,8 @@
-
 # Author: tim
+#####################################
+# TR: this script presently uses the list structured output rather 
+# than the tidy output. It should be reworked to make use of the tidy output
+# but this is low priority right now.
 ###############################################################################
 # for TR computers...otherwise you need to set wd yourself
 if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm","tim-ThinkPad-L440")){
