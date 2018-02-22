@@ -108,8 +108,8 @@ comparisons of period healthy life expectancy conditioned on different age patte
 \section{Introduction}
 
 Healthy life expectancy (HLE) is among the most widely used metrics of
-population health. It combines information on mortality and morbidity to
-summarize the expected years of life lived in good health, however measured. If
+population health. It combines information on mortality and morbidity (or disability) to
+summarize the expected years of life lived in good health, however measured.\footnote{In this manuscript we use the terms morbidity and disability interchangeably when referring to prevalence patterns.} If
 healthy life expectancy increases faster than life expectancy, morbidity is
 compressed into a smaller proportion of life. HLE can change because of changes in mortality, morbidity, or both.
 
@@ -117,17 +117,17 @@ Most often, HLE is calculated on the basis of morbidity prevalence and a lifetab
 assumes that a chronological age pattern best characterizes variation in the
 health characteristic over the lifespan. However research has shown that the prevalence of many health characteristics in old ages is better measured by a pattern over time-to-death (TTD) or by both age and TTD \citep{klijs2010disability,riffe2017ttd}. Most morbidity
 patterns increase with age in the aggregate, and can claim empirical regularity
-in this regard. However, we explain how the observed shape of a morbidity prevalence age-curve
+in this regard. However, we explain how the observed level and shape of a morbidity prevalence age-curve
 could change due to changes in mortality even with no change in underlying morbidity. At advanced ages the conflation of an increasing chronological-age mortality pattern and a TTD morbidity pattern produces a morbidity pattern that appears to increase with advancing age. 
 
-In the cohort perspective the TTD (here \emph{true}) and age (here \emph{apparent}) morbidity patterns imply the same HLE.
+In the cohort perspective the TTD and age prevalence patterns imply the same HLE.
 Problems arise in the period perspective. Differences in period HLE over
 time or between two populations cannot easily be partitioned into morbidity and
 mortality components because period morbidity patterns may depend on a TTD \emph{countdown} process already in place \citep{wolf2015disability}.\footnote{TTD prevalence patterns may also arise from age-structured health and mortality transition rates, but this is something we do not treat in detail.}
 %will depend on some unknown future TTD process. 
 For the same reason, comparisons of disability prevalence by age between populations with different underlying mortality may not be cut-and-dry.
 
-In this paper we illustrate these concepts formally and empirically, using morbidity data from the U.S. Health and Retirement Study \citep{RAND, HRS}. Assuming a fixed TTD morbidity function, we show that mortality reduction alone can lead to a lower fraction of years lived in poor health, and consequently morbidity compression. We estimate the magnitude of potential biases for different disabling processes, given different levels of mortality extracted from the Human Mortality Database \citep{HMD2018}. We first explain how the age pattern of morbidity prevalence may partly be a function of mortality using both formulas and a schematic illustration.
+In this paper we illustrate these concepts formally and empirically, using morbidity data from the U.S. Health and Retirement Study \citep{RAND, HRS}. Assuming a fixed TTD prevalence function, we show that mortality reduction alone can lead to a lower fraction of years lived in poor health, and consequently morbidity compression. We estimate the magnitude of potential biases for different empirical prevalence patterns, given different levels of mortality extracted from the Human Mortality Database \citep{HMD2018}. We first explain how the age pattern of morbidity prevalence may partly be a function of mortality using both formulas and a schematic illustration.
 
 
 \section{Morbidity as a function of time to death}
@@ -135,7 +135,7 @@ In this paper we illustrate these concepts formally and empirically, using morbi
 % redraft this section, w formal part as a new subsection
  
 A joint pattern of morbidity prevalence by age and time to death could in
-principle obtain any shape. Limited research suggests that such joint patterns fall into a small set of basic types, which typically slope monotonically in a single direction over these two dimensions \citep{riffe2017ttd}. For example, Figure~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time-to-death is a more important time measure to describe prevalence of poor SRH than age. Figures~\ref{fig:srhpoorttd} and~\ref{fig:srhpoorage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines (within age) in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision. Age lines (within TTD) in~\ref{fig:srhpoorage} are less articulated and more dispersed. Prevalence patterns such as this are inefficiently characterized by a single age pattern.  
+principle obtain any shape. Limited research suggests that such joint patterns fall into a small set of basic types, which typically slope monotonically in a single direction over these two dimensions \citep{riffe2017ttd}. For example, Figure~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time until death is a more important time measure to describe prevalence of poor SRH than age. Figures~\ref{fig:srhpoorttd} and~\ref{fig:srhpoorage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines (within age) in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision. Age lines (within TTD) in~\ref{fig:srhpoorage} are less articulated and more dispersed. Prevalence patterns such as this are inefficiently characterized by a single age pattern.  
 
 Thus an assumption of a single fixed morbidity prevalence pattern by
 time-to-death is simple, but not unrealistic, at least for characteristics with this joint
@@ -145,7 +145,7 @@ similarly shown that, compared to age, TTD was a stronger predictor of both
 incidence and prevalence of activities of daily living disabilities, but that
 functional limitations were better predicted by age.
 % also severe cases more ttd than mild
-Overall, there is not a broad evidence base on joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time-to-death for different disabling conditions remains an open research question.
+Overall, there is not a broad evidence base on joint age and TTD patterns. While our simplifying assumption of fixed TTD patterns is an acceptable abstraction of the particular joint patterns from which they were derived, these patterns only serve to demonstrate an arithmetic point in the extreme. The degree to which prevalence is better measured by age or time until death for different disabling conditions remains an open research question.
 
 \begin{figure}[ht!]
 \makebox[\linewidth][c]{
@@ -217,9 +217,9 @@ these circumstances, it is also deceptively tricky to partition period HLE
 differences into underlying morbidity and mortality components, because the
 morbidity component is (arithmetically) a function of an uncertain future mortality pattern
 that accompanies the apparent age pattern of morbidity. Although cohort HLE (a
-gold standard) is theoretically unbiased \citep{imai2007estimation}\footnote{We confirm that this remains so even if morbidity prevalence in strongly patterned by time-to-death.}, and therefore comparable, this quantity cannot be faithfully
+gold standard) is theoretically unbiased \citep{imai2007estimation}\footnote{We confirm that this remains so even if morbidity prevalence in strongly patterned by time until death.}, and therefore comparable, this quantity cannot be faithfully
 decomposed into morbidity and mortality components based on age patterns of morbidity and mortality alone if
-the underlying morbidity pattern is a function of time-to-death.
+the underlying morbidity pattern is a function of time until death.
 
 A toy example serves to illustrate these concepts. Figure~\ref{fig:test}
 provides a schematic overview of two stationary populations. The
@@ -254,25 +254,25 @@ with onset at age 50 reaching a maximum prevalence of 50\% at hypothetical age
 \caption{Schematic survival curves from higher (\ref{fig:toypop1}) and lower
 (\ref{fig:toypop2}) mortality populations. Each population is
 subjected to the same chronological age (blue) and time-to-death (yellow)
-morbidity prevalence patterns. The total prevalence of each sums to disability life years
-(DLY), drawn on the right of each survival curve. In \ref{fig:toypop1}
-the age and time-to-death prevalences imply the same DLY. In
-\ref{fig:toypop2} the time-to-death DLY is identical to \ref{fig:toypop1}, but
-the age DLY is two years higher, due entirely to improved longevity.}
+morbidity prevalence patterns. The total prevalence of each sums to disabled life expectancy
+(DLE), drawn on the right of each survival curve. In \ref{fig:toypop1}
+the age and time-to-death prevalences imply the same DLE. In
+\ref{fig:toypop2} the time-to-death DLE is identical to \ref{fig:toypop1}, but
+the age DLE is two years higher, due entirely to improved longevity.}
 \label{fig:test}
 \end{figure}
 
-The resulting disability life years (DLY) is shown with
+The resulting DLE is shown with
 barplots next to each stationary population.
 In population (a) the age and TTD prevalence functions yield
-the same DLY (and HLE). In population (b) the time-to-death DLY is identical to
-population (a), but the age DLY is nearly twice as high. For the
+the same DLE (and HLE). In population (b) the time-to-death DLE is identical to
+population (a), but the age DLE is nearly twice as high. For the
 age prevalence function, it is correct to conclude that increased longevity leads to
 increases in prevalence, but for the TTD prevalence function there is
 no morbidity-mortality trade-off. Instead, improved longevity leads to increased proportions of life
 lived disability-free, albeit with no change in the absolute concentration of morbidity in the final years of life. Analyses
 based on the standard Sullivan method \citep{Sullivan1970} are only capable of
-predicting increased DLY when projecting from the mortality of (a) to (b). This
+predicting increased DLE when projecting from the mortality of (a) to (b). This
 is so for both kinds of morbidity because the TTD prevalence pattern
 is erased when the same condition is measured over age. The same
 Sullivan method can also only conclude that the morbidity of the TTD
@@ -282,29 +282,28 @@ presented here, often varying by both age and TTD, but this example provides a u
 
 \section{Data and methods}
 \label{sec:datamethods}
-Estimating morbidity prevalence by time-to-death is straightforward for health surveys with mortality follow-up modules. We use the RAND version P of the U.S. Health and Retirement Study (HRS),\footnote{The HRS is sponsored by the National Institute on Aging (grant number NIA U01AG009740) and is conducted by the University of Michigan.} which consists of 12 survey waves from 1992 through 2014 and an extensive set of measures for various aspects of morbidity. Time to death is calculated directly for deceased respondents as the difference between the date of death and interview date. Within-individual time-to-death trajectories of health measures are therefore directly available as such in the data. For a given binary health measure on a single age by TTD grid, the specific prevalence ($g_{a,y}$) is defined as the average value of that respective health measure in that age by TTD interval. Variables estimated include
-counts of Activities of Daily Living (ADL),
-difficulties in carrying out at least 1, 2, or 3 (out of 5) instrumental
-Activities of Daily Living (IADL), living in a nursing home, having poor
+For our excercises we require lifetables and morbidity or disability prevalence patterns structured by time to death. Lifetables are taken from the Human Mortality Database \citep{HMD2018}. Estimating disability prevalence by time until death is straightforward for health surveys with mortality follow-up modules. We use the RAND version P of the U.S. Health and Retirement Study (HRS),\footnote{The HRS is sponsored by the National Institute on Aging (grant number NIA U01AG009740) and is conducted by the University of Michigan.} which consists of 12 survey waves from 1992 through 2014 and an extensive set of measures for various aspects of morbidity and disability. Time to death is calculated directly for deceased respondents as the difference between the date of death and interview date. Within-individual time-to-death trajectories of health measures are therefore directly available as such in the data. For a given binary health measure on a single age by TTD grid, the specific prevalence ($g_{a,y}$) is defined as the average value of that respective health measure in that age by TTD interval. We estimate patterns for variables including
+counts of disabilities in Activities of Daily Living (ADL) and
+Instrumental Activities of Daily Living (IADL), living in a nursing home, having poor
 self-rated health, and being unable to name the month of the year.
 % TODO start here!!!
 
-To ease interpretation, we produced age by TTD prevalence surfaces in which
+To ease interpretation, for each sex separately we produced age by TTD prevalence surfaces in which
 random variation is filtered out by applying logistic regression models with a
-given binary health measure as the outcome and natural splines for birth cohort,
+given binary health measure as the outcome and natural splines over birth cohort,
 TTD, and age as covariates. We used the predictions from these regression models
 to produce a series of prevalence surfaces for each variable. To account for the
 longitudinal nature of the HRS, potentially resulting in correlated error terms,
 we reproduced the HRS sampling structure in a bootstrap procedure
-\citep{efron1994introduction}. Annotated \texttt{R}-code for the procedure and the generation of all empirical results for this analysis is available in an online repository. The bootstrap procedure is described in a technical appendix. In a sensitivity analysis, we investigated the influence on our results of the underlying assumption that morbidity prevalence is a smooth function over birth cohort, TTD, and age; both natural splines and LOESS curves over the other time measures \citep{riffe2017ttd} produced highly similar results. We produced these surfaces for each health measure and by sex separately.
+\citep{efron1994introduction}. The bootstrap procedure is described in a technical appendix. In a sensitivity analysis, we investigated the influence on our results of the underlying assumption that morbidity prevalence is a smooth function over birth cohort, TTD, and age; both natural splines and LOESS curves over these time measures \citep{riffe2017ttd} produced highly similar results. Annotated \texttt{R}-code for all empirical results in this analysis is available in an open online repository.
 % 
 
 \section{Results}
 \label{sec:ttdok}
-In keeping with our prior examples of TTD-prevalence and changing mortality, we first develop a sense of how much  
+We follow the logic our examples from section~\ref{sec:schematic} to design two empirical exercises that help develop intuition on how time-to-death prevalence patterns create age patterns of prevalence, and how the may lead to bias in common decomposition approaches. We first develop an empirical sense of how different time-to-death morbidity prevalence curves interact with mortality in late life to change the shape and level of age patterns of prevalence. In section~\ref{sec:bounds} we examine the degree to which standard decompositions of disabled life expectancy into disability and mortality components could be biased if these relationships hold.
 \FloatBarrier
 %\section{How changing mortality affects morbidity prevalence}
-\subsection{A time-to-death morbidity pattern interacted with mortality}
+\subsection{Time-to-death morbidity interacted with mortality}
 \label{sec:schematic}
 The age pattern of morbidity prevalence observed in the cross-section (in older ages) depends
 on the extent to which prevalence is principally described by
@@ -346,32 +345,21 @@ curves appear at younger ages.
 These mortality-induced differences are large and also qualitatively different. In the middle variant, which closely resembles the TTD prevalence of disability in being able to bathe oneself, a 10-year increase in $e_{60}$ results in a 50 percent drop in disability prevalence at age 80 from around 20 to 10 percent. Meanwhile, the age at which a quarter of the population were considered disabled in this scenario differed by about 5 years with a 5-year improvement in $e_{60}$ from 20 to 25. The sharply increasing TTD prevalence pattern (top row) translates to a concave age pattern of prevalence, whereas the high and gradually increasing TTD pattern in the bottom row translates to a convex age pattern. This sheds light on some limiting conditions: As a TTD prevalence pattern tends to concentrate in the final moment of life, its corresponding age pattern will tend to be proportional to the force of mortality; as a TTD prevalence pattern tends to uniformity, its corresponding age pattern will also tend to uniformity.
 
 \FloatBarrier
-\subsection{Estimating bounds for the impact of mortality differences on estimates of disabled life years}
+\subsection{The impact of mortality differences on comparisons of disabled life expectancy}
 \label{sec:bounds}
+
 The Sullivan method is the most commonly used method to partition life
-expectancy into estimates of the total life years lived in a state of good
-health (HLY) or disability (DLY). Its popularity owes to its minimal data
+expectancy into estimates of the average life years lived in a state of good
+health (HLE) or disability (DLE). Its popularity owes to its minimal data
 requirements. Only current age-specific disability prevalence rates are needed
-in addition to a life table. Specifically, the
-number of person-years with disability $_{n}\pi _{x} \times _{n}L _{x}$ in
-age-group $x$ to $x+n$ are the product of the person-years lived from the life
-table $_{n}L _{x}$ and the proportion disabled $_{n}\pi _{x}$. The total DLY is
+in addition to a life table. Specifically, the stationary
+number of person-years with disability in
+age-group $x$ to $x+n$ is the product of the person-years lived from the life
+table $_{n}L _{x}$ and the proportion disabled $_{n}\pi _{x}$. The total DLE is
 the sum of  $_{n}\pi _{x} \times _{n}L _{x}$ over all age groups
 \citep{Sullivan1970}.
 
-It has long been recognized that the Sullivan method does not produce a pure
-synthetic measure of health expectancy, since it combines flow data of current
-mortality incidence with stock data of morbidity prevalence. While the mortality
-flow responds immediately to period change, for instance from medical
-innovations, the morbidity stock is slower to change because it reflects past
-cohort experiences with disability incidence and recovery
-\citep{Mathers1997,Barendregt1994}. Moreover, as was illustrated in
-Figure~\ref{fig:Fig_schematic3}, the prevalence at any age may not only depend
-(mathematically) on past transitions into and out of disability but also on
-future deaths.
-
-Nevertheless, comparing populations on the basis of life years lived in a state
-of good health (HLE) or disability (DLY) is standard practice in population
+Comparing populations on the basis of HLE or DLE is standard practice in macro studies of population
 health. The difference in either metric, either a within-population difference
 over two time periods or a between-population difference in the same time
 period, is often decomposed into mortality and morbidity components on the basis
@@ -379,40 +367,31 @@ of differences in mortality rates and morbidity age-prevalence respectively.
 \citet{Andreev2002} propose an analytic decomposition of HLE based on age patterns of mortality
 incidence and morbidity prevalence, which partitions a difference in HLE into
 two additive components for mortality and morbidity.
-%According to \citet{Nusselder2004}, the
-%corresponding mortality and disability effects at each age group for a
-% within-population decomposition are:
-%\begin{align}
-%	{_{n}{MOR}_{x}}&=\left [ \frac{_{n}\pi_{x\left ( t \right )} + _{n}\pi_{x\left
-%	( t+y \right )}  }{2}\right ]\cdot \Delta _{n}L_{x} \label{eq:MORcomp}\\
-%	{_{n}{DIS}_{x}}&=\left [ \frac{_{n}L_{x\left ( t \right )} + _{n}L_{x\left (
-%	t+y \right )}  }{2}\right ]\cdot \Delta _{n}\pi_{x}	\tc \label{eq:DIScomp}
-%\end{align}
-%where $\Delta$ refers to the change in the variable from time $t$ to $t+y$,
-%$_{n}\pi_x$ is prevalence in the discrete age group $[x,x+n)$, and $L_x$ is
-%lifetable exposure. Discrete prevalence $_{n}\pi_x$ is essentially our
-%$g^\star(a)$ from equation~\eqref{eq:gyfya}. 
-%The sum of the two components over
-%all ages is equal to the total change in DLY. These formulas are an
-%application of standard \citet{kitagawa1955components} decomposition. The
-%decomposition method of \citet{Andreev2002} (not shown) yields a different and
-%more correct age pattern of mortality \citep{shkolnikov2017}, but total
-% mortality and disability components are equal between the two methods, so we can use either of them to make our
-%point.
 
 %Although it is true that these two components arise from changes in death rates
 %and morbidity prevalence respectively, 
-Difficulties arise in the interpretation
-of these components as pure mortality and morbidity effects. If the time-to-death
-profile of disability prevalence does not change over different mortality
-regimes, inducing mortality decline alone will result in declines in the
-age-pattern of prevalence component, as we demonstrated. This method of
-decomposition will therefore still attribute a portion of the
-change in DLY to morbidity, and we consider this to be a source of bias.
+%However, it has long been recognized that the Sullivan method does not produce a pure
+%synthetic measure of health expectancy, since it combines flow data of current
+%mortality incidence with stock data of morbidity prevalence. Whereas the mortality
+%flow responds immediately to period change, for instance from medical
+%innovations, the morbidity stock is slower to change because it reflects past
+%cohort experiences with disability incidence and recovery
+%\citep{Mathers1997,Barendregt1994}. %Moreover, as was illustrated in
+%Figure~\ref{fig:Fig_schematic3}, the prevalence at any age may not only depend
+% on past transitions into and out of disability but also (mathematically) on
+%future deaths.
+%Difficulties arise in the interpretation
+%of these components as pure mortality and morbidity effects, not only because. If the time-to-death
+%profile of disability prevalence does not change over different mortality
+%regimes, inducing mortality decline alone will result in declines in the
+%age-pattern of prevalence component, as we demonstrated. This method of
+%decomposition will therefore still attribute a portion of the
+%change in DLE to morbidity, and we consider this to be a source of bias.
 
-To get a sense of the upper magnitude of this bias, we test how the disability
-component of this decomposition method would change when a fixed time-to-death
-prevalence of morbidity is applied to different mortality regimes using empirical data. %Morbidity data come from the US Health and Retirement Study while mortality and exposure data come from the Human Mortality Database \citep{HMD2018}.
+If we take the interaction between TTD-prevalence and mortality from section~\ref{sec:schematic} at face value, then there is reason to suspect that decompositions based on an age-pattern of prevalence might be biased. Specifically, a marginal age pattern of prevalence can itself be partitioned into morbidity and mortality components. This relationship is not accounted for in standard decompositions, which here constitutes a bias in the decompositon.
+To get a sense of the upper bound in the magnitude of this bias, we test how the disability/morbidity
+component of the \citet{Andreev2002} decomposition method would change when a fixed time-to-death
+prevalence pattern is applied to different mortality regimes using empirical data.\footnote{Results from this exercise would be nearly identical if decomposing with the method of \citet{Nusselder2004}, since we do not examine the age pattern of bias.} %Morbidity data come from the US Health and Retirement Study while mortality and exposure data come from the Human Mortality Database \citep{HMD2018}.
 
 Specifically, we consider the age prevalence of difficulties in carrying out at
 least 1, 2, or 3 (out of 5) functional Activities of Daily Living (ADL),
@@ -440,7 +419,7 @@ each disability type is shown for females in Figure~\ref{fig:DisbyTTD}.
 \begin{figure}
 \begin{adjustwidth}{-1.5cm}{}
 	\centering
-	\includegraphics[scale=.6]{Figures/DisbyTTD.pdf}
+	\includegraphics[scale=.6]{Figures/DisbyTTDnew.pdf}
 	\caption{The disability prevalence by time to death for various disability types, based on U.S. HRS data (females).}
 	\label{fig:DisbyTTD}
 \end{adjustwidth}
@@ -455,14 +434,14 @@ transition. To calculate the age-pattern of morbidity, we assume the survival
 pattern of each lifetable to be a stationary population and apply a
 discretization of equation~\eqref{eq:gyfya}. 
 
-We then make pair-wise comparisons of DLY between each population in
+We then make pair-wise comparisons of DLE between each population in
 the same year for the years 1980, 1990, and 2000.
 For within-country comparisons, we compare each population in
 10-year jumps, for all years starting from 1950. Altogether this leads to
 187 within-population comparisons and 1785 between-population comparisons for
-each sex. Finally we decompose the change or difference in DLY between the
+each sex. Finally we decompose the change or difference in DLE between the
 population pairs into mortality and morbidity components using the method of
-\citet{Andreev2002}. The true value of the change in DLY and the true value of the disability component
+\citet{Andreev2002}. The true value of the change in DLE and the true value of the disability component
 are both zero by design. Thus, the estimated disability component from this
 decomposition gauges bias.
 
@@ -472,7 +451,7 @@ Figure~\ref{fig:Fig_Decomp_3x3}. By doing so we aim to provide a rough
 empirically-based estimate of the upper bound of the change in the disability
 component that is attributable to the different underlying mortality levels
 of any two populations being compared. Thus if female $e_{60}$ increases in a
-country by 5 years, up to about 1 year of the reduction in DLY that is
+country by 5 years, up to about 1 year of the reduction in DLE that is
 attributed to the disability component could be solely arising from the decrease
 in mortality, in the case where disability is measured as having difficulty in
 at least three ADLs. Departure from this upper bound in real life depends on
