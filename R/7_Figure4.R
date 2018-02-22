@@ -33,6 +33,11 @@ for(i in 1:82){
 			varname=bl[[i]]$Female[[3]],TTD=0:12)
 }
 TTDdf = rbind.fill(TTDlist_F,TTDlist_M)
+
+# TR: this can be reworked to make use of object TTDprev, created in script
+# 3_applicationPrep.R That may as well be recycled throughout.
+
+
 #write.csv(TTDdf,"N:\\vanRaalte\\TTDdf.csv",row.names=F)
 
 #----------plotting certain morbidity types

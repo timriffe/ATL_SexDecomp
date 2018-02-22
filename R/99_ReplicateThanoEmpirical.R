@@ -3,8 +3,9 @@
 ###############################################################################
 
 # this is a side endeavor. Since the smoothing procedure changed between the present
-# paper and "Time to death markers of age and disability", I'd like to remake the
-# box plot distributions in the final figure of that paper to see if the tilt
+# paper are earlier version from
+# Riffe et al (2017) "Time-to-death patterns in markers of age and disability" VYPR v14
+# I'd like to remake the  box plot distributions in the final figure of that paper to see if same
 
 Results               <- local(get(load("Data/resultsP.Rdata")))
 varnames              <- sapply(Results, "[[", "var")
