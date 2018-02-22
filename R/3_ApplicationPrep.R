@@ -6,7 +6,6 @@ if (system("hostname",intern=TRUE) %in% c("triffe-N80Vm","tim-ThinkPad-L440")){
 	setwd("/home/tim/git/HLETTD")
 } 
 getwd()
-# install.packages("lubridate")
 
 Results               <- local(get(load("Data/resultsP.Rdata")))
 varnames              <- sapply(Results, "[[", "var")
