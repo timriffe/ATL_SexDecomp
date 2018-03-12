@@ -217,7 +217,7 @@ these circumstances, it is also deceptively tricky to partition period HLE
 differences into underlying morbidity and mortality components, because the
 morbidity component is (arithmetically) a function of an uncertain future mortality pattern
 that accompanies the apparent age pattern of morbidity. Although cohort HLE (a
-gold standard) is theoretically unbiased \citep{imai2007estimation}\footnote{We confirm that this remains so even if morbidity prevalence in strongly patterned by time until death.}, and therefore comparable, this quantity cannot be faithfully
+gold standard) is theoretically unbiased \citep{imai2007estimation}\footnote{We confirm that this remains so even if morbidity prevalence is strongly patterned by time until death.}, and therefore comparable, this quantity cannot be faithfully
 decomposed into morbidity and mortality components based on age patterns of morbidity and mortality alone if
 the underlying morbidity pattern is a function of time until death.
 
@@ -300,7 +300,7 @@ we reproduced the HRS sampling structure in a bootstrap procedure
 
 \section{Results}
 \label{sec:ttdok}
-We follow the logic our examples from section~\ref{sec:schematic} to design two empirical exercises that help develop intuition on how time-to-death prevalence patterns create age patterns of prevalence, and how the may lead to bias in common decomposition approaches. We first develop an empirical sense of how different time-to-death morbidity prevalence curves interact with mortality in late life to change the shape and level of age patterns of prevalence. In section~\ref{sec:bounds} we examine the degree to which standard decompositions of disabled life expectancy into disability and mortality components could be biased if these relationships hold.
+We follow the logic of our examples from section~\ref{sec:schematic} to design two empirical exercises that help develop intuition on how time-to-death prevalence patterns create age patterns of prevalence, and how the may lead to bias in common decomposition approaches. We first develop an empirical sense of how different time-to-death morbidity prevalence curves interact with mortality in late life to change the shape and level of age patterns of prevalence. In section~\ref{sec:bounds} we examine the degree to which standard decompositions of disabled life expectancy into disability and mortality components could be biased if these relationships hold.
 \FloatBarrier
 %\section{How changing mortality affects morbidity prevalence}
 \subsection{Time-to-death morbidity interacted with mortality}
@@ -563,16 +563,6 @@ consequences of nearness to death caused by some other primary factor.
 Neither of these explanations conflicts with the reality that causes must
 precede effects, and that therefore death cannot cause the morbidity that precedes it \citep{lynch2015commentary}. A third possibility, also consistent with the second, is that certain health transition incidence rates are indeed patterned by time to death, as reported by \citet{klijs2010disability}.
 
-Increasingly, data on mortality incidence and disability onset and recovery are available from
-multiple waves of survey panels such as the HRS, allowing researchers to
-calculate healthy life expectancy using sophisticated multistate models.
-Unfortunately such data is not available in all countries, or if it is, time
-trends are limited to the recent past. We are not arguing that a TTD approach
-should replace multistate models when such data is available. Our aim is rather
-to expose the implications of comparing healthy life expectancy from
-age-structured prevalence-based models with different underlying mortality
-regimes.
-
 To model prevalence as a function of
 time to death requires no surreal understanding of how things work, but is
 rather a modelling choice \citep{wolf2015disability},. When modeling for
@@ -583,7 +573,17 @@ However, using time to death in models intended for causal interpretation is mor
 prevalence as a function of time to death is more widely applicable to
 other health conditions, younger ages, more recent birth
 cohorts, and other populations in different stages of epidemiological
-transition. Further, even joint age-TTD prevalence patterns, such as that of Figure~\ref{fig:srhpoortal} may change over time, and are not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations or over time, since many health conditions appear to show strong time-to-death components. To further test the bias we hypothesize and to design more robust synthetic measures of life lived in good or poor health, more effort should be given to data collection, mortality followup, and measurement practices.
+transition. Further, even joint age-TTD prevalence patterns, such as that of Figure~\ref{fig:srhpoortal} may change over time, and are not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations or over time, since many health conditions appear to show strong time-to-death components. To further test the bias we hypothesize and to design more robust synthetic measures of life lived in good or poor health, more effort should first be given to data collection, mortality followup, and measurement practices.
+
+Increasingly, data on mortality incidence and disability onset and recovery are available from
+multiple waves of survey panels such as the HRS, allowing researchers to
+calculate healthy life expectancy using sophisticated multistate models.
+Unfortunately such data is not available in all countries, or if it is, time
+trends are limited to the recent past. We are not arguing that a TTD approach
+should replace multistate models when such data is available. Our aim is rather
+to expose the implications of comparing healthy life expectancy from
+age-structured prevalence-based models with different underlying mortality
+regimes.
 
 \section{Conclusions}
 We describe a likely source of bias in comparisons of healthy life expectancy or life years lived in poor health. This bias derives from a failure of age structure to capture the principal pattern of time variation in morbidity. In short, age standardization does not guarantee comparability of morbidity levels. Comparisons of period healthy life expectancy calculated from marginal age patterns of morbidity prevalence cannot be directly partitioned into morbidity and mortality effects if the joint age by time to death morbidity prevalence pattern varies at all by time until death. 
@@ -620,7 +620,7 @@ observations are not independent but correlated within individuals. To account
 for the influence of the correlated error structure on the estimation of age
 by time-to-death (TAL) surfaces, we applied a bootstrap
 \citep{efron1994introduction} procedure in which we approximated the sampling structure of the HRS. In our
-application, bootstrap sizes of 999 provided the best approximation of the distribution of our estimator; if our method is adapted to other datasets, we recommend the use of bootstrap diagnostics applied to various locations on the TAL surface (with special attention to the ``edges'' of the TAL surface) to determine bootstrap size.
+application, a bootstrap with 999 iterations provided a good approximation of the distribution of our estimator; if our method is adapted to other datasets, we recommend the use of bootstrap diagnostics applied to various locations on the TAL surface (with special attention to the ``edges'' of the TAL surface) to determine bootstrap size.
 
 \subsection{Bootstrap steps}
 An \texttt{R}-code application of our method is available as Supplemental Material. The method, and therefore the code, works through the following 9 steps:
