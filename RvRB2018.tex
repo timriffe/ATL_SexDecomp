@@ -178,7 +178,8 @@ Overall, there is not a broad evidence base on joint age and TTD patterns. While
 \end{figure}
  
  \FloatBarrier
- 
+
+Still we wager that TTD-dominant prevalence patterns are widespread in old ages, and an understanding of their mechanical role in lifetable-based demographic methods bears lessons for the practices of comparing, decomposing, or analyzing trends in HLE. 
 Imagine a bad health condition, $G$, with prevalence that varies only as a
 function of time to death, $y$, and not as a function of chronological age, $a$.
 Since the TTD prevalence distribution is very closely concentrated at the end of life, there will still be an apparent age function,
@@ -262,7 +263,7 @@ the age DLE is two years higher, due entirely to improved longevity.}
 \label{fig:test}
 \end{figure}
 
-The resulting DLE is shown with
+The resulting disabled life expectancy (DLE) is shown with
 barplots next to each stationary population.
 In population (a) the age and TTD prevalence functions yield
 the same DLE (and HLE). In population (b) the time-to-death DLE is identical to
@@ -397,7 +398,7 @@ patterns considered here, which appear to be common.
 This relationship is not accounted for in standard decompositions, which here constitutes a compositional bias in the decompositon.
 To get a sense of the upper bound in the magnitude of this bias, we test how the disability/morbidity
 component of the \citet{Andreev2002} decomposition method would change when a fixed time-to-death
-prevalence pattern is applied to different mortality regimes using empirical data.\footnote{Results from this exercise would be nearly identical if decomposing with the method of \citet{Nusselder2004}, since we do not examine the age pattern of bias.} %Morbidity data come from the US Health and Retirement Study while mortality and exposure data come from the Human Mortality Database \citep{HMD2018}.
+prevalence pattern is applied to different mortality regimes using empirical data.\footnote{Results from this exercise would be nearly identical if decomposing with the method of \citet{Nusselder2004}, since we do not examine the age pattern of bias \citep{shkolnikov2017}.} %Morbidity data come from the US Health and Retirement Study while mortality and exposure data come from the Human Mortality Database \citep{HMD2018}.
 
 Specifically, we consider the age prevalence of difficulties in carrying out at
 least 1, 2, or 3 (out of 5) functional Activities of Daily Living (ADL),
@@ -565,7 +566,7 @@ precede effects, and that therefore death cannot cause the morbidity that preced
 
 To model prevalence as a function of
 time to death requires no surreal understanding of how things work, but is
-rather a modelling choice \citep{wolf2015disability},. When modeling for
+rather a modelling choice \citep{wolf2015disability}. When modeling for
 descriptive or exploratory purposes (as we have done to produce e.g. Figure~\ref{fig:Fig_schematic3}),
 and possibly for projections, one can safely use
 TTD as a predictive variable.
@@ -715,7 +716,7 @@ Splines are known to function less well near the endpoints ($t_0$ and $t_k$); to
 
 \subsection{Predicting the age by time-to-death surface}
 To produce age by time-to-death surfaces, we created a dataset with birth year,
-time to death, and chronological age as columns. The minimum and maximum values of birth year, time to death and chronological age were equal to those found in the empirical data, and intermediate values were spaced at 1-year intervals. This dataset therefore represents an empty Lexis space. Using the fitted regression models, we then predicted outcomes for this Lexis space; i.e. we created a column with an expected value for each birth year, time to death and chronological age combination (henceforth: Lexis cell) in the Lexis space. Each iteration of the bootstrap added a new column of such predictions. Note that if the user also wishes to produce standard errors (i.e. statistical precision is of importance), techniques such as multiple predictions for a Lexis cell (and averaging over them) within each bootstrap iteration could be applied to reduce Monte Carlo error. Once all iterations are finished, to produce the final Lexis surface we then plot the median prediction for each Lexis cell. Since three dimensions are more difficult to visualize due to overplotting, in our paper we chose the predictions of the 1915-1919 birth cohort and plotted along the time to death and age dimensions.
+time to death, and chronological age as columns. The minimum and maximum values of birth year, time to death and chronological age were equal to those found in the empirical data, and intermediate values were spaced at 1-year intervals. This dataset therefore represents an empty Lexis space. Using the fitted regression models, we then predicted outcomes for this Lexis space; i.e. we created a column with an expected value for each birth year, time to death and chronological age combination (henceforth: Lexis cell) in the Lexis space. Each iteration of the bootstrap added a new column of such predictions. Once all iterations are finished, to produce the final Lexis surface we then plot the median prediction for each Lexis cell. Since three dimensions are more difficult to visualize due to overplotting, in our paper we chose the predictions of the 1915-1919 birth cohort and plotted along the time to death and age dimensions.
 
 We found that, overall, predictions for each Lexis cell were normally
 distributed, and TAL surfaces based on Lexis cell averages were nearly identical
