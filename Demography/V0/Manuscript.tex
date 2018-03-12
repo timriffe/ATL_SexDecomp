@@ -1,11 +1,12 @@
 
-%\documentclass[12pt,oneside,a4paper,doublespacing]{article} % for submission
-\documentclass[12pt,oneside,a4paper]{article} % for sharing
+%\documentclass[12pt,oneside,letterpaper,doublespacing]{article}  % for submission
+%\documentclass[12pt,oneside,a4paper]{article} % for sharing
+\documentclass[12pt,oneside,letterpaper,doublespacing]{article}  % for submission
 % packages used for review
 \usepackage{lineno}
 \linenumbers
 \usepackage[margin=1in]{geometry}
-
+%\usepackage[T1]{fontenc}
 \usepackage{appendix}
 \usepackage{amsmath}
 \usepackage{caption}
@@ -21,9 +22,10 @@
 \usepackage{xcolor,colortbl}
 \usepackage{chngpage}
 %\usepackage[active,tightpage]{preview}
-\usepackage{natbib}
+%\usepackage{natbib}
+\usepackage[natbibapa]{apacite}% for submission
 %\usepackage[natbib, maxcitenames=2, mincitenames=1, style=apa]{biblatex}
-\bibpunct{(}{)}{,}{a}{}{;} 
+%\bibpunct{(}{)}{,}{a}{}{;} 
 \usepackage{url}
 \usepackage{nth}
 \usepackage{authblk}
@@ -37,7 +39,8 @@
 \usepackage[normalem]{ulem}
 \usepackage{amsfonts}
 \usepackage{xfrac}
-
+\usepackage[notablist,nofiglist]{endfloat} % for submission
+\renewcommand{\figurename}{Fig.} % for submission
 
 %\renewcommand{\listtablename}{List of Appendix Tables}
 %\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
@@ -93,6 +96,9 @@
 
 \maketitle
 
+\pagebreak % for submission
+
+
 \begin{abstract}
 In calculating period healthy life expectancy, the use of age-specific
 morbidity prevalence patterns assumes that age captures the important
@@ -105,6 +111,8 @@ patterns.
 Our findings have implications for any between- or within-population
 comparisons of period healthy life expectancy conditioned on different age patterns of mortality.
 \end{abstract}
+Keywords: Mortality, Population health, Healthy life expectancy, Decomposition, Age structure
+\pagebreak % for submission
 
 \section{Introduction}
 
@@ -136,7 +144,7 @@ In this paper we illustrate these concepts formally and empirically, using morbi
 % redraft this section, w formal part as a new subsection
  
 A joint pattern of morbidity prevalence by age and time to death could in
-principle obtain any shape. Limited research suggests that such joint patterns fall into a small set of basic types, which typically slope monotonically in a single direction over these two dimensions \citep{riffe2017ttd}. For example, Figure~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time until death is a more important time measure to describe prevalence of poor SRH than age. Figures~\ref{fig:srhpoorttd} and~\ref{fig:srhpoorage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines (within age) in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision. Age lines (within TTD) in~\ref{fig:srhpoorage} are less articulated and more dispersed. Prevalence patterns such as this are inefficiently characterized by a single age pattern.  
+principle obtain any shape. Limited research suggests that such joint patterns fall into a small set of basic types, which typically slope monotonically in a single direction over these two dimensions \citep{riffe2017ttd}. For example, Fig.~\ref{fig:srhpoortal} shows US female poor self-reported health (SRH) prevalence after age 70 broken down by age and TTD under three views. Panel~\ref{fig:srhpoorsurf} shows these data as a surface, whose more horizontally running prevalence contour lines indicate that time until death is a more important time measure to describe prevalence of poor SRH than age. Figs.~\ref{fig:srhpoorttd} and~\ref{fig:srhpoorage}, show the same prevalence data plotted with respect to the respective TTD and age margins. Of these, the TTD lines (within age) in \ref{fig:srhpoorttd} yield a more compact set of patterns, which one could imaginably summarize with a single line without much loss of precision. Age lines (within TTD) in~\ref{fig:srhpoorage} are less articulated and more dispersed. Prevalence patterns such as this are inefficiently characterized by a single age pattern.  
 
 Thus an assumption of a single fixed morbidity prevalence pattern by
 time-to-death is simple, but not unrealistic, at least for characteristics with this joint
@@ -175,7 +183,7 @@ Overall, there is not a broad evidence base on joint age and TTD patterns. While
         \includegraphics[scale=.53]{Figures/fig1d.pdf} %fig1d
     \end{subfigure}
     }
-    \caption{Prevalence of females from the 1920-1924 cohort with self-reported poor health, by time-to-death and age. The same data are shown by age over the time-to-death margin in (b) and by time-to-death over the age margin in (c). Comparing (b) and (c) we conclude that a single time-to-death pattern would better approximate the surface (a) than would a single age pattern.}\label{fig:srhpoortal}
+    \caption{Prevalence of females from the 1920-1924 cohort with self-reported poor health, by time-to-death and age. The same data are shown by age over the time-to-death margin in (b) and by time-to-death over the age margin in (c). Comparing (b) and (c) we conclude that a single time-to-death pattern would better approximate the surface (a) than would a single age pattern}\label{fig:srhpoortal}
 \end{figure}
  
  \FloatBarrier
@@ -223,7 +231,7 @@ gold standard) is theoretically unbiased \citep{imai2007estimation}\footnote{We 
 decomposed into morbidity and mortality components based on age patterns of morbidity and mortality alone if
 the underlying morbidity pattern is a function of time until death.
 
-A toy example serves to illustrate these concepts. Figure~\ref{fig:test}
+A toy example serves to illustrate these concepts. Fig.~\ref{fig:test}
 provides a schematic overview of two stationary populations. The
 underlying survival pattern of these two populations is based on period survival
 curves from Japanese males in 1970 (a) and 2010 (b) \citep{HMD2018}, but the reader may
@@ -311,7 +319,7 @@ The age pattern of morbidity prevalence observed in the cross-section (in older 
 on the extent to which prevalence is principally described by
 age versus time-to-death and on the underlying mortality
 level. If the prevalence is principally a function of TTD, the
-specifics of its shape are also important. In Figure~\ref{fig:Fig_schematic3} we
+specifics of its shape are also important. In Fig.~\ref{fig:Fig_schematic3} we
 show the age-translations of different schematic TTD prevalence patterns when
 interacted with fictitious stationary populations under different mortality levels.
 
@@ -421,7 +429,7 @@ a linear time-to-death prevalence profile for each disability by averaging over 
 %instance from the 1915 birth cohort 6 percent of males and 11 percent of
 % females were still alive. 
  The TTD prevalence of morbidity for
-each disability type is shown for females in Figure~\ref{fig:DisbyTTD}.
+each disability type is shown for females in Fig.~\ref{fig:DisbyTTD}.
 
 
 \begin{figure}
@@ -440,7 +448,7 @@ Database, had they experienced the US time-to-death profile of morbidity. Easter
 age patterns of mortality, particularly in the years surrounding political
 transition. To calculate the age-pattern of morbidity, we assume the survival
 pattern of each lifetable to be a stationary population and apply a
-discretization of equation~\eqref{eq:gyfya}. 
+discretization of Eq.~\eqref{eq:gyfya}. 
 
 We then make pair-wise comparisons of DLE between each population in
 the same year for the years 1980, 1990, and 2000.
@@ -455,7 +463,7 @@ decomposition gauges bias.
 
 We compare the association between the change in the estimated disability
 component and the difference in remaining life expectancy at age 60 for each population pair in
-Figure~\ref{fig:Fig_Decomp_3x3}. This provides a rough
+Fig.~\ref{fig:Fig_Decomp_3x3}. This provides a rough
 empirically-based estimate of the upper bound of the change in the disability
 component that is attributable to the different underlying mortality levels
 of any two populations being compared. Thus for 2+ ADLs, if female $e_{60}$ increases in a
@@ -568,14 +576,14 @@ precede effects, and that therefore death cannot cause the morbidity that preced
 To model prevalence as a function of
 time to death requires no surreal understanding of how things work, but is
 rather a modelling choice \citep{wolf2015disability}. When modeling for
-descriptive or exploratory purposes (as we have done to produce e.g. Figure~\ref{fig:Fig_schematic3}),
+descriptive or exploratory purposes (as we have done to produce e.g. Fig.~\ref{fig:Fig_schematic3}),
 and possibly for projections, one can safely use
 TTD as a predictive variable.
 However, using time to death in models intended for causal interpretation is more perilous; Some argue that TTD may function as a proxy for unobserved variables such as biomarkers for impending mortality \citep{wolf2015disability} although a limited exploration of this possibility yielded mixed results \citep{rehkopf2016cross}. Others argue that including TTD as a proxy in models will introduce omitted variable bias \citep{lynch2015commentary}. This does not preclude use of TTD patterns in classic aggregate demography settings, such as lifetable-based methods as here. Much more empirical work is needed in order to determine whether modeling morbidity
 prevalence as a function of time to death is more widely applicable to
 other health conditions, younger ages, more recent birth
 cohorts, and other populations in different stages of epidemiological
-transition. Further, even joint age-TTD prevalence patterns, such as that of Figure~\ref{fig:srhpoortal} may change over time, and are not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations or over time, since many health conditions appear to show strong time-to-death components. To further test the bias we hypothesize and to design more robust synthetic measures of life lived in good or poor health, more effort should first be given to data collection, mortality followup, and measurement practices.
+transition. Further, even joint age-TTD prevalence patterns, such as that of Fig.~\ref{fig:srhpoortal} may change over time, and are not fixed as in our examples. Nevertheless, the distortions demonstrated are likely to arise in everyday practice when comparing health trends over age between populations or over time, since many health conditions appear to show strong time-to-death components. To further test the bias we hypothesize and to design more robust synthetic measures of life lived in good or poor health, more effort should first be given to data collection, mortality followup, and measurement practices.
 
 Increasingly, data on mortality incidence and disability onset and recovery are available from
 multiple waves of survey panels such as the HRS, allowing researchers to
@@ -595,7 +603,7 @@ In Section~\ref{sec:ttdok} we provide an example of a variable whose joint preva
 
 
 \newpage%% this forces a new page, so that things end up a bit more where you think they should
-\bibliographystyle{plainnat}
+\bibliographystyle{apacite} % for submission
 \bibliography{refs}
 
 \begin{appendices}
