@@ -1,0 +1,32 @@
+COMMENTS TO AUTHORS:
+
+This paper demonstrates how interpretation of periods differences in healthy life expectancy, using common decomposition approaches such as Sullivan’s method, may be biased by empirical linkages between prevalence of morbidity by TTD and by age, using two examples.  
+Below I have tried to build on the merits of the study, and point out elements that can be revised to strengthen its contribution.
+
+Major concerns 
+
+The research issue addressed by the manuscript, and the manuscript’s associated objectives, should be more clearly and concisely stated at the top of the paper.  As written, these essential elements of the manuscripts are circuitously described, often redundantly so, right up through the Results section.  The reader is left to parse disparate statements from across the manuscript to infer the objectives of the manuscript and the essential issue that is being addressed. 
+
+A related point: on page 4, line 54: what has been the impact of the “potential biases” to date? Can the significance of the concern/issue raised by this paper be discussed qualitatively as well as quantitatively?  Why is this an important issue to consider?   
+
+I believe that one of the themes of the Wolf et al. 2015 paper (cited by the authors) is that TTD is a censored distribution—it is missing for those in the survey who remain  alive.  Have the authors considered the implications of this theme for their analysis? 
+
+More detail is needed to motivate and explain the reasoning for the bootstrap procedure approach for reproducing the HRS sampling scheme, as a suitable remedy for the repeated measures on observations in the HRS (E.g., as opposed to implementing standard models for correlated data). 
+
+The examples and the exploratory analyses reveal a collection of findings that, while interesting, raise concerns about their generality.  Can the authors clarify the structure of their analysis to highlight the generality of their findings, and therefore also the conclusions?  In what situations, and with which methods (E.g. only Sullivan’s?) can we expect the bias at the core of their concerns?
+
+Related to the prior comment about generalizability:  p. 13, line 273:  “Two factors apparently account…”..?  This seems to imply a level of surprise or coincidence at the finding?  Should the reader take from this statement that the findings are a curiosity, to be explored further elsewhere?  Such a statement dilutes the impact of findings and conclusions to be drawn from the analysis.
+
+The conclusion section is only a summary of work done, not a set of substantive points gleaned from the paper.
+
+ 
+Minor issues/typos
+
+In multiple places, clearer, more precise  language should be used.  E.g. p. 3 line 38, “…can claim empirical regularity in this regard”. …can simply by “…morbidity tends to increase with age…”   Another example:  p. 4 line 49, refers to “cut and dry”. Exactly what is meant here?  
+Another example:  p. 5 line 83:  “we wager…” should be replaced with appropriate language.
+p.8 line 166, a reference is needed that points to the R-Code.
+
+P.11, line 232, “…at face value”  How else might the result be taken?  E..g, Is there an assumption implied here?  Please clarify.
+
+P.17 line 379, insert “…bias in comparisons of ^PERIOD^ healthy life expectancy…”
+
